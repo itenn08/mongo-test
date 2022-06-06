@@ -38,8 +38,8 @@
   .input {
     width: 100%;
 
-    &:last-of-type {
-      margin: 20px 0;
+    &:first-of-type {
+      margin-bottom: 20px;
     }
   }
 }
@@ -48,4 +48,5 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  margin-top: 20px;
 }
