@@ -1,28 +1,54 @@
-import React from "react";
-import { Button, TextField } from "@mui/material";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useNavigate, useLocation } from "react-router-dom";
+import { Button, TextField } from "@mui/material";
 
+import AuthStore from "../../store/Auth";
 import styles from "./styles.module.scss";
 
-type IFormInput = {
+export type IFormInput = {
   email: string;
   password: string;
 };
 
+type LocationState = {
+  state: {
+    from: { pathname: string };
+  };
+};
+
 const Auth = () => {
-  const {
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<IFormInput>();
+  const { handleSubmit, control, reset } = useForm<IFormInput>({
+    mode: "onBlur",
+  });
+  const [form, toggleForm] = useState(false);
+  const [error, setError] = useState("");
 
-  console.log("control", control);
+  const location = useLocation() as LocationState;
+  const navigate = useNavigate();
 
-  const onSubmit = (data: IFormInput) => console.log(data);
+  const onSubmit = (data: IFormInput) => {
+    AuthStore.auth(data, form)
+      .then(() => {
+        const from = location.state?.from?.pathname || "/overview";
+        navigate(from, { replace: true });
+      })
+      .catch((err: string) => {
+        setError(err);
+      });
+  };
+
+  const handleToggleForm = () => {
+    toggleForm((prev) => !prev);
+    reset();
+    setError("");
+  };
 
   return (
     <div className={styles["wrapper"]}>
-      <div className={styles["title"]}>Log In to Dashboard</div>
+      <div className={styles["title"]}>
+        {form ? "Sign up" : "Log In"} to Dashboard
+      </div>
       <div className={styles["subTitle"]}>
         Enter your email and password below
       </div>
@@ -89,19 +115,21 @@ const Auth = () => {
             }}
           />
         </div>
+        <div className={styles["error"]}>{error}</div>
         <div className={styles["button"]}>
           <Button
             variant="contained"
             sx={{ width: "250px", height: "50px" }}
             type="submit"
           >
-            Log in
+            {form ? "Sign up" : "Sign in"}
           </Button>
         </div>
       </form>
 
       <div className={styles["signUp"]}>
-        Don't have an account? <span>Sign up</span>
+        Don't have an account?{" "}
+        <span onClick={handleToggleForm}>{form ? "Sign up" : "Log In"}</span>
       </div>
     </div>
   );

@@ -7,36 +7,22 @@ import {
 } from "react-router-dom";
 
 import AuthPage from "../pages/auth";
-import NoAuthTemplate from "../pages/noAuthTemplate";
+import AuthTemplate from "../pages/authTemplate";
+import DashboardPage from "../pages/dashboard";
+import RequireAuth from "./RequireAuth";
 
 const UIRouter = () => {
   return (
     <Router>
       <Routes>
-        {/* <Route element={<NoAuthTemplate />}> */}
-        <Route path="/" element={<AuthPage />} />
-        {/* </Route> */}
-        {/* <Route element={<NoAuthTemplate />}>
-          <Route path="/" element={<WelcomePage />} />
-          <Route path="/questions" element={<QuestionsPage />} />
-          <Route path="/end" element={<EndPage />} />
-        </Route>
-
-        <Route element={<AuthTemplate showIcons={false} />}>
-          <Route path="/login" element={<Login />} />
-        </Route>
+        <Route path="/login" element={<AuthPage />} />
 
         <Route element={<RequireAuth />}>
           <Route element={<AuthTemplate />}>
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/overview" element={<Dashboard />} />
-            <Route path="/logbook" element={<LogBook />} />
-            <Route path="/tasks" element={<Tasks />} />
-            <Route path="/documents" element={<Documents />} />
-            <Route path="/policies" element={<Policies />} />
+            <Route path="/dashboard" element={<DashboardPage />} />
           </Route>
-        </Route> */}
-        {/* <Route path="*" element={<Navigate to="/overview" replace />} /> */}
+        </Route>
+        <Route path="*" element={<Navigate to="/dashboard" replace />} />
       </Routes>
     </Router>
   );
