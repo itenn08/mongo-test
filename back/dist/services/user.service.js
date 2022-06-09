@@ -30,7 +30,7 @@ let UserService = class UserService {
         try {
             const isUsedEmail = await this.findOne(email);
             if (isUsedEmail)
-                throw new common_1.ConflictException('User already exists');
+                throw new common_1.ConflictException("User already exists");
             await user.save();
             const payload = {
                 email: user.email,
@@ -48,7 +48,7 @@ let UserService = class UserService {
     async login(user) {
         const check = await this.validateUser(user.email, user.password);
         if (!check) {
-            throw new common_1.HttpException('Email or password is not correct', common_1.HttpStatus.BAD_REQUEST);
+            throw new common_1.HttpException("Email or password is not correct", common_1.HttpStatus.BAD_REQUEST);
         }
         const payload = {
             email: user.email,
@@ -81,7 +81,13 @@ let UserService = class UserService {
     async findAll() {
         try {
             const users = await this.userModel.find().exec();
-            return users;
+            const result = users.map((item) => {
+                return {
+                    id: item._id,
+                    email: item.email,
+                };
+            });
+            return result;
         }
         catch (e) {
             throw new common_1.HttpException(e, common_1.HttpStatus.BAD_REQUEST);
@@ -93,7 +99,7 @@ let UserService = class UserService {
                 .findByIdAndRemove({ _id: id })
                 .exec();
             if (!deletedUser) {
-                throw new common_1.HttpException('User not found', common_1.HttpStatus.BAD_REQUEST);
+                throw new common_1.HttpException("User not found", common_1.HttpStatus.BAD_REQUEST);
             }
             return deletedUser;
         }
@@ -104,7 +110,7 @@ let UserService = class UserService {
 };
 UserService = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)('User')),
+    __param(0, (0, mongoose_1.InjectModel)("User")),
     __metadata("design:paramtypes", [mongoose_2.Model,
         jwt_1.JwtService])
 ], UserService);
