@@ -3,20 +3,20 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-} from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { JwtService } from '@nestjs/jwt';
-import { Model } from 'mongoose';
-import * as bcrypt from 'bcrypt';
+} from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { JwtService } from "@nestjs/jwt";
+import { Model } from "mongoose";
+import * as bcrypt from "bcrypt";
 
-import { UserDto } from 'src/dto/user.dto';
-import { User } from '../interfaces/user.interface';
+import { UserDto } from "src/dto/user.dto";
+import { User, UserEdited } from "../interfaces/user.interface";
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel('User') private userModel: Model<User>,
-    private jwtService: JwtService,
+    @InjectModel("User") private userModel: Model<User>,
+    private jwtService: JwtService
   ) {}
 
   async register(userDto: UserDto) {
@@ -27,7 +27,7 @@ export class UserService {
 
     try {
       const isUsedEmail = await this.findOne(email);
-      if (isUsedEmail) throw new ConflictException('User already exists');
+      if (isUsedEmail) throw new ConflictException("User already exists");
 
       await user.save();
 
@@ -50,8 +50,8 @@ export class UserService {
 
     if (!check) {
       throw new HttpException(
-        'Email or password is not correct',
-        HttpStatus.BAD_REQUEST,
+        "Email or password is not correct",
+        HttpStatus.BAD_REQUEST
       );
     }
 
@@ -90,11 +90,17 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<User[]> {
+  async findAll(): Promise<UserEdited[]> {
     try {
       const users = await this.userModel.find().exec();
+      const result = users.map((item) => {
+        return {
+          id: item._id,
+          email: item.email,
+        };
+      });
 
-      return users;
+      return result;
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
@@ -106,7 +112,7 @@ export class UserService {
         .findByIdAndRemove({ _id: id })
         .exec();
       if (!deletedUser) {
-        throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+        throw new HttpException("User not found", HttpStatus.BAD_REQUEST);
       }
       return deletedUser;
     } catch (e) {

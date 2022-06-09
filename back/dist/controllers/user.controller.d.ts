@@ -12,7 +12,7 @@ export declare class UserController {
         username: string;
         accessToken: string;
     }>;
-    findAll(): Promise<User[]>;
+    findAll(): Promise<import("src/interfaces/user.interface").UserEdited[]>;
     findOne(email: string): Promise<User>;
     delete(id: string): Promise<User & {
         _id: any;

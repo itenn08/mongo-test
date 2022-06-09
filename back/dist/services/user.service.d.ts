@@ -1,7 +1,7 @@
-import { JwtService } from '@nestjs/jwt';
-import { Model } from 'mongoose';
-import { UserDto } from 'src/dto/user.dto';
-import { User } from '../interfaces/user.interface';
+import { JwtService } from "@nestjs/jwt";
+import { Model } from "mongoose";
+import { UserDto } from "src/dto/user.dto";
+import { User, UserEdited } from "../interfaces/user.interface";
 export declare class UserService {
     private userModel;
     private jwtService;
@@ -16,7 +16,7 @@ export declare class UserService {
     }>;
     validateUser(email: string, pass: string): Promise<User>;
     findOne(email: string): Promise<User>;
-    findAll(): Promise<User[]>;
+    findAll(): Promise<UserEdited[]>;
     delete(id: string): Promise<User & {
         _id: any;
     }>;
