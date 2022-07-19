@@ -18,6 +18,6 @@ export declare class UserService {
     findOne(email: string): Promise<User>;
     findAll(): Promise<UserEdited[]>;
     delete(id: string): Promise<User & {
-        _id: any;
+        _id: import("mongoose").Types.ObjectId;
     }>;
 }

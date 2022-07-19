@@ -128,8 +128,17 @@ const Auth = () => {
       </form>
 
       <div className={styles["signUp"]}>
-        Don't have an account?{" "}
-        <span onClick={handleToggleForm}>{form ? "Sign up" : "Log In"}</span>
+        {form ? (
+          <div>
+            Already have an account?{" "}
+            <span onClick={handleToggleForm}>Log in</span>
+          </div>
+        ) : (
+          <div>
+            Don't have an account?{" "}
+            <span onClick={handleToggleForm}>Sign up</span>
+          </div>
+        )}
       </div>
     </div>
   );

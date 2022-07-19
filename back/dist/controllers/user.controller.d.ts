@@ -15,6 +15,6 @@ export declare class UserController {
     findAll(): Promise<import("src/interfaces/user.interface").UserEdited[]>;
     findOne(email: string): Promise<User>;
     delete(id: string): Promise<User & {
-        _id: any;
+        _id: import("mongoose").Types.ObjectId;
     }>;
 }

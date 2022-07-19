@@ -26,7 +26,16 @@ let UserService = class UserService {
     async register(userDto) {
         const { email, password } = userDto;
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new this.userModel({ email, password: hashedPassword });
+        const user = new this.userModel({
+            email,
+            password: hashedPassword,
+            city: "",
+            country: "",
+            firstName: "",
+            lastName: "",
+            role: "user",
+            dateOfBirth: null,
+        });
         try {
             const isUsedEmail = await this.findOne(email);
             if (isUsedEmail)
