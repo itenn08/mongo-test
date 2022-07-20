@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid, GridValueGetterParams } from "@mui/x-data-grid";
 import { Box, Button, CircularProgress, Modal } from "@mui/material";
 
 import { useQueryUsers, useUsers } from "../../hooks/reactQuery/useUsers";
 import { User } from "../../types/users";
 import styles from "./styles.module.scss";
-
-type UserType = {
-  email: string;
-  id: string;
-};
+import { DataGridLayout } from "../DataGridLayout";
+import { columns, makeRows } from "./UserTableDataGrid";
 
 const UsersTable = () => {
   const [rows, setRows] = useState<User[]>([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const style = {
     position: "absolute",
@@ -39,8 +35,7 @@ const UsersTable = () => {
 
   useEffect(() => {
     if (!isLoading && users && users?.length > 0) {
-      console.log("users :>> ", users);
-      setRows(users);
+      setRows(makeRows(users));
     }
   }, [users, isLoading]);
 
@@ -49,30 +44,30 @@ const UsersTable = () => {
     handleCloseModal();
   };
 
-  const columns = [
-    { field: "id", headerName: "ID", width: 200 },
-    { field: "email", headerName: "email", width: 200 },
-    { field: "lastName", headerName: "lastName", width: 200 },
-    {
-      field: "action",
-      headerName: "",
-      sortable: false,
-      renderCell: (params: GridValueGetterParams) => {
-        const onClick = () => {
-          setSelectedUser(params.row);
-          setShowModal(true);
-        };
+  const getEditableTechnician = (user: User) => {
+    console.log("edit :>> ", user);
+  };
 
-        return <Button onClick={onClick}>Delete</Button>;
-      },
-    },
-  ];
+  const getDeletableTechnician = (user: User) => {
+    setSelectedUser(user);
+    setShowModal(true);
+  };
 
   return (
     <div className={styles.wrapper}>
       {rows.length > 0 ? (
         <div style={{ height: 400, width: "100%" }}>
-          <DataGrid rows={rows} columns={columns} />
+          <Box display="flex" flexGrow={1} sx={{ minHeight: "400px" }}>
+            <DataGridLayout
+              rows={rows}
+              columns={columns(getEditableTechnician, getDeletableTechnician)}
+              loading={isLoading}
+              pageSize={0}
+              pageIndex={0}
+              pageCount={0}
+              hideFooter
+            />
+          </Box>
         </div>
       ) : (
         <CircularProgress />

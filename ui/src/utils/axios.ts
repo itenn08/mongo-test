@@ -10,9 +10,21 @@ export const axiosClient = Axios.create({
   },
 });
 
-if (AuthStore.token) {
-  axiosClient.defaults.headers.common.Authorization = `Bearer ${AuthStore.token}`;
-}
+axiosClient.interceptors.request.use(
+  async (config) => {
+    config.headers = {
+      ...config.headers,
+      Authorization: `Bearer ${AuthStore.token}`,
+    };
+    if (!AuthStore.token) {
+      delete config.headers.Authorization;
+    }
+    return config;
+  },
+  (error) => {
+    Promise.reject(error);
+  }
+);
 
 export const paramsSerializer = (parameters: { [key: string]: any }) => {
   const items = Object.keys(parameters).map((key) => {
