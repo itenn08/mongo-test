@@ -1,20 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { DataGrid, GridValueGetterParams } from "@mui/x-data-grid";
 import { Box, Button, CircularProgress, Modal } from "@mui/material";
 
-import API from "../../utils/api";
-import { BASE_URL } from "../../config";
+import { useQueryUsers, useUsers } from "../../hooks/reactQuery/useUsers";
+import { User } from "../../types/users";
 import styles from "./styles.module.scss";
-
-type UserType = {
-  email: string;
-  id: string;
-};
+import { DataGridLayout } from "../DataGridLayout";
+import { columns, makeRows } from "./UserTableDataGrid";
+import UserEdit from "./EditUser";
 
 const UsersTable = () => {
-  const [rows, setRows] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
+  const [rows, setRows] = useState<User[]>([]);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const style = {
     position: "absolute",
@@ -28,91 +26,82 @@ const UsersTable = () => {
     p: 4,
   };
 
-  const deleteUser = () => {
-    const axiosConfig = {
-      url: `${BASE_URL}/user/${selectedUser?.id}`,
-      method: "DELETE",
-    };
-    API(axiosConfig)
-      .then(({ response, err }) => {
-        if (err) {
-          throw err;
-        }
-        return response.data;
-      })
-      .then((data) => {
-        getUsers();
-        handleCloseModal();
-      })
-      .catch(() => {});
-  };
-
   const handleCloseModal = () => {
-    setShowModal(false);
+    setShowDeleteModal(false);
     setSelectedUser(null);
   };
 
-  const getUsers = () => {
-    const axiosConfig = {
-      url: `${BASE_URL}/user/getAll`,
-      method: "GET",
-    };
+  const { deleteUser } = useUsers();
 
-    API(axiosConfig)
-      .then(({ response, err }) => {
-        if (err) {
-          throw err;
-        }
-        return response.data;
-      })
-      .then((data) => {
-        setRows(data);
-      })
-      .catch(() => {});
-  };
+  const { data: users, isLoading } = useQueryUsers();
 
   useEffect(() => {
-    getUsers();
-  }, []);
+    if (!isLoading && users && users?.length > 0) {
+      setRows(makeRows(users));
+    }
+  }, [users, isLoading]);
 
-  const columns = [
-    { field: "id", headerName: "ID", width: 200 },
-    { field: "email", headerName: "email", width: 200 },
-    {
-      field: "action",
-      headerName: "",
-      sortable: false,
-      renderCell: (params: GridValueGetterParams) => {
-        const onClick = () => {
-          setSelectedUser(params.row);
-          setShowModal(true);
-        };
+  const handleDeleteUser = async () => {
+    await deleteUser(selectedUser?.id!);
+    handleCloseModal();
+  };
 
-        return <Button onClick={onClick}>Delete</Button>;
-      },
-    },
-  ];
+  const getEditableTechnician = (user: User) => {
+    setSelectedUser(user);
+    setShowEditModal(true);
+  };
+
+  const getDeletableTechnician = (user: User) => {
+    setSelectedUser(user);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setSelectedUser(null);
+  };
 
   return (
     <div className={styles.wrapper}>
       {rows.length > 0 ? (
         <div style={{ height: 400, width: "100%" }}>
-          <DataGrid rows={rows} columns={columns} />
+          <Box display="flex" flexGrow={1} sx={{ minHeight: "400px" }}>
+            <DataGridLayout
+              rows={rows}
+              columns={columns(getEditableTechnician, getDeletableTechnician)}
+              loading={isLoading}
+              pageSize={0}
+              pageIndex={0}
+              pageCount={0}
+              hideFooter
+            />
+          </Box>
         </div>
       ) : (
         <CircularProgress />
       )}
+      {selectedUser && (
+        <UserEdit
+          user={selectedUser!}
+          openDialog={showEditModal}
+          onClose={handleCloseEditModal}
+        />
+      )}
 
-      <Modal open={showModal} onClose={handleCloseModal}>
+      <Modal open={showDeleteModal} onClose={handleCloseModal}>
         <Box sx={style}>
-          <div className={styles.ModalText}>
+          <div className={styles.modalText}>
             Are you sure to delete user <span>{selectedUser?.email}</span>?
           </div>
-          <div className={styles.ModalButtons}>
+          <div className={styles.modalButtons}>
             <Button onClick={handleCloseModal} variant="contained">
               Cancel
             </Button>
-            <Button variant="contained" color="error" onClick={deleteUser}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeleteUser}
+            >
               Delete
             </Button>
           </div>

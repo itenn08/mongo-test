@@ -3,13 +3,14 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  Logger,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { JwtService } from "@nestjs/jwt";
 import { Model } from "mongoose";
 import * as bcrypt from "bcrypt";
 
-import { UserDto } from "src/dto/user.dto";
+import { UserDto, UserUpdateDto } from "src/dto/user.dto";
 import { User, UserEdited } from "../interfaces/user.interface";
 
 @Injectable()
@@ -23,7 +24,16 @@ export class UserService {
     const { email, password } = userDto;
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new this.userModel({ email, password: hashedPassword });
+    const user = new this.userModel({
+      email,
+      password: hashedPassword,
+      city: "",
+      country: "",
+      firstName: "",
+      lastName: "",
+      role: "user",
+      dateOfBirth: null,
+    });
 
     try {
       const isUsedEmail = await this.findOne(email);
@@ -97,10 +107,35 @@ export class UserService {
         return {
           id: item._id,
           email: item.email,
+          firstName: item.firstName,
+          lastName: item.lastName,
+          dateOfBirth: item.dateOfBirth,
+          role: item.role,
+          country: item.country,
+          city: item.city,
         };
       });
 
       return result;
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async update(id: string, postData: UserUpdateDto) {
+    try {
+      const post = await this.userModel.findByIdAndUpdate(
+        { _id: id },
+        postData,
+        {
+          new: true,
+        }
+      );
+
+      if (!post) {
+        throw new HttpException("User not found", HttpStatus.BAD_REQUEST);
+      }
+      return post;
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
