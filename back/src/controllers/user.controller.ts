@@ -4,12 +4,13 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Request,
   UseGuards,
   ValidationPipe,
 } from "@nestjs/common";
-import { UserDto } from "src/dto/user.dto";
+import { UserDto, UserUpdateDto } from "src/dto/user.dto";
 import { UserService } from "src/services/user.service";
 import { User } from "src/interfaces/user.interface";
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
@@ -38,6 +39,12 @@ export class UserController {
   @Get(":email")
   async findOne(@Param("email") email: string): Promise<User> {
     return this.userService.findOne(email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(":id")
+  async updatePost(@Param("id") id: string, @Body() body: UserUpdateDto) {
+    return this.userService.update(id, body);
   }
 
   @UseGuards(JwtAuthGuard)

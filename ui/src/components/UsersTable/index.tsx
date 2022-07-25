@@ -6,10 +6,12 @@ import { User } from "../../types/users";
 import styles from "./styles.module.scss";
 import { DataGridLayout } from "../DataGridLayout";
 import { columns, makeRows } from "./UserTableDataGrid";
+import UserEdit from "./EditUser";
 
 const UsersTable = () => {
   const [rows, setRows] = useState<User[]>([]);
-  const [showModal, setShowModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const style = {
@@ -25,7 +27,7 @@ const UsersTable = () => {
   };
 
   const handleCloseModal = () => {
-    setShowModal(false);
+    setShowDeleteModal(false);
     setSelectedUser(null);
   };
 
@@ -45,12 +47,18 @@ const UsersTable = () => {
   };
 
   const getEditableTechnician = (user: User) => {
-    console.log("edit :>> ", user);
+    setSelectedUser(user);
+    setShowEditModal(true);
   };
 
   const getDeletableTechnician = (user: User) => {
     setSelectedUser(user);
-    setShowModal(true);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setSelectedUser(null);
   };
 
   return (
@@ -72,8 +80,15 @@ const UsersTable = () => {
       ) : (
         <CircularProgress />
       )}
+      {selectedUser && (
+        <UserEdit
+          user={selectedUser!}
+          openDialog={showEditModal}
+          onClose={handleCloseEditModal}
+        />
+      )}
 
-      <Modal open={showModal} onClose={handleCloseModal}>
+      <Modal open={showDeleteModal} onClose={handleCloseModal}>
         <Box sx={style}>
           <div className={styles.modalText}>
             Are you sure to delete user <span>{selectedUser?.email}</span>?

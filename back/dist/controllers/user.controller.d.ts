@@ -1,4 +1,4 @@
-import { UserDto } from "src/dto/user.dto";
+import { UserDto, UserUpdateDto } from "src/dto/user.dto";
 import { UserService } from "src/services/user.service";
 import { User } from "src/interfaces/user.interface";
 export declare class UserController {
@@ -14,6 +14,9 @@ export declare class UserController {
     }>;
     findAll(): Promise<import("src/interfaces/user.interface").UserEdited[]>;
     findOne(email: string): Promise<User>;
+    updatePost(id: string, body: UserUpdateDto): Promise<User & {
+        _id: import("mongoose").Types.ObjectId;
+    }>;
     delete(id: string): Promise<User & {
         _id: import("mongoose").Types.ObjectId;
     }>;

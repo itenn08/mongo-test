@@ -94,9 +94,29 @@ let UserService = class UserService {
                 return {
                     id: item._id,
                     email: item.email,
+                    firstName: item.firstName,
+                    lastName: item.lastName,
+                    dateOfBirth: item.dateOfBirth,
+                    role: item.role,
+                    country: item.country,
+                    city: item.city,
                 };
             });
             return result;
+        }
+        catch (e) {
+            throw new common_1.HttpException(e, common_1.HttpStatus.BAD_REQUEST);
+        }
+    }
+    async update(id, postData) {
+        try {
+            const post = await this.userModel.findByIdAndUpdate({ _id: id }, postData, {
+                new: true,
+            });
+            if (!post) {
+                throw new common_1.HttpException("User not found", common_1.HttpStatus.BAD_REQUEST);
+            }
+            return post;
         }
         catch (e) {
             throw new common_1.HttpException(e, common_1.HttpStatus.BAD_REQUEST);

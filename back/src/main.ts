@@ -9,6 +9,7 @@ async function bootstrap() {
       origin: "http://localhost:3000",
       credentials: true,
     },
+    logger: ["error", "warn", "log", "debug"],
   });
   app.useGlobalPipes(new ValidationPipe());
   await app.listen(8080);

@@ -9,7 +9,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserDto = void 0;
+exports.UserUpdateDto = exports.UserDto = void 0;
 const class_validator_1 = require("class-validator");
 class UserDto {
 }
@@ -21,9 +21,46 @@ __decorate([
 ], UserDto.prototype, "email", void 0);
 __decorate([
     (0, class_validator_1.IsString)(),
-    (0, class_validator_1.MinLength)(8, { message: 'Password is too short (8 characters min)' }),
-    (0, class_validator_1.MaxLength)(20, { message: 'Password is too long (20 characters max)' }),
+    (0, class_validator_1.MinLength)(8, { message: "Password is too short (8 characters min)" }),
+    (0, class_validator_1.MaxLength)(20, { message: "Password is too long (20 characters max)" }),
     __metadata("design:type", String)
 ], UserDto.prototype, "password", void 0);
 exports.UserDto = UserDto;
+class UserUpdateDto {
+}
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    (0, class_validator_1.IsEmail)(),
+    __metadata("design:type", String)
+], UserUpdateDto.prototype, "email", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UserUpdateDto.prototype, "firstName", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    __metadata("design:type", String)
+], UserUpdateDto.prototype, "lastName", void 0);
+__decorate([
+    (0, class_validator_1.IsDateString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Date)
+], UserUpdateDto.prototype, "dateOfBirth", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], UserUpdateDto.prototype, "country", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], UserUpdateDto.prototype, "city", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], UserUpdateDto.prototype, "role", void 0);
+exports.UserUpdateDto = UserUpdateDto;
 //# sourceMappingURL=user.dto.js.map

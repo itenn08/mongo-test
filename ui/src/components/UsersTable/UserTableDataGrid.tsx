@@ -8,6 +8,7 @@ import {
 import { User } from "../../types/users";
 import { Delete, Edit } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
+import { formatDate } from "../../utils/date";
 
 const defaultProps = {
   editable: false,
@@ -83,6 +84,14 @@ export const columns = (
     flex: 2,
   },
   {
+    field: "city",
+    headerName: "City",
+    type: "string",
+    ...defaultAlignment,
+    ...defaultProps,
+    flex: 1,
+  },
+  {
     field: "actions",
     headerName: "",
     ...defaultAlignment,
@@ -110,10 +119,10 @@ export const makeRows = (users: User[]): any => {
       id: index,
       email: user.email || "-",
       lastName: user.lastName || "-",
-      firstName: user.lastName || "-",
+      firstName: user.firstName || "-",
       city: user.city || "-",
       country: user.country || "-",
-      dateOfBirth: user.dateOfBirth || "-",
+      dateOfBirth: formatDate(user.dateOfBirth) || "-",
       role: user.role || "-",
       actions: user,
     }));
