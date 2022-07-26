@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 
 type SidebarLinkTypes = {
   title: string;
@@ -8,9 +8,14 @@ type SidebarLinkTypes = {
   onClick?: () => void;
 };
 
-const SidebarLink = ({ title, children, onClick }: SidebarLinkTypes) => (
+const SidebarLink = ({title, children, onClick}: SidebarLinkTypes) => (
   <div className={styles.wrapper}>
-    <div className={styles.linkWrapper} onClick={onClick}>
+    <div
+      className={styles.linkWrapper}
+      onKeyPress={onClick}
+      onClick={onClick}
+      role="button"
+      tabIndex={0}>
       <span className={styles.icon}>{children}</span>
       <span className={styles.link}>{title}</span>
     </div>

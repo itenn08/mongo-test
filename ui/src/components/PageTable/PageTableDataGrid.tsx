@@ -4,11 +4,13 @@ import {
   GridColumnHeaderParams,
   GridRenderCellParams,
 } from '@mui/x-data-grid';
-import {Delete, Edit} from '@mui/icons-material';
 import {Box, Typography} from '@mui/material';
+import {Delete, Edit} from '@mui/icons-material';
 
-import {User} from '../../types/users';
 import {formatDate} from '../../utils/date';
+import {StatusChip} from '../StatusChip/StatusChip';
+import {Page} from '../../types/pages';
+import {Resource} from '../../types/misc';
 
 const defaultProps = {
   editable: false,
@@ -38,56 +40,60 @@ const defaultAlignment: {
 };
 
 export const columns = (
-  getEditableTechnician: (item: User) => void,
-  getDeletableTechnician: (item: User) => void,
+  getEditablePage: (item: Page) => void,
+  getDeletablePage: (item: Page) => void,
 ): GridColDef[] => [
   {
-    field: 'email',
-    headerName: 'Email',
+    field: 'title',
+    headerName: 'Title',
     type: 'string',
     ...defaultAlignment,
     ...defaultProps,
     flex: 2,
   },
   {
-    field: 'firstName',
-    headerName: 'First Name',
+    field: 'url',
+    headerName: 'URL',
     type: 'string',
     ...defaultAlignment,
     ...defaultProps,
     flex: 2,
   },
   {
-    field: 'lastName',
-    headerName: 'Last Name',
+    field: 'seoTitle',
+    headerName: 'SEO Title',
     type: 'string',
     ...defaultAlignment,
     ...defaultProps,
     flex: 2,
   },
   {
-    field: 'role',
-    headerName: 'Role',
+    field: 'seoDescription',
+    headerName: 'SEO Description',
     type: 'string',
     ...defaultAlignment,
     ...defaultProps,
     flex: 2,
   },
   {
-    field: 'dateOfBirth',
-    headerName: 'Date of Birth',
+    field: 'date',
+    headerName: 'Date',
     type: 'string',
     ...defaultAlignment,
     ...defaultProps,
     flex: 2,
   },
   {
-    field: 'city',
-    headerName: 'City',
-    type: 'string',
+    field: 'isActive',
+    headerName: 'Status',
     ...defaultAlignment,
     ...defaultProps,
-    flex: 1,
+    renderCell: (params) => (
+      <StatusChip
+        color={params.value ? 'primary' : 'error'}
+        label={params.value ? 'Active' : 'Inactive'}
+      />
+    ),
   },
   {
     field: 'actions',
@@ -96,12 +102,10 @@ export const columns = (
     ...defaultProps,
     renderCell: (params) => (
       <Box sx={{display: 'flex'}}>
-        <Box
-          onClick={() => getEditableTechnician(params.value)}
-          sx={{mr: '1em'}}>
+        <Box onClick={() => getEditablePage(params.value)} sx={{mr: '1em'}}>
           <Edit sx={{color: 'text.secondary'}} />
         </Box>
-        <Box onClick={() => getDeletableTechnician(params.value)}>
+        <Box onClick={() => getDeletablePage(params.value)}>
           <Delete sx={{color: 'text.secondary'}} />
         </Box>
       </Box>
@@ -109,19 +113,18 @@ export const columns = (
   },
 ];
 
-export const makeRows = (users: User[]): any => {
+export const makeRows = (pages: Resource<Page>): any => {
   const result =
-    users.length &&
-    users.map((user: User, index: number) => ({
+    pages.data &&
+    pages.data.map((page: Page, index: number) => ({
       id: index,
-      email: user.email || '-',
-      lastName: user.lastName || '-',
-      firstName: user.firstName || '-',
-      city: user.city || '-',
-      country: user.country || '-',
-      dateOfBirth: formatDate(user.dateOfBirth) || '-',
-      role: user.role || '-',
-      actions: user,
+      title: page.title || '-',
+      url: page.url || '-',
+      seoTitle: page.seoTitle || '-',
+      seoDescription: page.seoDescription || '-',
+      date: formatDate(page.date) || '-',
+      isActive: page.isActive,
+      actions: page,
     }));
   return result || [];
 };

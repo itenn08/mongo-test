@@ -17,6 +17,9 @@ const user_controller_1 = require("./controllers/user.controller");
 const user_schema_1 = require("./schemas/user.schema");
 const local_strategy_1 = require("./strategies/local.strategy");
 const jwt_auth_strategy_1 = require("./strategies/jwt-auth.strategy");
+const page_schema_1 = require("./schemas/page.schema");
+const pages_controller_1 = require("./controllers/pages.controller");
+const page_service_1 = require("./services/page.service");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -24,16 +27,19 @@ AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot(),
             mongoose_1.MongooseModule.forRoot(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.c9jvb.mongodb.net/?retryWrites=true&w=majority`),
-            mongoose_1.MongooseModule.forFeature([{ name: 'User', schema: user_schema_1.UserSchema }]),
+            mongoose_1.MongooseModule.forFeature([
+                { name: "User", schema: user_schema_1.UserSchema },
+                { name: "Page", schema: page_schema_1.PageSchema },
+            ]),
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
                 secret: process.env.JWT_SECRET,
-                signOptions: { expiresIn: '24h' },
+                signOptions: { expiresIn: "24h" },
             }),
         ],
-        controllers: [user_controller_1.UserController],
-        providers: [user_service_1.UserService, local_strategy_1.LocalStrategy, jwt_auth_strategy_1.JwtStrategy],
-        exports: [user_service_1.UserService],
+        controllers: [user_controller_1.UserController, pages_controller_1.PageController],
+        providers: [user_service_1.UserService, page_service_1.PageService, local_strategy_1.LocalStrategy, jwt_auth_strategy_1.JwtStrategy],
+        exports: [user_service_1.UserService, page_service_1.PageService],
     })
 ], AppModule);
 exports.AppModule = AppModule;
