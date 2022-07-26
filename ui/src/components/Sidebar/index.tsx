@@ -1,6 +1,6 @@
 import React from 'react';
 import {useNavigate} from 'react-router-dom';
-import {Description, Home, Logout} from '@mui/icons-material';
+import {Description, Logout, People} from '@mui/icons-material';
 
 import AuthStore from '../../store/Auth';
 import SidebarLink from './Link';
@@ -16,8 +16,8 @@ const Sidebar = () => {
 
   return (
     <div className={styles.wrapper}>
-      <SidebarLink title="Main" onClick={() => navigate('/users')}>
-        <Home />
+      <SidebarLink title="Users" onClick={() => navigate('/users')}>
+        <People />
       </SidebarLink>
       <SidebarLink title="Pages" onClick={() => navigate('/pages')}>
         <Description />

@@ -1,7 +1,7 @@
 import { JwtService } from "@nestjs/jwt";
 import { Model } from "mongoose";
 import { UserDto, UserUpdateDto } from "src/dto/user.dto";
-import { User, UserEdited } from "../interfaces/user.interface";
+import { User } from "../interfaces/user.interface";
 export declare class UserService {
     private userModel;
     private jwtService;
@@ -16,7 +16,20 @@ export declare class UserService {
     }>;
     validateUser(email: string, pass: string): Promise<User>;
     findOne(email: string): Promise<User>;
-    findAll(): Promise<UserEdited[]>;
+    findAll(pageIndex: number, pageSize?: number): Promise<{
+        data: {
+            id: any;
+            email: string;
+            firstName: string;
+            lastName: string;
+            dateOfBirth: Date;
+            role: string;
+            country: string;
+            city: string;
+        }[];
+        page: number;
+        total: number;
+    }>;
     update(id: string, postData: UserUpdateDto): Promise<User & {
         _id: import("mongoose").Types.ObjectId;
     }>;

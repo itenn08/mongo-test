@@ -9,6 +9,7 @@ import {Box, Typography} from '@mui/material';
 
 import {User} from '../../types/users';
 import {formatDate} from '../../utils/date';
+import {Resource} from '../../types/misc';
 
 const defaultProps = {
   editable: false,
@@ -109,10 +110,10 @@ export const columns = (
   },
 ];
 
-export const makeRows = (users: User[]): any => {
+export const makeRows = (users: Resource<User>): any => {
   const result =
-    users.length &&
-    users.map((user: User, index: number) => ({
+    users.data &&
+    users.data.map((user: User, index: number) => ({
       id: index,
       email: user.email || '-',
       lastName: user.lastName || '-',
