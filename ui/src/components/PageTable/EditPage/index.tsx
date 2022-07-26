@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 
-import EditUserForm from './EditUserForm';
+import EditUserForm from './EditPageForm';
 import {Dialog} from '../../Dialog';
 import {Page, PageUpdateForm} from '../../../types/pages';
 import {usePages} from '../../../hooks/reactQuery/usePages';

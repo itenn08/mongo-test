@@ -14,7 +14,7 @@ export class PageService {
       title: body.title,
       content: body.content,
       date: body.date || new Date(),
-      isActive: body.isActive || true,
+      isActive: body.isActive,
       seoDescription: body.seoDescription,
       seoTitle: body.seoTitle,
       url: body.url,
@@ -22,6 +22,7 @@ export class PageService {
 
     try {
       await page.save();
+      return { page: page._id };
     } catch (error) {
       throw error;
     }

@@ -1,11 +1,12 @@
-import {useQuery, useQueryClient} from 'react-query';
+import {useMutation, useQuery, useQueryClient} from 'react-query';
 
 import {paramsSerializer, axiosClient} from '../../utils/axios';
 import {useSnackbar} from '../useSnackbar';
 import {queryKeys as qks, queryKeys} from '../../reactQuery/constants';
 import {BASE_URL} from '../../config';
 import {Page, PageUpdateForm} from '../../types/pages';
-import {Resource} from '../../types/misc';
+import {Resource, StringValue} from '../../types/misc';
+import {NewPageModel} from '../../pages/NewPage/model';
 
 export const getPages = async (params: any) => {
   const response = await axiosClient.get<Resource<Page>>(`${BASE_URL}/page/`, {
@@ -92,4 +93,28 @@ export const usePages = () => {
     updatePage,
     deletePage,
   };
+};
+
+const createPage = async (body: NewPageModel): Promise<StringValue> => {
+  const response = await axiosClient.post<StringValue>(`${BASE_URL}/page/`, {
+    ...body,
+  });
+  return response.data;
+};
+
+export const useCreatePage = (successMsg: string) => {
+  const {enqueueSnackbar} = useSnackbar();
+  return useMutation((body: NewPageModel) => createPage(body), {
+    onSuccess: () => {
+      enqueueSnackbar(successMsg, {
+        variant: 'success',
+      });
+    },
+    onError: (err) => {
+      console.log(err);
+      enqueueSnackbar('An unexpected error occurred, please try again.', {
+        variant: 'error',
+      });
+    },
+  });
 };

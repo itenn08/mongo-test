@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {Box, Button, CircularProgress, Modal} from '@mui/material';
 import {GridRowsProp} from '@mui/x-data-grid';
 
@@ -6,13 +7,17 @@ import styles from './styles.module.scss';
 import {DataGridLayout} from '../DataGridLayout';
 import {columns, makeRows} from './PageTableDataGrid';
 import {Page} from '../../types/pages';
-import PageEdit from './EditUser';
+import PageEdit from './EditPage';
 import {usePages, useQueryPages} from '../../hooks/reactQuery/usePages';
 import {createEmptyResource, makePage} from '../../utils/paging';
+import {PageListingLayout} from '../PageListingLayout';
+import {Widget} from '../Widget';
 
 const pageSize = 10;
 
 const PageTable = () => {
+  const navigate = useNavigate();
+
   const [rows, setRows] = useState<GridRowsProp>([]);
   const [page, setPage] = useState(makePage(0, pageSize));
   const [pageCount, setPageCount] = useState(0);
@@ -80,29 +85,39 @@ const PageTable = () => {
 
   return (
     <div className={styles.wrapper}>
-      {rows.length > 0 ? (
-        <div style={{height: 650, width: '100%'}}>
-          <Box display="flex" flexGrow={1} sx={{minHeight: '650px'}}>
-            <DataGridLayout
-              rows={rows}
-              columns={columns(getEditablePage, getDeletablePage)}
-              loading={isLoading}
-              pageSize={page.pageSize}
-              pageIndex={page.pageIndex + 1}
-              pageCount={pageCount}
-              hideFooter={pageCount <= 1}
-              handlePageChange={(value) =>
-                setPage((prev) => ({
-                  ...prev,
-                  pageIndex: value - 1,
-                }))
-              }
+      <div style={{height: 650, width: '100%'}}>
+        <PageListingLayout
+          renderWidget={
+            <Widget
+              searchPlaceholder="Search by number, name, address etc."
+              showActionBtn
+              btnOnClick={() => navigate('/pages/new')}
+              btnLabel="New Page"
             />
+          }>
+          <Box display="flex" flexGrow={1} sx={{minHeight: '650px'}}>
+            {rows.length > 0 ? (
+              <DataGridLayout
+                rows={rows}
+                columns={columns(getEditablePage, getDeletablePage)}
+                loading={isLoading}
+                pageSize={page.pageSize}
+                pageIndex={page.pageIndex + 1}
+                pageCount={pageCount}
+                hideFooter={pageCount <= 1}
+                handlePageChange={(value) =>
+                  setPage((prev) => ({
+                    ...prev,
+                    pageIndex: value - 1,
+                  }))
+                }
+              />
+            ) : (
+              <CircularProgress />
+            )}
           </Box>
-        </div>
-      ) : (
-        <CircularProgress />
-      )}
+        </PageListingLayout>
+      </div>
       {selectedPage && (
         <PageEdit
           page={selectedPage!}
@@ -110,7 +125,6 @@ const PageTable = () => {
           onClose={handleCloseEditModal}
         />
       )}
-
       <Modal open={showDeleteModal} onClose={handleCloseModal}>
         <Box sx={style}>
           <div className={styles.modalText}>

@@ -11,6 +11,7 @@ import UsersTable from '../components/UsersTable';
 import AuthPage from '../pages/auth';
 import AuthTemplate from '../pages/authTemplate';
 import DashboardPage from '../pages/dashboard';
+import {NewPage} from '../pages/NewPage';
 import RequireAuth from './RequireAuth';
 
 const UIRouter = () => (
@@ -35,6 +36,16 @@ const UIRouter = () => (
             element={
               <DashboardPage>
                 <PageTable />
+              </DashboardPage>
+            }
+          />
+        </Route>
+        <Route element={<AuthTemplate />}>
+          <Route
+            path="/pages/new"
+            element={
+              <DashboardPage>
+                <NewPage />
               </DashboardPage>
             }
           />

@@ -1,8 +1,8 @@
-import { BASE_URL } from "./../config";
-import { makeAutoObservable, runInAction, reaction } from "mobx";
+import {makeAutoObservable, runInAction, reaction} from 'mobx';
 
-import API from "../utils/api";
-import { IFormInput } from "../components/Auth";
+import {BASE_URL} from '../config';
+import API from '../utils/api';
+import {IFormInput} from '../components/Auth';
 
 class AuthStore {
   constructor() {
@@ -11,15 +11,15 @@ class AuthStore {
       () => this.token,
       (token) => {
         if (token) {
-          window.localStorage.setItem("jwt", token);
+          window.localStorage.setItem('jwt', token);
         } else {
-          window.localStorage.removeItem("jwt");
+          window.localStorage.removeItem('jwt');
         }
-      }
+      },
     );
   }
 
-  private _email = "";
+  private _email = '';
 
   set email(value: string) {
     this._email = value;
@@ -29,7 +29,7 @@ class AuthStore {
     return this._email;
   }
 
-  private _password = "";
+  private _password = '';
 
   set password(value: string) {
     this._password = value;
@@ -39,7 +39,7 @@ class AuthStore {
     return this._password;
   }
 
-  private _token = window.localStorage.getItem("jwt");
+  private _token = window.localStorage.getItem('jwt');
 
   get token() {
     return this._token;
@@ -51,7 +51,7 @@ class AuthStore {
 
   isLoading = false;
 
-  private _error: string = "";
+  private _error: string = '';
 
   get error(): string {
     return this._error;
@@ -73,8 +73,8 @@ class AuthStore {
       : `${BASE_URL}/user/login`;
 
     const axiosConfig = {
-      url: url,
-      method: "POST",
+      url,
+      method: 'POST',
       data: {
         email: data.email,
         password: data.password,
@@ -82,22 +82,22 @@ class AuthStore {
     };
 
     return API(axiosConfig)
-      .then(({ response, err }) => {
+      .then(({response, err}) => {
         if (err) {
-          console.log("err", err);
+          console.log('err', err);
           this.error = err.data.message;
           throw err;
         }
         return response.data;
       })
-      .then((data) => {
+      .then((res) => {
         runInAction(() => {
-          this.token = data.accessToken;
+          this.token = res.accessToken;
         });
       })
       .catch(() => {
         runInAction(() => {
-          this.password = "";
+          this.password = '';
         });
         throw this.error;
       })
@@ -109,7 +109,7 @@ class AuthStore {
   }
 
   logout() {
-    this.token = "";
+    this.token = '';
   }
 }
 
