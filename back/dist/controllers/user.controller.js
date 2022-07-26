@@ -17,6 +17,7 @@ const common_1 = require("@nestjs/common");
 const user_dto_1 = require("../dto/user.dto");
 const user_service_1 = require("../services/user.service");
 const jwt_auth_guard_1 = require("../guards/jwt-auth.guard");
+const pagination_dto_1 = require("../dto/pagination.dto");
 let UserController = class UserController {
     constructor(userService) {
         this.userService = userService;
@@ -27,8 +28,8 @@ let UserController = class UserController {
     async login(req) {
         return this.userService.login(req.body);
     }
-    async findAll() {
-        return await this.userService.findAll();
+    async findAll({ pageIndex, pageSize }) {
+        return await this.userService.findAll(pageIndex, pageSize);
     }
     async findOne(email) {
         return this.userService.findOne(email);
@@ -56,9 +57,10 @@ __decorate([
 ], UserController.prototype, "login", null);
 __decorate([
     (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
-    (0, common_1.Get)("/getAll"),
+    (0, common_1.Get)(""),
+    __param(0, (0, common_1.Query)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [pagination_dto_1.PaginationParams]),
     __metadata("design:returntype", Promise)
 ], UserController.prototype, "findAll", null);
 __decorate([

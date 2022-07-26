@@ -1,7 +1,7 @@
-import { useEffect, useRef } from "react";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import useTheme from "@mui/material/styles/useTheme";
+import {useEffect, useRef} from 'react';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import useTheme from '@mui/material/styles/useTheme';
 import {
   DataGrid,
   DataGridProps,
@@ -12,19 +12,19 @@ import {
   GridRenderCellParams,
   GridRowParams,
   GridRowsProp,
-} from "@mui/x-data-grid";
-import LinearProgress from "@mui/material/LinearProgress";
-import { useNavigate } from "react-router-dom";
+} from '@mui/x-data-grid';
+import LinearProgress from '@mui/material/LinearProgress';
+import {useNavigate} from 'react-router-dom';
 
-import { EmptySection } from "../EmptySection";
-import { CustomPagination } from "../CustomPagination";
+import {EmptySection} from '../EmptySection';
+import {CustomPagination} from '../CustomPagination';
 
 interface Props extends DataGridProps {
   rows: GridRowsProp;
   columns: GridColDef[];
   hideFooter?: boolean;
   height?: string | number;
-  containerStyle?: { [key: string]: string | number };
+  containerStyle?: {[key: string]: string | number};
   loading?: boolean;
   onCellClick?: GridEventListener<GridEvents.cellClick>;
   pageSize?: number;
@@ -48,32 +48,30 @@ interface Props extends DataGridProps {
 interface ColumnProps extends GridColDef {
   field: string;
   headerName: string;
-  type?: "string" | "number";
-  cellClassName?: "nowrap" | "truncateText";
-  variant?: "uppercase" | "titleCase";
+  type?: 'string' | 'number';
+  cellClassName?: 'nowrap' | 'truncateText';
+  variant?: 'uppercase' | 'titleCase';
 }
 
 export const getColumnProps = ({
   field,
   headerName,
-  type = "string",
-  cellClassName = "nowrap",
-  variant = "uppercase",
-  renderHeader = (params: GridColumnHeaderParams) => {
-    return (
-      <Typography variant="subtitle2" color="textSecondary">
-        {(params.colDef.headerName &&
-          variant === "titleCase" &&
-          params.colDef.headerName) ||
-          (params.colDef.headerName && params.colDef.headerName.toUpperCase())}
-      </Typography>
-    );
-  },
+  type = 'string',
+  cellClassName = 'nowrap',
+  variant = 'uppercase',
+  renderHeader = (params: GridColumnHeaderParams) => (
+    <Typography variant="subtitle2" color="textSecondary">
+      {(params.colDef.headerName &&
+        variant === 'titleCase' &&
+        params.colDef.headerName) ||
+        (params.colDef.headerName && params.colDef.headerName.toUpperCase())}
+    </Typography>
+  ),
   renderCell = (params: GridRenderCellParams<any, any, any>) => (
-    <Typography variant="body2">{params.value || "-"}</Typography>
+    <Typography variant="body2">{params.value || '-'}</Typography>
   ),
   flex = 1,
-  align = "left",
+  align = 'left',
   editable = false,
   sortable = false,
 }: ColumnProps): GridColDef => ({
@@ -127,7 +125,7 @@ export const DataGridLayout = ({
   rows.forEach((item) => {
     if (item.showHeader) {
       rowClassNames[`& .MuiDataGrid-rowHeading-${item.id}`] = {
-        "&::before": {
+        '&::before': {
           content: `"${item.headerText}"`,
         },
       };
@@ -136,7 +134,7 @@ export const DataGridLayout = ({
 
   useEffect(() => {
     if (gridRef.current) {
-      const ele = gridRef.current.querySelector(".MuiDataGrid-virtualScroller");
+      const ele = gridRef.current.querySelector('.MuiDataGrid-virtualScroller');
       ele.scrollTop = 0;
     }
   }, [scrollToTop]);
@@ -159,7 +157,7 @@ export const DataGridLayout = ({
           <EmptySection
             illustration="clipboard"
             size="tiny"
-            containerStyle={{ my: "auto" }}
+            containerStyle={{my: 'auto'}}
             label="No data entries yet. They will appear here once added."
           />
         )
@@ -170,7 +168,7 @@ export const DataGridLayout = ({
         <EmptySection
           illustration="clipboard"
           size="tiny"
-          containerStyle={{ my: "auto" }}
+          containerStyle={{my: 'auto'}}
           label="There are no entires for the applied filters."
         />
       )
@@ -180,10 +178,9 @@ export const DataGridLayout = ({
   return (
     <Box
       sx={{
-        flexGrow: fullHeight ? 1 : "unset",
-        ...(!fullHeight && { height }),
-      }}
-    >
+        flexGrow: fullHeight ? 1 : 'unset',
+        ...(!fullHeight && {height}),
+      }}>
       <DataGrid
         ref={gridRef}
         components={{
@@ -205,11 +202,11 @@ export const DataGridLayout = ({
         onCellClick={
           onCellClick ||
           ((params, e) => {
-            if (params.field === "__check__") {
+            if (params.field === '__check__') {
               return;
             }
             e.preventDefault();
-            if (params.field !== "actions" && isCellClickable) {
+            if (params.field !== 'actions' && isCellClickable) {
               navigate(params.row.navigateTo);
             }
           })
@@ -217,98 +214,98 @@ export const DataGridLayout = ({
         getRowClassName={(params) =>
           params.row.showHeader
             ? `MuiDataGrid-rowHeading-common MuiDataGrid-rowHeading-${params.row.id}`
-            : ""
+            : ''
         }
         onRowClick={onRowClick}
         checkboxSelection={checkboxSelection}
         sx={{
-          width: "100%",
-          my: "0.5em",
-          borderLeft: "none",
-          borderRight: "none",
-          borderTop: "none",
-          borderBottom: "2px solid",
-          borderColor: "background.default",
-          "& .MuiDataGrid-row": {
-            background: "white",
-            cursor: "pointer",
+          width: '100%',
+          my: '0.5em',
+          borderLeft: 'none',
+          borderRight: 'none',
+          borderTop: 'none',
+          borderBottom: '2px solid',
+          borderColor: 'background.default',
+          '& .MuiDataGrid-row': {
+            background: 'white',
+            cursor: 'pointer',
           },
-          "& .MuiDataGrid-columnHeaders": {
-            background: "white",
-            border: "2px solid",
-            borderColor: "background.default",
-            borderRadius: "4px",
+          '& .MuiDataGrid-columnHeaders': {
+            background: 'white',
+            border: '2px solid',
+            borderColor: 'background.default',
+            borderRadius: '4px',
             ...(isWidget && {
               border: `1px solid ${theme.palette.text.disabled}`,
-              borderRadius: "4px",
+              borderRadius: '4px',
             }),
           },
-          "& .MuiDataGrid-columnHeaderTitleContainer": {
-            padding: "0",
-            whiteSpace: "pre-wrap",
+          '& .MuiDataGrid-columnHeaderTitleContainer': {
+            padding: '0',
+            whiteSpace: 'pre-wrap',
           },
-          "& .MuiDataGrid-columnSeparator": {
-            display: "none",
+          '& .MuiDataGrid-columnSeparator': {
+            display: 'none',
           },
-          "& .MuiDataGrid-main": {
-            ".MuiLinearProgress-root": {
+          '& .MuiDataGrid-main': {
+            '.MuiLinearProgress-root': {
               top: 50,
               zIndex: 1,
-              position: "absolute",
-              width: "100%",
+              position: 'absolute',
+              width: '100%',
             },
-            "& *:focus, & *:focus-within": {
-              "& *": {
-                outline: "none",
-                cursor: "pointer",
+            '& *:focus, & *:focus-within': {
+              '& *': {
+                outline: 'none',
+                cursor: 'pointer',
               },
             },
           },
-          "& .MuiDataGrid-columnHeader:focus-within, & .MuiDataGrid-columnHeader:focus ":
+          '& .MuiDataGrid-columnHeader:focus-within, & .MuiDataGrid-columnHeader:focus ':
             {
-              outline: "none",
-              border: "none",
+              outline: 'none',
+              border: 'none',
             },
-          "& .MuiDataGrid-cell": {
-            borderBottom: "2px solid ",
-            borderColor: "background.default",
-            whiteSpace: "normal",
+          '& .MuiDataGrid-cell': {
+            borderBottom: '2px solid ',
+            borderColor: 'background.default',
+            whiteSpace: 'normal',
           },
 
-          ".MuiDataGrid-rowHeading-common": {
-            marginTop: "calc(2em + 4px)",
-            position: "relative",
-            "&::before": {
-              position: "absolute",
-              width: "100%",
-              top: "-2em",
-              paddingLeft: ".75em",
-              borderTop: "2px solid",
-              borderColor: "background.default",
-              borderBottom: "2px solid white",
-              background: "white",
-              color: "text.secondary",
+          '.MuiDataGrid-rowHeading-common': {
+            marginTop: 'calc(2em + 4px)',
+            position: 'relative',
+            '&::before': {
+              position: 'absolute',
+              width: '100%',
+              top: '-2em',
+              paddingLeft: '.75em',
+              borderTop: '2px solid',
+              borderColor: 'background.default',
+              borderBottom: '2px solid white',
+              background: 'white',
+              color: 'text.secondary',
               fontWeight: 600,
-              fontSize: "0.9375rem",
+              fontSize: '0.9375rem',
               lineHeight: 1.73,
-              letterSpacing: "0.15px",
+              letterSpacing: '0.15px',
             },
           },
-          ".nowrap": {
-            whiteSpace: "nowrap",
+          '.nowrap': {
+            whiteSpace: 'nowrap',
           },
-          ".truncateText": {
-            "& p": {
-              overflow: "hidden",
-              textOverflow: "ellipsis ",
-              display: "-webkit-box",
-              maxWidth: "100%",
+          '.truncateText': {
+            '& p': {
+              overflow: 'hidden',
+              textOverflow: 'ellipsis ',
+              display: '-webkit-box',
+              maxWidth: '100%',
               // Limit to number of lines
-              WebkitLineClamp: "2 ",
-              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: '2 ',
+              WebkitBoxOrient: 'vertical',
             },
           },
-          "& .MuiDataGrid-columnHeaderCheckbox": {
+          '& .MuiDataGrid-columnHeaderCheckbox': {
             opacity: 0,
           },
           ...rowClassNames,

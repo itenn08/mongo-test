@@ -1,27 +1,29 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import LogoutIcon from "@mui/icons-material/Logout";
-import HomeIcon from "@mui/icons-material/Home";
+import React from 'react';
+import {useNavigate} from 'react-router-dom';
+import {Description, Logout, People} from '@mui/icons-material';
 
-import AuthStore from "../../store/Auth";
-import SidebarLink from "./Link";
-import styles from "./styles.module.scss";
+import AuthStore from '../../store/Auth';
+import SidebarLink from './Link';
+import styles from './styles.module.scss';
 
 const Sidebar = () => {
   const navigate = useNavigate();
 
   const logoutHandler = () => {
     AuthStore.logout();
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
     <div className={styles.wrapper}>
-      <SidebarLink title="Main">
-        <HomeIcon />
+      <SidebarLink title="Users" onClick={() => navigate('/users')}>
+        <People />
+      </SidebarLink>
+      <SidebarLink title="Pages" onClick={() => navigate('/pages')}>
+        <Description />
       </SidebarLink>
       <SidebarLink title="Logout" onClick={logoutHandler}>
-        <LogoutIcon />
+        <Logout />
       </SidebarLink>
     </div>
   );

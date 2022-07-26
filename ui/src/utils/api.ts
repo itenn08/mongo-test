@@ -1,6 +1,6 @@
-import axios, { AxiosRequestConfig } from "axios";
+import axios, {AxiosRequestConfig} from 'axios';
 
-import AuthStore from "../store/Auth";
+import AuthStore from '../store/Auth';
 
 type APIPropsType = {
   url: string;
@@ -34,9 +34,9 @@ const API = async ({
       .catch((error: any) => {
         throw error.response;
       });
-    return { response };
+    return {response};
   } catch (err: any) {
-    return { err };
+    return {err};
   }
 };
 
@@ -53,21 +53,19 @@ axiosApiInstance.interceptors.request.use(
   },
   (error) => {
     Promise.reject(error);
-  }
+  },
 );
 
 axiosApiInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+  (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
       AuthStore.logout();
-      window.location.href = "/login";
+      window.location.href = '/login';
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 export default API;

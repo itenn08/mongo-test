@@ -100,10 +100,16 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<UserEdited[]> {
+  async findAll(pageIndex: number, pageSize?: number) {
     try {
-      const users = await this.userModel.find().exec();
-      const result = users.map((item) => {
+      const users = await this.userModel
+        .find()
+        .sort({ _id: 1 })
+        .skip(pageIndex * pageSize)
+        .limit(pageSize)
+        .exec();
+
+      const data = await users.map((item) => {
         return {
           id: item._id,
           email: item.email,
@@ -115,8 +121,9 @@ export class UserService {
           city: item.city,
         };
       });
+      const total = await this.userModel.count();
 
-      return result;
+      return { data, page: pageIndex, total };
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }

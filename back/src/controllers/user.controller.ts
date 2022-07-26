@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
   ValidationPipe,
@@ -14,6 +15,7 @@ import { UserDto, UserUpdateDto } from "src/dto/user.dto";
 import { UserService } from "src/services/user.service";
 import { User } from "src/interfaces/user.interface";
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
+import { PaginationParams } from "src/dto/pagination.dto";
 
 @Controller("user")
 export class UserController {
@@ -30,9 +32,9 @@ export class UserController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get("/getAll")
-  async findAll() {
-    return await this.userService.findAll();
+  @Get("")
+  async findAll(@Query() { pageIndex, pageSize }: PaginationParams) {
+    return await this.userService.findAll(pageIndex, pageSize);
   }
 
   @UseGuards(JwtAuthGuard)

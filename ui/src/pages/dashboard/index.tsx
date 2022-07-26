@@ -1,14 +1,9 @@
-import React from "react";
+import React, {ReactNode} from 'react';
 
-import UsersTable from "../../components/UsersTable";
-import styles from "./styles.module.scss";
+import styles from './styles.module.scss';
 
-const DashboardPage = () => {
-  return (
-    <div className={styles["wrapper"]}>
-      <UsersTable />
-    </div>
-  );
-};
+const DashboardPage = ({children}: {children: ReactNode}) => (
+  <div className={styles.wrapper}>{children}</div>
+);
 
 export default DashboardPage;

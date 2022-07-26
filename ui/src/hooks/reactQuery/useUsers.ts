@@ -4,9 +4,10 @@ import {User, UserUpdateForm} from '../../types/users';
 import {useSnackbar} from '../useSnackbar';
 import {queryKeys as qks, queryKeys} from '../../reactQuery/constants';
 import {BASE_URL} from '../../config';
+import {Resource} from '../../types/misc';
 
 export const getUsers = async (params: any) => {
-  const response = await axiosClient.get<User[]>(`${BASE_URL}/user/getAll`, {
+  const response = await axiosClient.get<Resource<User>>(`${BASE_URL}/user/`, {
     params,
     paramsSerializer,
   });

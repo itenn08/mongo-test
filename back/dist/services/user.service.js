@@ -87,10 +87,15 @@ let UserService = class UserService {
             throw new common_1.HttpException(e, common_1.HttpStatus.BAD_REQUEST);
         }
     }
-    async findAll() {
+    async findAll(pageIndex, pageSize) {
         try {
-            const users = await this.userModel.find().exec();
-            const result = users.map((item) => {
+            const users = await this.userModel
+                .find()
+                .sort({ _id: 1 })
+                .skip(pageIndex * pageSize)
+                .limit(pageSize)
+                .exec();
+            const data = await users.map((item) => {
                 return {
                     id: item._id,
                     email: item.email,
@@ -102,7 +107,8 @@ let UserService = class UserService {
                     city: item.city,
                 };
             });
-            return result;
+            const total = await this.userModel.count();
+            return { data, page: pageIndex, total };
         }
         catch (e) {
             throw new common_1.HttpException(e, common_1.HttpStatus.BAD_REQUEST);

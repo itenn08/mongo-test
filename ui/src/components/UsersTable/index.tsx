@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from "react";
-import { Box, Button, CircularProgress, Modal } from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {Box, Button, CircularProgress, Modal} from '@mui/material';
+import {GridRowsProp} from '@mui/x-data-grid';
 
-import { useQueryUsers, useUsers } from "../../hooks/reactQuery/useUsers";
-import { User } from "../../types/users";
-import styles from "./styles.module.scss";
-import { DataGridLayout } from "../DataGridLayout";
-import { columns, makeRows } from "./UserTableDataGrid";
-import UserEdit from "./EditUser";
+import {useQueryUsers, useUsers} from '../../hooks/reactQuery/useUsers';
+import {User} from '../../types/users';
+import styles from './styles.module.scss';
+import {DataGridLayout} from '../DataGridLayout';
+import {columns, makeRows} from './UserTableDataGrid';
+import UserEdit from './EditUser';
+import {createEmptyResource, makePage} from '../../utils/paging';
+
+const pageSize = 10;
 
 const UsersTable = () => {
-  const [rows, setRows] = useState<User[]>([]);
+  const [rows, setRows] = useState<GridRowsProp>([]);
+  const [page, setPage] = useState(makePage(0, pageSize));
+  const [pageCount, setPageCount] = useState(0);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 400,
-    bgcolor: "background.paper",
-    border: "2px solid #000",
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
   };
@@ -31,15 +37,26 @@ const UsersTable = () => {
     setSelectedUser(null);
   };
 
-  const { deleteUser } = useUsers();
+  const {deleteUser} = useUsers();
 
-  const { data: users, isLoading } = useQueryUsers();
+  const {data: userResource = createEmptyResource<User>(pageSize), isLoading} =
+    useQueryUsers(
+      {
+        pageIndex: page.pageIndex,
+        pageSize: page.pageSize,
+      },
+      {keepPreviousData: true},
+    );
 
   useEffect(() => {
-    if (!isLoading && users && users?.length > 0) {
-      setRows(makeRows(users));
+    setPageCount(Math.ceil(userResource.total / page.pageSize));
+  }, [userResource, page.pageSize]);
+
+  useEffect(() => {
+    if (!isLoading && userResource && userResource?.data?.length > 0) {
+      setRows(makeRows(userResource));
     }
-  }, [users, isLoading]);
+  }, [userResource, isLoading]);
 
   const handleDeleteUser = async () => {
     await deleteUser(selectedUser?.id!);
@@ -64,16 +81,22 @@ const UsersTable = () => {
   return (
     <div className={styles.wrapper}>
       {rows.length > 0 ? (
-        <div style={{ height: 400, width: "100%" }}>
-          <Box display="flex" flexGrow={1} sx={{ minHeight: "400px" }}>
+        <div style={{height: 650, width: '100%'}}>
+          <Box display="flex" flexGrow={1} sx={{minHeight: '650px'}}>
             <DataGridLayout
               rows={rows}
               columns={columns(getEditableTechnician, getDeletableTechnician)}
               loading={isLoading}
-              pageSize={0}
-              pageIndex={0}
-              pageCount={0}
-              hideFooter
+              pageSize={page.pageSize}
+              pageIndex={page.pageIndex + 1}
+              pageCount={pageCount}
+              hideFooter={pageCount <= 1}
+              handlePageChange={(value) =>
+                setPage((prev) => ({
+                  ...prev,
+                  pageIndex: value - 1,
+                }))
+              }
             />
           </Box>
         </div>
@@ -100,8 +123,7 @@ const UsersTable = () => {
             <Button
               variant="contained"
               color="error"
-              onClick={handleDeleteUser}
-            >
+              onClick={handleDeleteUser}>
               Delete
             </Button>
           </div>
