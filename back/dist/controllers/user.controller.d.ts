@@ -6,8 +6,10 @@ export declare class UserController {
     private readonly userService;
     constructor(userService: UserService);
     signUp(userDto: UserDto): Promise<{
-        username: string;
+        email: string;
         accessToken: string;
+        firstName: string;
+        lastName: string;
     }>;
     login(req: any): Promise<{
         username: string;
