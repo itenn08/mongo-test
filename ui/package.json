@@ -34,7 +34,8 @@
     "react-scripts": "5.0.1",
     "sass": "^1.52.2",
     "typescript": "^4.7.3",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "react-dnd": "^16.0.1"
   },
   "devDependencies": {
     "@types/lodash.debounce": "^4.0.7",

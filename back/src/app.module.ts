@@ -1,3 +1,4 @@
+import { PageCategoryController } from "./controllers/pageCategory";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -12,6 +13,8 @@ import { JwtStrategy } from "./strategies/jwt-auth.strategy";
 import { PageSchema } from "./schemas/page.schema";
 import { PageController } from "./controllers/pages.controller";
 import { PageService } from "./services/page.service";
+import { PageCategoryService } from "./services/pageCategory.service";
+import { PageCategorySchema } from "./schemas/pageCategory.schema";
 
 @Module({
   imports: [
@@ -22,6 +25,7 @@ import { PageService } from "./services/page.service";
     MongooseModule.forFeature([
       { name: "User", schema: UserSchema },
       { name: "Page", schema: PageSchema },
+      { name: "PageCategory", schema: PageCategorySchema },
     ]),
     PassportModule,
     JwtModule.register({
@@ -29,8 +33,14 @@ import { PageService } from "./services/page.service";
       signOptions: { expiresIn: "24h" },
     }),
   ],
-  controllers: [UserController, PageController],
-  providers: [UserService, PageService, LocalStrategy, JwtStrategy],
-  exports: [UserService, PageService],
+  controllers: [UserController, PageController, PageCategoryController],
+  providers: [
+    UserService,
+    PageService,
+    PageCategoryService,
+    LocalStrategy,
+    JwtStrategy,
+  ],
+  exports: [UserService, PageService, PageCategoryService],
 })
 export class AppModule {}

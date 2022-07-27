@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppModule = void 0;
+const pageCategory_1 = require("./controllers/pageCategory");
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const mongoose_1 = require("@nestjs/mongoose");
@@ -20,6 +21,8 @@ const jwt_auth_strategy_1 = require("./strategies/jwt-auth.strategy");
 const page_schema_1 = require("./schemas/page.schema");
 const pages_controller_1 = require("./controllers/pages.controller");
 const page_service_1 = require("./services/page.service");
+const pageCategory_service_1 = require("./services/pageCategory.service");
+const pageCategory_schema_1 = require("./schemas/pageCategory.schema");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -30,6 +33,7 @@ AppModule = __decorate([
             mongoose_1.MongooseModule.forFeature([
                 { name: "User", schema: user_schema_1.UserSchema },
                 { name: "Page", schema: page_schema_1.PageSchema },
+                { name: "PageCategory", schema: pageCategory_schema_1.PageCategorySchema },
             ]),
             passport_1.PassportModule,
             jwt_1.JwtModule.register({
@@ -37,9 +41,15 @@ AppModule = __decorate([
                 signOptions: { expiresIn: "24h" },
             }),
         ],
-        controllers: [user_controller_1.UserController, pages_controller_1.PageController],
-        providers: [user_service_1.UserService, page_service_1.PageService, local_strategy_1.LocalStrategy, jwt_auth_strategy_1.JwtStrategy],
-        exports: [user_service_1.UserService, page_service_1.PageService],
+        controllers: [user_controller_1.UserController, pages_controller_1.PageController, pageCategory_1.PageCategoryController],
+        providers: [
+            user_service_1.UserService,
+            page_service_1.PageService,
+            pageCategory_service_1.PageCategoryService,
+            local_strategy_1.LocalStrategy,
+            jwt_auth_strategy_1.JwtStrategy,
+        ],
+        exports: [user_service_1.UserService, page_service_1.PageService, pageCategory_service_1.PageCategoryService],
     })
 ], AppModule);
 exports.AppModule = AppModule;
