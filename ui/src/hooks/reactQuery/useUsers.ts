@@ -6,6 +6,13 @@ import {queryKeys as qks, queryKeys} from '../../reactQuery/constants';
 import {BASE_URL} from '../../config';
 import {Resource} from '../../types/misc';
 
+export const getUserById = async (email: string) => {
+  const response = await axiosClient.get<User>(`${BASE_URL}/user/${email}`, {
+    paramsSerializer,
+  });
+  return response.data;
+};
+
 export const getUsers = async (params: any) => {
   const response = await axiosClient.get<Resource<User>>(`${BASE_URL}/user/`, {
     params,

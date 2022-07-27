@@ -1,5 +1,6 @@
 import {makeAutoObservable, runInAction, reaction} from 'mobx';
 
+import UserStore from './User';
 import {BASE_URL} from '../config';
 import API from '../utils/api';
 import {IFormInput} from '../components/Auth';
@@ -84,7 +85,6 @@ class AuthStore {
     return API(axiosConfig)
       .then(({response, err}) => {
         if (err) {
-          console.log('err', err);
           this.error = err.data.message;
           throw err;
         }
@@ -92,6 +92,8 @@ class AuthStore {
       })
       .then((res) => {
         runInAction(() => {
+          UserStore.setUser(res);
+          window.localStorage.setItem('email', res.email);
           this.token = res.accessToken;
         });
       })
@@ -110,6 +112,7 @@ class AuthStore {
 
   logout() {
     this.token = '';
+    window.location.href = '/login';
   }
 }
 

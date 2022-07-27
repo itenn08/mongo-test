@@ -9,8 +9,7 @@ import PageTable from '../components/PageTable';
 import UsersTable from '../components/UsersTable';
 
 import AuthPage from '../pages/auth';
-import AuthTemplate from '../pages/authTemplate';
-import DashboardPage from '../pages/dashboard';
+import PageLayout from '../pages/PageLayout';
 import {NewPage} from '../pages/NewPage';
 import RequireAuth from './RequireAuth';
 
@@ -20,36 +19,32 @@ const UIRouter = () => (
       <Route path="/login" element={<AuthPage />} />
 
       <Route element={<RequireAuth />}>
-        <Route element={<AuthTemplate />}>
-          <Route
-            path="/users"
-            element={
-              <DashboardPage>
-                <UsersTable />
-              </DashboardPage>
-            }
-          />
-        </Route>
-        <Route element={<AuthTemplate />}>
-          <Route
-            path="/pages"
-            element={
-              <DashboardPage>
-                <PageTable />
-              </DashboardPage>
-            }
-          />
-        </Route>
-        <Route element={<AuthTemplate />}>
-          <Route
-            path="/pages/new"
-            element={
-              <DashboardPage>
-                <NewPage />
-              </DashboardPage>
-            }
-          />
-        </Route>
+        <Route
+          path="/users"
+          element={
+            <PageLayout>
+              <UsersTable />
+            </PageLayout>
+          }
+        />
+
+        <Route
+          path="/pages"
+          element={
+            <PageLayout>
+              <PageTable />
+            </PageLayout>
+          }
+        />
+
+        <Route
+          path="/pages/new"
+          element={
+            <PageLayout>
+              <NewPage />
+            </PageLayout>
+          }
+        />
       </Route>
       <Route path="*" element={<Navigate to="/users" replace />} />
     </Routes>

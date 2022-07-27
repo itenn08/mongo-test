@@ -7,8 +7,10 @@ export declare class UserService {
     private jwtService;
     constructor(userModel: Model<User>, jwtService: JwtService);
     register(userDto: UserDto): Promise<{
-        username: string;
+        email: string;
         accessToken: string;
+        firstName: string;
+        lastName: string;
     }>;
     login(user: User): Promise<{
         username: string;

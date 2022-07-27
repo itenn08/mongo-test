@@ -46,8 +46,10 @@ let UserService = class UserService {
                 sub: user._id,
             };
             return {
-                username: user.email,
+                email: user.email,
                 accessToken: this.jwtService.sign(payload),
+                firstName: user.firstName,
+                lastName: user.lastName,
             };
         }
         catch (error) {
