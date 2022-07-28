@@ -5,7 +5,7 @@ import {GridRowsProp} from '@mui/x-data-grid';
 import {useQueryUsers, useUsers} from '../../hooks/reactQuery/useUsers';
 import {User} from '../../types/users';
 import styles from './styles.module.scss';
-import {DataGridLayout} from '../DataGridLayout';
+import {DataGridLayout} from '../../components/DataGridLayout';
 import {columns, makeRows} from './UserTableDataGrid';
 import UserEdit from './EditUser';
 import {createEmptyResource, makePage} from '../../utils/paging';

@@ -4,9 +4,9 @@ import {FormikProps} from 'formik';
 import Box from '@mui/material/Box';
 
 import {UserUpdateForm} from '../../../types/users';
-import FormInput from '../../FormComponents/FormInput';
-import {DatePicker} from '../../FormComponents/DatePicker';
-import {FormSelect} from '../../FormComponents/FormSelect';
+import FormInput from '../../../components/FormComponents/FormInput';
+import {DatePicker} from '../../../components/FormComponents/DatePicker';
+import {FormSelect} from '../../../components/FormComponents/FormSelect';
 import {roles} from '../../../constants/menu';
 
 interface Props {

@@ -5,7 +5,7 @@ import * as Yup from 'yup';
 import {User, UserUpdateForm} from '../../../types/users';
 import {useUsers} from '../../../hooks/reactQuery/useUsers';
 import EditUserForm from './EditUserForm';
-import {Dialog} from '../../Dialog';
+import {Dialog} from '../../../components/Dialog';
 
 interface Props {
   user: User;

@@ -3,10 +3,10 @@ import {Grid, Typography} from '@mui/material';
 import {FormikProps} from 'formik';
 import Box from '@mui/material/Box';
 
-import FormInput from '../../FormComponents/FormInput';
-import {DatePicker} from '../../FormComponents/DatePicker';
+import FormInput from '../../../components/FormComponents/FormInput';
+import {DatePicker} from '../../../components/FormComponents/DatePicker';
 import {PageUpdateForm} from '../../../types/pages';
-import {Switch} from '../../Switch';
+import {Switch} from '../../../components/Switch';
 
 interface Props {
   formik: FormikProps<PageUpdateForm>;

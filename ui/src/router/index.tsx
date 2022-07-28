@@ -5,8 +5,8 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
-import PageTable from '../components/PageTable';
-import UsersTable from '../components/UsersTable';
+import PageTable from '../pages/Pages';
+import UsersTable from '../pages/Users';
 
 import AuthPage from '../pages/auth';
 import PageLayout from '../pages/PageLayout';
@@ -31,7 +31,7 @@ const UIRouter = () => (
         <Route
           path="/pages"
           element={
-            <PageLayout>
+            <PageLayout pageScrollable>
               <PageTable />
             </PageLayout>
           }

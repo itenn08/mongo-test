@@ -7,13 +7,15 @@ import {
   Param,
   Patch,
   Post,
-  Query,
+  Put,
   UseGuards,
   ValidationPipe,
 } from "@nestjs/common";
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
-import { PaginationParams } from "src/dto/pagination.dto";
-import { PageCategoryDto } from "src/dto/pageCategory.dto";
+import {
+  PageCategoryDto,
+  PageCategoryUpdateDto,
+} from "src/dto/pageCategory.dto";
 
 @Controller("category")
 export class PageCategoryController {
@@ -21,8 +23,8 @@ export class PageCategoryController {
 
   @UseGuards(JwtAuthGuard)
   @Get("")
-  async findAll(@Query() { pageIndex, pageSize }: PaginationParams) {
-    return await this.pageCategoryService.findAll(pageIndex, pageSize);
+  async findAll() {
+    return await this.pageCategoryService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
@@ -41,6 +43,12 @@ export class PageCategoryController {
   @Patch(":id")
   async updatePost(@Param("id") id: string, @Body() body: PageCategoryDto) {
     return this.pageCategoryService.update(id, body);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch()
+  async updateAllPost(@Body() body: PageCategoryUpdateDto[]) {
+    return this.pageCategoryService.updateAll(body);
   }
 
   @UseGuards(JwtAuthGuard)

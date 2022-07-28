@@ -8,7 +8,7 @@ import {Box, Typography} from '@mui/material';
 import {Delete, Edit} from '@mui/icons-material';
 
 import {formatDate} from '../../utils/date';
-import {StatusChip} from '../StatusChip/StatusChip';
+import {StatusChip} from '../../components/StatusChip/StatusChip';
 import {Page} from '../../types/pages';
 import {Resource} from '../../types/misc';
 

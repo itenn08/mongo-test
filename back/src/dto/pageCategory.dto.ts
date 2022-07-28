@@ -1,4 +1,11 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import {
+  IsArray,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from "class-validator";
+import { PageCategoryChildrenCategory } from "src/interfaces/pageCategory.interface";
 
 export class PageCategoryDto {
   @IsString()
@@ -7,13 +14,23 @@ export class PageCategoryDto {
 
   @IsString()
   @IsOptional()
-  parent: string;
+  parent_id: string | null;
 
   @IsString()
   @IsNotEmpty()
   link: string;
 
   @IsString()
+  @IsNotEmpty()
+  type: "parent" | "link";
+
+  @IsNumber()
   @IsOptional()
   order?: number;
+}
+
+export class PageCategoryUpdateDto extends PageCategoryDto {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
 }
