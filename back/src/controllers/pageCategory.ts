@@ -7,7 +7,6 @@ import {
   Param,
   Patch,
   Post,
-  Put,
   Query,
   UseGuards,
   ValidationPipe,
@@ -25,15 +24,20 @@ export class PageCategoryController {
 
   @UseGuards(JwtAuthGuard)
   @Get("")
-  async findAll(@Query() { pageIndex, pageSize, query }: PaginationParams) {
-    if (query) {
-      return await this.pageCategoryService.findByFilter(
-        pageIndex,
-        pageSize,
-        query
-      );
-    }
+  async findAll(@Query() { pageIndex, pageSize }: PaginationParams) {
     return await this.pageCategoryService.findAll(pageIndex, pageSize);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("/search")
+  async searchByName(
+    @Query() { pageIndex, pageSize, query }: PaginationParams
+  ) {
+    return await this.pageCategoryService.findByFilter(
+      pageIndex,
+      pageSize,
+      query
+    );
   }
 
   @UseGuards(JwtAuthGuard)

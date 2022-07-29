@@ -3,7 +3,6 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
-  Logger,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { JwtService } from "@nestjs/jwt";
@@ -11,7 +10,7 @@ import { Model } from "mongoose";
 import * as bcrypt from "bcrypt";
 
 import { UserDto, UserUpdateDto } from "src/dto/user.dto";
-import { User, UserEdited } from "../interfaces/user.interface";
+import { User } from "src/interfaces/user.interface";
 
 @Injectable()
 export class UserService {

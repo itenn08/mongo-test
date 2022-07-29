@@ -1,4 +1,3 @@
-import { Category } from "./../../../ui/src/types/categories";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -38,7 +37,7 @@ export class PageService {
         .skip(pageIndex * pageSize)
         .limit(pageSize)
         .exec();
-      console.log("pages", pages);
+
       const data = await pages.map((item) => {
         return {
           id: item._id,
@@ -52,7 +51,7 @@ export class PageService {
           isActive: item.isActive,
         };
       });
-      console.log("data", data);
+
       const total = await this.pageModel.count();
 
       return { data, page: pageIndex, total };

@@ -1,11 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+
 import {
   PageCategoryDto,
   PageCategoryUpdateDto,
 } from "src/dto/pageCategory.dto";
-
 import { PageCategory } from "src/interfaces/pageCategory.interface";
 
 @Injectable()

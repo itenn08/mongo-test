@@ -6,15 +6,9 @@ export interface PageUpdateForm {
   seoDescription: string;
   date: Date;
   isActive: boolean;
+  category: string;
 }
 
-export interface Page {
+export interface Page extends PageUpdateForm {
   id: string;
-  title: string;
-  url: string;
-  content: string;
-  seoTitle: string;
-  seoDescription: string;
-  date: Date;
-  isActive: boolean;
 }

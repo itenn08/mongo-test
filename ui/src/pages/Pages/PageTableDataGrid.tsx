@@ -60,6 +60,14 @@ export const columns = (
     flex: 2,
   },
   {
+    field: 'category',
+    headerName: 'Category',
+    type: 'string',
+    ...defaultAlignment,
+    ...defaultProps,
+    flex: 2,
+  },
+  {
     field: 'seoTitle',
     headerName: 'SEO Title',
     type: 'string',
@@ -120,6 +128,7 @@ export const makeRows = (pages: Resource<Page>): any => {
       id: index,
       title: page.title || '-',
       url: page.url || '-',
+      category: page.category || '-',
       seoTitle: page.seoTitle || '-',
       seoDescription: page.seoDescription || '-',
       date: formatDate(page.date) || '-',

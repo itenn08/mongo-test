@@ -32,6 +32,7 @@ const PageEdit = ({page, openDialog, onClose}: Props) => {
       seoDescription: page.seoDescription,
       date: page.date,
       isActive: page.isActive,
+      category: page.category,
     },
     validationSchema,
     onSubmit: () => {
@@ -43,6 +44,7 @@ const PageEdit = ({page, openDialog, onClose}: Props) => {
         seoDescription: formik.values.seoDescription || '',
         date: formik.values.date || new Date(),
         isActive: formik.values.isActive,
+        category: formik.values.category,
       };
 
       updatePage(body, page.id, () => {

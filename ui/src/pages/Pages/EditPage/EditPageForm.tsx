@@ -7,6 +7,7 @@ import FormInput from '../../../components/FormComponents/FormInput';
 import {DatePicker} from '../../../components/FormComponents/DatePicker';
 import {PageUpdateForm} from '../../../types/pages';
 import {Switch} from '../../../components/Switch';
+import CategoryPageAutocomplete from '../../../components/Autocompletes/CategoryPageAutocomplete';
 
 interface Props {
   formik: FormikProps<PageUpdateForm>;
@@ -84,6 +85,23 @@ const EditUserForm = ({formik}: Props) => {
                 }}
               />
             ))}
+            <Box>
+              <CategoryPageAutocomplete
+                getCategory={(value) => {
+                  formik.setFieldValue('category', value);
+                }}
+                initialValue={formik.values?.category || null}
+                textFieldProps={{
+                  error: !!(formik.errors.category && formik.touched.category),
+                  helperText:
+                    formik.errors.category && formik.touched.category
+                      ? formik.errors.category
+                      : '',
+                  label: 'Category',
+                  onBlur: formik.handleBlur,
+                }}
+              />
+            </Box>
             <DatePicker
               defaultDate={formik.values.date}
               getSelectedDate={(newValue) => {
