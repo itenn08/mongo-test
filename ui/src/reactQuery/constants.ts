@@ -5,4 +5,8 @@ export const queryKeys = {
   getPages: 'getPages',
   updatePage: 'updatePage',
   deletePage: 'deletePage',
+
+  getCategories: 'getCategories',
+  updateCategory: 'updateCategory',
+  deleteCategory: 'deleteCategory',
 };

@@ -1,14 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {Box, Button, CircularProgress, Modal} from '@mui/material';
+import {Box, CircularProgress} from '@mui/material';
 import {GridRowsProp} from '@mui/x-data-grid';
 
 import {useQueryUsers, useUsers} from '../../hooks/reactQuery/useUsers';
 import {User} from '../../types/users';
 import styles from './styles.module.scss';
-import {DataGridLayout} from '../DataGridLayout';
+import {DataGridLayout} from '../../components/DataGridLayout';
 import {columns, makeRows} from './UserTableDataGrid';
 import UserEdit from './EditUser';
 import {createEmptyResource, makePage} from '../../utils/paging';
+import DeleteModal from '../../components/DeleteModal';
 
 const pageSize = 10;
 
@@ -19,18 +20,6 @@ const UsersTable = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
 
   const handleCloseModal = () => {
     setShowDeleteModal(false);
@@ -110,25 +99,13 @@ const UsersTable = () => {
           onClose={handleCloseEditModal}
         />
       )}
-
-      <Modal open={showDeleteModal} onClose={handleCloseModal}>
-        <Box sx={style}>
-          <div className={styles.modalText}>
-            Are you sure to delete user <span>{selectedUser?.email}</span>?
-          </div>
-          <div className={styles.modalButtons}>
-            <Button onClick={handleCloseModal} variant="contained">
-              Cancel
-            </Button>
-            <Button
-              variant="contained"
-              color="error"
-              onClick={handleDeleteUser}>
-              Delete
-            </Button>
-          </div>
-        </Box>
-      </Modal>
+      <DeleteModal
+        open={showDeleteModal}
+        onConfirm={handleDeleteUser}
+        onClose={handleCloseModal}
+        title="Delete User"
+        content={`Are you sure to delete user ${selectedUser?.email}?`}
+      />
     </div>
   );
 };

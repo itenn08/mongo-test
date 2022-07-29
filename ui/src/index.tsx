@@ -26,19 +26,17 @@ const queryClient = new QueryClient({
 });
 
 root.render(
-  <React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <SnackbarProvider
-          autoHideDuration={2000}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          maxSnack={3}>
-          <App />
-        </SnackbarProvider>
-      </QueryClientProvider>
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider theme={theme}>
+    <QueryClientProvider client={queryClient}>
+      <SnackbarProvider
+        autoHideDuration={2000}
+        anchorOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        maxSnack={3}>
+        <App />
+      </SnackbarProvider>
+    </QueryClientProvider>
+  </ThemeProvider>,
 );

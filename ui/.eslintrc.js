@@ -36,6 +36,7 @@ module.exports = {
     'react/no-array-index-key': 'off',
     'react/require-default-props': 'off',
     'react/jsx-props-no-spreading': 'off',
+    'import/no-unresolved': 'off',
     'react/function-component-definition': [
       2,
       {namedComponents: 'arrow-function'},
