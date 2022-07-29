@@ -4,11 +4,7 @@ import {paramsSerializer, axiosClient} from '../../utils/axios';
 import {useSnackbar} from '../useSnackbar';
 import {queryKeys as qks, queryKeys} from '../../reactQuery/constants';
 import {BASE_URL} from '../../config';
-import {
-  Category,
-  CategoryFetch,
-  CategoryUpdateForm,
-} from '../../types/categories';
+import {Category, CategoryFetch, CategoryParent} from '../../types/categories';
 
 export const getCategories = async (params: any) => {
   const response = await axiosClient.get<CategoryFetch>(
@@ -39,7 +35,7 @@ export const useCategories = () => {
   const queryClient = useQueryClient();
 
   const updateCategory = async (
-    data: CategoryUpdateForm,
+    data: CategoryParent,
     id: string,
     onSuccess?: () => void,
   ): Promise<void> => {
@@ -126,33 +122,39 @@ export const useCategories = () => {
     }
   };
 
+  const createCategory = async (
+    data: Category,
+    onSuccess?: () => void,
+  ): Promise<void> => {
+    try {
+      const {status} = await axiosClient.post(`${BASE_URL}/category`, data);
+
+      if (status === 201) {
+        enqueueSnackbar(`Categories created successfully!`, {
+          variant: 'success',
+        });
+        queryClient.invalidateQueries(queryKeys.getCategories);
+        if (onSuccess) {
+          console.log('on succ');
+          onSuccess();
+        }
+      }
+    } catch (error: any) {
+      console.error(error);
+      enqueueSnackbar(
+        error.response?.message ||
+          'Sorry! Unable to save changes right now. Please try again.',
+        {
+          variant: 'error',
+        },
+      );
+    }
+  };
+
   return {
     updateCategory,
     deleteCategory,
     updateAllCategories,
+    createCategory,
   };
 };
-
-// const createPage = async (body: NewPageModel): Promise<StringValue> => {
-//   const response = await axiosClient.post<StringValue>(`${BASE_URL}/category/`, {
-//     ...body,
-//   });
-//   return response.data;
-// };
-
-// export const useCreateCategory = (successMsg: string) => {
-//   const {enqueueSnackbar} = useSnackbar();
-//   return useMutation((body: NewPageModel) => createPage(body), {
-//     onSuccess: () => {
-//       enqueueSnackbar(successMsg, {
-//         variant: 'success',
-//       });
-//     },
-//     onError: (err) => {
-//       console.log(err);
-//       enqueueSnackbar('An unexpected error occurred, please try again.', {
-//         variant: 'error',
-//       });
-//     },
-//   });
-// };

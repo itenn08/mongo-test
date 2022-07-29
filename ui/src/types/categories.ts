@@ -1,29 +1,13 @@
-// export interface CategoryUpdateForm {
-//   name: string;
-//   link: string;
-//   parent: string;
-//   order: number;
-//   position: number;
-// }
-
-export interface CategoryUpdateForm {
+export interface CategoryParent {
   name: string;
   link: string;
   parent_id: string;
   order: number;
   type: string;
-  children: CategoryChild[];
+  children?: Category[];
 }
 
-export interface CategoryChild {
-  name: string;
-  link: string;
-  parent_id: string;
-  order: number;
-  type: string;
-}
-
-export interface Category extends CategoryUpdateForm {
+export interface Category extends CategoryParent {
   id: string;
 }
 

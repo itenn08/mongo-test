@@ -15,6 +15,7 @@ export class PageCategoryService {
   ) {}
 
   async create(body: PageCategoryDto) {
+    console.log("body", body);
     const category = new this.pageCategoryModel({
       name: body.name,
       parent_id: body.parent_id || "",
@@ -22,7 +23,7 @@ export class PageCategoryService {
       link: body.link,
       type: body.type || "link",
     });
-
+    console.log("category", category);
     try {
       await category.save();
       return { category: category._id };
@@ -51,53 +52,6 @@ export class PageCategoryService {
   async findAll() {
     try {
       const categories = await this.pageCategoryModel.find().exec();
-      const buggedArray = [];
-
-      // const findItem = (array: any, id) => {
-      //   const childrenCategory = [];
-      //   array.forEach((child) => {
-      //     console.log("child", child);
-      //     console.log("id", id);
-      //     if (child.parent_id === id) {
-      //       childrenCategory.push({
-      //         id: child._id,
-      //         name: child.name,
-      //         parent_id: child.parent_id,
-      //         order: child.order,
-      //         link: child.link,
-      //         type: child.type,
-      //       });
-      //     } else {
-      //       buggedArray.push(child);
-      //     }
-      //   });
-
-      //   console.log("childrenCategory", childrenCategory);
-      //   return childrenCategory;
-      // };
-
-      // const data = await categories
-      //   .filter((item) => !item.parent_id)
-      //   .map((item) => {
-      //     return {
-      //       id: item._id,
-      //       name: item.name,
-      //       parent_id: item.parent_id,
-      //       order: item.order,
-      //       link: item.link,
-      //       type: item.type,
-      //       children: categories
-      //         .filter((child) => child.parent_id === item._id.toString())
-      //         .map((child) => {
-      //           return {
-      //             id: child._id,
-      //             name: child.name,
-      //             parent: child.parent_id,
-      //             order: child.order,
-      //             link: child.link,
-      //             type: child.type,
-      //           };
-      //         }),
 
       const data = await categories
         .filter((item) => !item.parent_id)
@@ -110,11 +64,7 @@ export class PageCategoryService {
             link: item.link,
             type: "parent",
             children: categories
-              .filter(
-                (child) =>
-                  child.parent_id === item._id.toString() &&
-                  child.type === "link"
-              )
+              .filter((child) => child.parent_id === item._id.toString())
               .map((child) => {
                 return {
                   id: child._id,
@@ -125,149 +75,8 @@ export class PageCategoryService {
                   type: child.type,
                 };
               }),
-
-            // children: categories.map(
-            //   (child) => {
-            //     if (child.parent_id.includes(item._id.toString())) {
-            //       return {
-            // id: child._id,
-            // name: child.name,
-            // parent: child.parent_id,
-            // order: child.order,
-            // link: child.link,
-            // type: child.type,
-            //       };
-            //     } else {
-            //       if (child.type.includes("link")) {
-            //         buggedArray.push({
-            //           id: child._id,
-            //           name: child.name,
-            //           parent: child.parent_id,
-            //           order: child.order,
-            //           link: child.link,
-            //           type: child.type,
-            //         });
-            //       }
-            //       return null;
-            //     }
-            //   }
-
-            // child.parent_id.includes(item._id.toString())
-            // ? {
-            //     id: child._id,
-            //     name: child.name,
-            //     parent: child.parent_id,
-            //     order: child.order,
-            //     link: child.link,
-            //     type: child.type,
-            //   }
-            //   : child.type.includes("link") &&
-            // buggedArray.push({
-            //   id: child._id,
-            //   name: child.name,
-            //   parent: child.parent_id,
-            //   order: child.order,
-            //   link: child.link,
-            //   type: child.type,
-            // })
-
-            // children: categories.map(
-            //   (child) =>
-            //     child.parent_id.includes(item._id.toString())
-            //       ? {
-            //           id: child._id,
-            //           name: child.name,
-            //           parent: child.parent_id,
-            //           order: child.order,
-            //           link: child.link,
-            //           type: child.type,
-            //         }
-            //       : child.type.includes("link") &&
-            //         buggedArray.push({
-            //           id: child._id,
-            //           name: child.name,
-            //           parent: child.parent_id,
-            //           order: child.order,
-            //           link: child.link,
-            //           type: child.type,
-            //         })
-
-            // children: categories.forEach(
-            //   (child) => {
-            //     if (child.parent_id.includes(item._id.toString())) {
-            //       console.log("includes");
-            //       return {
-            //         id: child._id,
-            //         name: child.name,
-            //         parent: child.parent_id,
-            //         order: child.order,
-            //         link: child.link,
-            //         type: child.type,
-            //         test: "asd",
-            //       };
-            //     } else {
-            //       if (child.type.includes("link")) {
-            //         buggedArray.push({
-            //           id: child._id,
-            //           name: child.name,
-            //           parent: child.parent_id,
-            //           order: child.order,
-            //           link: child.link,
-            //           type: child.type,
-            //         });
-            //       }
-            //     }
-            //   }
-
-            // children: categories.map((child) =>
-            //   child.parent_id.includes(item._id.toString())
-            //     ? {
-            //         id: child._id,
-            //         name: child.name,
-            //         parent: child.parent_id,
-            //         order: child.order,
-            //         link: child.link,
-            //         type: child.type,
-            //       }
-            //     : child.type.includes("link") &&
-            //       buggedArray.push({
-            //         id: child._id,
-            //         name: child.name,
-            //         parent: child.parent_id,
-            //         order: child.order,
-            //         link: child.link,
-            //         type: child.type,
-            //       })
-            // ),
           };
         });
-
-      // const result = [...data, ...buggedArray];
-
-      // const data = await categories
-      //   .filter((item) => !item.parent_id)
-      //   .map((item) => {
-      //     return {
-      //       id: item._id,
-      //       name: item.name,
-      //       parent: item.parent_id,
-      //       order: item.order,
-      //       link: item.link,
-      //       type: item.type,
-      // children: categories
-      //   .filter((child) => child.parent_id === item._id.toString())
-      //   .map((child) => {
-      // return {
-      //   id: child._id,
-      //   name: child.name,
-      //   parent: child.parent_id,
-      //   order: child.order,
-      //   link: child.link,
-      //   type: child.type,
-      // };
-      //   }),
-      //     };
-      //   });
 
       const total = await this.pageCategoryModel.count();
 
