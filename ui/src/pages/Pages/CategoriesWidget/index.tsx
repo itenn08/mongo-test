@@ -10,6 +10,7 @@ import {InfoCard} from '../../../components/InfoCard';
 import Categories from './Categories';
 import CategoryEdit from './CategoryEdit';
 import DeleteModal from '../../../components/DeleteModal';
+import {padNumber} from '../../../utils/date';
 
 export const CategoriesWidget = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -55,7 +56,24 @@ export const CategoriesWidget = () => {
   return (
     <Box>
       <InfoCard
-        header={<Typography variant="subtitle1">Categories</Typography>}
+        header={
+          <Box sx={{display: 'flex', alignItems: 'center'}}>
+            <Typography variant="subtitle1">Categories</Typography>
+            <Box
+              sx={{
+                ml: '20px',
+                backgroundColor: 'primary.main',
+                color: 'white',
+                padding: '5px 10px',
+                borderRadius: '4px',
+              }}>
+              <Typography variant="subtitle1">
+                {(categoriesData?.total && padNumber(categoriesData?.total)) ||
+                  0}
+              </Typography>
+            </Box>
+          </Box>
+        }
         containerStyles={{flexGrow: 1}}
         headerStyles={{mt: '0.5em'}}
         handleAction={onCreateCategory}

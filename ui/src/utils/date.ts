@@ -7,17 +7,17 @@ import {
   parseISO,
   startOfWeek,
   intervalToDuration,
-} from "date-fns";
+} from 'date-fns';
 
-export const DEFAULT_DATE_FORMAT = "dd.MM.yyyy";
+export const DEFAULT_DATE_FORMAT = 'dd.MM.yyyy';
 
 export function getDateObject(input: any): Date {
   const type = typeof input;
-  if (type === "string") {
+  if (type === 'string') {
     return parseISO(input);
   }
 
-  if (type === "number") {
+  if (type === 'number') {
     return new Date(input);
   }
 
@@ -26,13 +26,13 @@ export function getDateObject(input: any): Date {
 
 export const getStartOfWeek = (
   date: Date,
-  weekStart?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined
-) => startOfWeek(date, { weekStartsOn: weekStart });
+  weekStart?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined,
+) => startOfWeek(date, {weekStartsOn: weekStart});
 
 export const getEndOfWeek = (
   date: Date,
-  weekStart?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined
-) => endOfWeek(date, { weekStartsOn: weekStart });
+  weekStart?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined,
+) => endOfWeek(date, {weekStartsOn: weekStart});
 
 export function formatDate(input?: string | Date, formatType?: string) {
   if (!input) {
@@ -44,14 +44,14 @@ export function formatDate(input?: string | Date, formatType?: string) {
 }
 
 export function setDateTime(date: Date, hourMinute: string): Date {
-  const parts = hourMinute.split(":");
+  const parts = hourMinute.split(':');
   return new Date(
-    date.setHours(parseInt(parts[0], 10), parseInt(parts[1], 10), 0)
+    date.setHours(parseInt(parts[0], 10), parseInt(parts[1], 10), 0),
   );
 }
 
 export function toRestDate(date: Date): string {
-  return format(date, "yyyy-MM-dd");
+  return format(date, 'yyyy-MM-dd');
 }
 
 export function toRestDateTime(date: Date): string {
@@ -59,11 +59,11 @@ export function toRestDateTime(date: Date): string {
 }
 
 export function toTimeString(restDateTime: string): string {
-  return format(parseISO(restDateTime), "HH:mm");
+  return format(parseISO(restDateTime), 'HH:mm');
 }
 
 export function toDate(value: any): Date {
-  if (typeof value === "number") {
+  if (typeof value === 'number') {
     // value is epoch seconds
     return new Date(Math.trunc(value * 1000));
   }
@@ -79,7 +79,7 @@ export function toEpochSeconds(date: Date): number {
 }
 
 export function timeToMinutes(time: string): number {
-  const parts = time.split(":");
+  const parts = time.split(':');
   const hour = parseInt(parts[0], 10);
   const minutes = parseInt(parts[1], 10);
   return hour * 60 + minutes;
@@ -87,15 +87,15 @@ export function timeToMinutes(time: string): number {
 
 export const getWhen = (date: Date, formatStr: string) => {
   if (isToday(date)) {
-    return "Today";
+    return 'Today';
   }
 
   if (isTomorrow(date)) {
-    return "Tomorrow";
+    return 'Tomorrow';
   }
 
   if (isYesterday(date)) {
-    return "Yesterday";
+    return 'Yesterday';
   }
 
   return formatDate(date, formatStr);
@@ -105,14 +105,14 @@ export const convertMinsToHM = (minutes: number) => {
   const timeString = minutes / 60;
   const date = new Date(0, 0);
   date.setMinutes(+timeString * 60);
-  const hm = date.toTimeString().slice(0, 5).split(":");
-  return `${+hm[0]}hrs ${Number(hm[1]) > 0 ? `${+hm[1]}mins` : ""}`;
+  const hm = date.toTimeString().slice(0, 5).split(':');
+  return `${+hm[0]}hrs ${Number(hm[1]) > 0 ? `${+hm[1]}mins` : ''}`;
 };
 
 export const convertDigitalMinsToHM = (minutes: number) => {
   const m = Math.floor(minutes % 60).toString();
   const h = Math.floor((minutes / 60) % 60).toString();
-  return `${h.padStart(2, "0")}:${m.padStart(2, "0")} h`;
+  return `${h.padStart(2, '0')}:${m.padStart(2, '0')} h`;
 };
 
 export const getLastWeek = () => {
@@ -123,7 +123,7 @@ export const getLastWeek = () => {
 export const getRangeDate = (
   start: string,
   end: string,
-  formatStr?: string
+  formatStr?: string,
 ) => {
   const dateStart = formatDate(start, formatStr);
   const dateEnd = formatDate(end, formatStr);
@@ -131,35 +131,37 @@ export const getRangeDate = (
 };
 
 export const convert12hTo24h = (time: string, meridian?: string) => {
-  const localMeridian = meridian || time.split(" ")[1];
-  const hr = time.split(":")[0];
-  const min = time.split(":")[1];
+  const localMeridian = meridian || time.split(' ')[1];
+  const hr = time.split(':')[0];
+  const min = time.split(':')[1];
   if (localMeridian) {
     const newHr =
-      localMeridian.toUpperCase() === "PM" && Number(hr) !== 12
+      localMeridian.toUpperCase() === 'PM' && Number(hr) !== 12
         ? Number(hr) + 12
         : hr;
-    return `${newHr}:${min.split(" ")[0]}`;
+    return `${newHr}:${min.split(' ')[0]}`;
   }
   return `${hr}:${min}`;
 };
 
 export const convert24hTo12h = (time: string, addMeridian?: boolean) => {
-  const hr = time.split(":")[0];
-  const min = time.split(":")[1];
+  const hr = time.split(':')[0];
+  const min = time.split(':')[1];
 
   const newHr = Number(hr) > 12 ? Number(hr) - 12 : hr;
 
   return addMeridian
-    ? `${newHr.toLocaleString("en-US", {
+    ? `${newHr.toLocaleString('en-US', {
         minimumIntegerDigits: 2,
         useGrouping: false,
-      })}:${min} ${Number(hr) >= 12 ? "PM" : "AM"}`
-    : `${newHr.toLocaleString("en-US", {
+      })}:${min} ${Number(hr) >= 12 ? 'PM' : 'AM'}`
+    : `${newHr.toLocaleString('en-US', {
         minimumIntegerDigits: 2,
         useGrouping: false,
       })}:${min}`;
 };
 
 export const getDifferenceInInterval = (start: Date, end: Date) =>
-  intervalToDuration({ start: new Date(start), end: new Date(end) });
+  intervalToDuration({start: new Date(start), end: new Date(end)});
+
+export const padNumber = (num: number) => (num < 10 ? `0${num}` : num);

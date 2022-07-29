@@ -69,7 +69,7 @@ export class PageCategoryService {
                 return {
                   id: child._id,
                   name: child.name,
-                  parent: child.parent_id,
+                  parent_id: child.parent_id,
                   order: child.order,
                   link: "link",
                   type: child.type,

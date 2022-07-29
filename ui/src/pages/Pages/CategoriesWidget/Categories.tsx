@@ -17,7 +17,9 @@ const Categories = ({categories, onEditCategory, onDeleteCategory}: Props) => {
     <Box>
       {categories.length > 0 &&
         categories.map((categoryParent: Category) => (
-          <Box sx={{border: '1px solid #e1e1e1'}} key={categoryParent.id}>
+          <Box
+            sx={{border: '1px solid #e1e1e1', mb: '10px'}}
+            key={categoryParent.id}>
             <Box
               sx={{
                 background: '#fbfbfb',

@@ -34,10 +34,10 @@ const DeleteModal = ({
       <DialogContentText
         id="alert-dialog-description"
         sx={{color: 'text.primary'}}>
-        <Typography>{content}</Typography>
-        {helperText && (
-          <Typography variant="subtitle2">{helperText}</Typography>
-        )}
+        <>
+          {content}
+          {helperText && {helperText}}
+        </>
       </DialogContentText>
     </DialogContent>
     <DialogActions>

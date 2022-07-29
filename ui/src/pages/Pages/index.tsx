@@ -123,7 +123,7 @@ const PageTable = () => {
           title="Delete Page"
           content={`Are you sure to delete Page ${selectedPage?.title}?`}
         />
-        <Grid item xs={12}>
+        <Grid item xs={6}>
           <CategoriesWidget />
         </Grid>
       </Grid>
