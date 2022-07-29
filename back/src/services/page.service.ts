@@ -1,3 +1,4 @@
+import { Category } from "./../../../ui/src/types/categories";
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
@@ -18,6 +19,7 @@ export class PageService {
       seoDescription: body.seoDescription,
       seoTitle: body.seoTitle,
       url: body.url,
+      category: body.category,
     });
 
     try {
@@ -36,7 +38,7 @@ export class PageService {
         .skip(pageIndex * pageSize)
         .limit(pageSize)
         .exec();
-
+      console.log("pages", pages);
       const data = await pages.map((item) => {
         return {
           id: item._id,
@@ -46,9 +48,11 @@ export class PageService {
           date: item.date,
           content: item.content,
           url: item.url,
+          category: item.category || "",
           isActive: item.isActive,
         };
       });
+      console.log("data", data);
       const total = await this.pageModel.count();
 
       return { data, page: pageIndex, total };

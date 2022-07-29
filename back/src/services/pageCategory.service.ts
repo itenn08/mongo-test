@@ -15,7 +15,6 @@ export class PageCategoryService {
   ) {}
 
   async create(body: PageCategoryDto) {
-    console.log("body", body);
     const category = new this.pageCategoryModel({
       name: body.name,
       parent_id: body.parent_id || "",
@@ -23,7 +22,7 @@ export class PageCategoryService {
       link: body.link,
       type: body.type || "link",
     });
-    console.log("category", category);
+
     try {
       await category.save();
       return { category: category._id };
@@ -41,7 +40,6 @@ export class PageCategoryService {
       uniqueCategories.forEach((item: PageCategoryUpdateDto) =>
         this.update(item.id, item)
       );
-      // body.forEach((item) => this.update(item.id, item));
 
       return "updated";
     } catch (e) {
@@ -49,9 +47,43 @@ export class PageCategoryService {
     }
   }
 
-  async findAll() {
+  async findByFilter(pageIndex?: number, pageSize?: number, query?: string) {
     try {
-      const categories = await this.pageCategoryModel.find().exec();
+      const categories = await this.pageCategoryModel
+        .find()
+        .where({ name: new RegExp(`^${query}`) })
+        .sort({ _id: 1 })
+        .skip(pageIndex * pageSize)
+        .limit(pageSize)
+        .exec();
+
+      const data = await categories.map((item) => {
+        return {
+          id: item._id,
+          name: item.name,
+          parent_id: item.parent_id,
+          order: item.order,
+          link: item.link,
+          type: "parent",
+        };
+      });
+
+      const total = await this.pageCategoryModel.count();
+
+      return { data, total };
+    } catch (e) {
+      throw new HttpException(e, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async findAll(pageIndex?: number, pageSize?: number) {
+    try {
+      const categories = await this.pageCategoryModel
+        .find()
+        .sort({ _id: 1 })
+        .skip(pageIndex * pageSize)
+        .limit(pageSize)
+        .exec();
 
       const data = await categories
         .filter((item) => !item.parent_id)

@@ -8,6 +8,7 @@ export interface Page extends Document {
   readonly seoDescription: string;
   readonly date: Date | null;
   readonly isActive: boolean;
+  readonly category: string;
 }
 
 export interface PageEdit {
