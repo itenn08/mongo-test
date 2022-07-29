@@ -51,7 +51,7 @@ export class PageCategoryService {
     try {
       const categories = await this.pageCategoryModel
         .find()
-        .where({ name: new RegExp(`^${query}`) })
+        .where({ "LOWER(name)": new RegExp(`^${query}`) })
         .sort({ _id: 1 })
         .skip(pageIndex * pageSize)
         .limit(pageSize)
