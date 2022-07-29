@@ -1,3 +1,5 @@
+import {Category} from './categories';
+
 export interface PageUpdateForm {
   title: string;
   url: string;
@@ -6,7 +8,7 @@ export interface PageUpdateForm {
   seoDescription: string;
   date: Date;
   isActive: boolean;
-  category: string;
+  category: Category | null;
 }
 
 export interface Page extends PageUpdateForm {

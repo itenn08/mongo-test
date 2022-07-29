@@ -128,7 +128,7 @@ export const makeRows = (pages: Resource<Page>): any => {
       id: index,
       title: page.title || '-',
       url: page.url || '-',
-      category: page.category || '-',
+      category: page.category?.name || '-',
       seoTitle: page.seoTitle || '-',
       seoDescription: page.seoDescription || '-',
       date: formatDate(page.date) || '-',

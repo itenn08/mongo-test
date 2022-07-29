@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsDateString,
   IsNotEmpty,
+  IsObject,
   IsOptional,
   IsString,
 } from "class-validator";
@@ -35,7 +36,7 @@ export class PageDto {
   @IsOptional()
   isActive?: boolean;
 
-  @IsString()
+  @IsObject()
   @IsOptional()
-  category?: string;
+  category?: {} | null;
 }

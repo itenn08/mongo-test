@@ -17,4 +17,8 @@ export class PaginationParams {
   @IsOptional()
   @IsString()
   query?: string;
+
+  @IsOptional()
+  @IsString()
+  type?: string;
 }

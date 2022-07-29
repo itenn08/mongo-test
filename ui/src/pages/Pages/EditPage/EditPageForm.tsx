@@ -90,6 +90,7 @@ const EditUserForm = ({formik}: Props) => {
                 getCategory={(value) => {
                   formik.setFieldValue('category', value);
                 }}
+                onlyParent={false}
                 initialValue={formik.values?.category || null}
                 textFieldProps={{
                   error: !!(formik.errors.category && formik.touched.category),

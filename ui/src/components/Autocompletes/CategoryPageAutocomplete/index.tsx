@@ -9,11 +9,12 @@ import {useSearchByName} from '../../../hooks/reactQuery/userCategories';
 import {useDebounce} from '../../../hooks/useDebounce';
 
 interface Props {
-  getCategory?: (val: string | null) => void;
+  getCategory?: (val: Category | null) => void;
   getQuery?: (val: string) => void;
-  initialValue?: string | null;
+  initialValue?: Category | null;
   textFieldProps?: TextFieldProps;
   disabled?: boolean;
+  onlyParent?: boolean;
 }
 
 const CategoryPageAutocomplete = ({
@@ -22,16 +23,18 @@ const CategoryPageAutocomplete = ({
   initialValue = null,
   textFieldProps,
   disabled,
+  onlyParent = true,
 }: Props) => {
   const [query, setQuery] = useState<string>('');
-  const [queryView, setQueryView] = useState(initialValue || '');
-  const [category, setCategory] = useState<string | null>(initialValue);
+  const [queryView, setQueryView] = useState(initialValue?.name || '');
+  const [category, setCategory] = useState<Category | null>(initialValue);
 
   const {data: categoriesResource = createEmptyResource(5)} = useSearchByName(
     {
       pageIndex: 0,
       pageSize: 5,
       query,
+      ...(onlyParent && {type: 'parent'}),
     },
     {keepPreviousData: true},
   );
@@ -86,7 +89,7 @@ const CategoryPageAutocomplete = ({
       sx={{minHeight: 0}}
       options={categoriesResource.data}
       onChange={(event: any, newValue: Category | null) => {
-        setCategory(newValue?.name || '');
+        setCategory(newValue || null);
       }}
       getOptionLabel={(option) => option.name}
       onInputChange={onInputChange}

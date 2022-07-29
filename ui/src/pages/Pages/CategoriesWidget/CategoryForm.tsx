@@ -7,6 +7,7 @@ import FormInput from '../../../components/FormComponents/FormInput';
 import {Category} from '../../../types/categories';
 import {FormSelect} from '../../../components/FormComponents/FormSelect';
 import {typeOfCategory} from '../../../constants/menu';
+import CategoryPageAutocomplete from '../../../components/Autocompletes/CategoryPageAutocomplete';
 
 interface Props {
   formik: FormikProps<Category>;
@@ -47,14 +48,14 @@ const CategoryForm = ({formik}: Props) => {
                 error: !!formik.errors.link && formik.touched.link,
                 required: true,
               },
-              {
-                id: 'parent_id',
-                label: 'Parent Category',
-                placeholder: 'Parent Category ID',
-                value: formik.values.parent_id,
-                helperText: formik.touched.parent_id && formik.errors.parent_id,
-                error: !!formik.errors.parent_id && formik.touched.parent_id,
-              },
+              // {
+              //   id: 'parent_id',
+              //   label: 'Parent Category',
+              //   placeholder: 'Parent Category ID',
+              //   value: formik.values.parent_id,
+              //   helperText: formik.touched.parent_id && formik.errors.parent_id,
+              //   error: !!formik.errors.parent_id && formik.touched.parent_id,
+              // },
               {
                 id: 'order',
                 label: 'Order',
@@ -90,6 +91,21 @@ const CategoryForm = ({formik}: Props) => {
                 name: 'type',
                 required: true,
                 ...defaultProps,
+              }}
+            />
+            <CategoryPageAutocomplete
+              getCategory={(value) => {
+                formik.setFieldValue('parent', value);
+              }}
+              initialValue={formik.values?.parent || null}
+              textFieldProps={{
+                error: !!(formik.errors.parent && formik.touched.parent),
+                helperText:
+                  formik.errors.parent && formik.touched.parent
+                    ? formik.errors.parent
+                    : '',
+                label: 'Parent Category',
+                onBlur: formik.handleBlur,
               }}
             />
           </Box>

@@ -1,4 +1,5 @@
 import { Types } from "mongoose";
+import { PageCategory } from "src/interfaces/pageCategory.interface";
 
 export interface Page extends Document {
   readonly title: string;
@@ -8,7 +9,7 @@ export interface Page extends Document {
   readonly seoDescription: string;
   readonly date: Date | null;
   readonly isActive: boolean;
-  readonly category: string;
+  readonly category: PageCategory;
 }
 
 export interface PageEdit {
