@@ -14,7 +14,6 @@ export const getCategories = async (params: any) => {
       paramsSerializer,
     },
   );
-
   return response.data;
 };
 
@@ -23,6 +22,29 @@ export const useQueryCategories = (params?: any, options?: any) =>
     [qks.getCategories, params],
     () =>
       getCategories({
+        ...params,
+      }),
+    {
+      ...options,
+    },
+  );
+
+export const getCategoriesByName = async (params: any) => {
+  const response = await axiosClient.get<CategoryFetch>(
+    `${BASE_URL}/category/search`,
+    {
+      params,
+      paramsSerializer,
+    },
+  );
+  return response.data;
+};
+
+export const useSearchByName = (params?: any, options?: any) =>
+  useQuery(
+    [qks.getCategories, params],
+    () =>
+      getCategoriesByName({
         ...params,
       }),
     {
@@ -135,7 +157,6 @@ export const useCategories = () => {
         });
         queryClient.invalidateQueries(queryKeys.getCategories);
         if (onSuccess) {
-          console.log('on succ');
           onSuccess();
         }
       }

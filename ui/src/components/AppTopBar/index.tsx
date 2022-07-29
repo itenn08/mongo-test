@@ -100,7 +100,6 @@ const AppTopBar = ({pageTitle, showBackAction, backBtnLabel = ''}: Props) => {
                 {
                   label: 'Logout',
                   action: () => {
-                    console.log('test');
                     AuthStore.logout();
                   },
                 },

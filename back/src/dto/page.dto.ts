@@ -34,4 +34,8 @@ export class PageDto {
   @IsBoolean()
   @IsOptional()
   isActive?: boolean;
+
+  @IsString()
+  @IsOptional()
+  category?: string;
 }

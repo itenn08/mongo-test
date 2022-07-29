@@ -18,6 +18,7 @@ export class PageService {
       seoDescription: body.seoDescription,
       seoTitle: body.seoTitle,
       url: body.url,
+      category: body.category,
     });
 
     try {
@@ -46,9 +47,11 @@ export class PageService {
           date: item.date,
           content: item.content,
           url: item.url,
+          category: item.category || "",
           isActive: item.isActive,
         };
       });
+
       const total = await this.pageModel.count();
 
       return { data, page: pageIndex, total };

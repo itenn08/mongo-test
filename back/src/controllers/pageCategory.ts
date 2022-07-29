@@ -7,7 +7,7 @@ import {
   Param,
   Patch,
   Post,
-  Put,
+  Query,
   UseGuards,
   ValidationPipe,
 } from "@nestjs/common";
@@ -16,6 +16,7 @@ import {
   PageCategoryDto,
   PageCategoryUpdateDto,
 } from "src/dto/pageCategory.dto";
+import { PaginationParams } from "src/dto/pagination.dto";
 
 @Controller("category")
 export class PageCategoryController {
@@ -23,8 +24,20 @@ export class PageCategoryController {
 
   @UseGuards(JwtAuthGuard)
   @Get("")
-  async findAll() {
-    return await this.pageCategoryService.findAll();
+  async findAll(@Query() { pageIndex, pageSize }: PaginationParams) {
+    return await this.pageCategoryService.findAll(pageIndex, pageSize);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get("/search")
+  async searchByName(
+    @Query() { pageIndex, pageSize, query }: PaginationParams
+  ) {
+    return await this.pageCategoryService.findByFilter(
+      pageIndex,
+      pageSize,
+      query
+    );
   }
 
   @UseGuards(JwtAuthGuard)

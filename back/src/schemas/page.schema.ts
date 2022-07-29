@@ -8,4 +8,5 @@ export const PageSchema = new mongoose.Schema({
   seoDescription: String,
   date: Date,
   isActive: Boolean,
+  category: String,
 });

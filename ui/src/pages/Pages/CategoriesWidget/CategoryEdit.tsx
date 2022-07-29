@@ -23,7 +23,7 @@ const CategoryEdit = ({category, openDialog, type, onClose}: Props) => {
     type: Yup.string().required('Type is required'),
     order: Yup.string().matches(/^[0-9]+$/, 'Order is not valid'),
   });
-  console.log('category', category);
+
   const formik = useFormik<Category>({
     enableReinitialize: true,
     initialValues: {

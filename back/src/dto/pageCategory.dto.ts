@@ -1,11 +1,4 @@
-import {
-  IsArray,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from "class-validator";
-import { PageCategoryChildrenCategory } from "src/interfaces/pageCategory.interface";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class PageCategoryDto {
   @IsString()
