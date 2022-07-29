@@ -1,9 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {Box, Button, CircularProgress, Grid, Modal} from '@mui/material';
+import {Box, CircularProgress, Grid} from '@mui/material';
 import {GridRowsProp} from '@mui/x-data-grid';
 
-import styles from './styles.module.scss';
 import {DataGridLayout} from '../../components/DataGridLayout';
 import {columns, makeRows} from './PageTableDataGrid';
 import {Page} from '../../types/pages';
@@ -14,6 +13,7 @@ import {PageListingLayout} from '../../components/PageListingLayout';
 import {Widget} from '../../components/Widget';
 import {TabContentContainer} from '../../components/TabContentContainer';
 import {CategoriesWidget} from './CategoriesWidget';
+import DeleteModal from '../../components/DeleteModal';
 
 const pageSize = 10;
 
@@ -26,18 +26,6 @@ const PageTable = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPage, setSelectedPage] = useState<Page | null>(null);
-
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-  };
 
   const handleCloseModal = () => {
     setShowDeleteModal(false);
@@ -128,24 +116,13 @@ const PageTable = () => {
             onClose={handleCloseEditModal}
           />
         )}
-        <Modal open={showDeleteModal} onClose={handleCloseModal}>
-          <Box sx={style}>
-            <div className={styles.modalText}>
-              Are you sure to delete Page <span>{selectedPage?.title}</span>?
-            </div>
-            <div className={styles.modalButtons}>
-              <Button onClick={handleCloseModal} variant="contained">
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={handleDeletePage}>
-                Delete
-              </Button>
-            </div>
-          </Box>
-        </Modal>
+        <DeleteModal
+          open={showDeleteModal}
+          onConfirm={handleDeletePage}
+          onClose={handleCloseModal}
+          title="Delete Page"
+          content={`Are you sure to delete Page ${selectedPage?.title}?`}
+        />
         <Grid item xs={12}>
           <CategoriesWidget />
         </Grid>
