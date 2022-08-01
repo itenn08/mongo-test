@@ -11,6 +11,7 @@ import FormInput from '../../components/FormComponents/FormInput';
 import {Switch} from '../../components/Switch';
 import {DatePicker} from '../../components/FormComponents/DatePicker';
 import CategoryPageAutocomplete from '../../components/Autocompletes/CategoryPageAutocomplete';
+import HTMLEditor from '../../components/HTMLEditor';
 
 interface Props {
   getBasicSettingsFormErrors?: (
@@ -103,23 +104,6 @@ export const BasicSettingsForm = ({
             />
           </Grid>
           <Grid item md={5}>
-            <FormInput
-              props={{
-                size: 'small',
-                placeholder: 'Enter content',
-                label: 'Content',
-                name: 'content',
-                value: formik.values.content,
-                helperText: formik.errors.content,
-                error: !!formik.errors.content,
-                sx: {
-                  mt: '0.5em',
-                },
-                ...defaultProps,
-              }}
-            />
-          </Grid>
-          <Grid item md={5}>
             <DatePicker
               defaultDate={formik.values.date}
               getSelectedDate={(newValue) => {
@@ -140,6 +124,7 @@ export const BasicSettingsForm = ({
               getCategory={(value) => {
                 formik.setFieldValue('category', value);
               }}
+              containerStyles={{mt: '0.5em'}}
               onlyParent={false}
               initialValue={formik.values?.category || null}
               textFieldProps={{
@@ -165,6 +150,15 @@ export const BasicSettingsForm = ({
                 onChanged={(value) => formik.setFieldValue('isActive', value)}
               />
             </Box>
+          </Grid>
+          <Grid item md={10}>
+            <Typography variant="body1" sx={{color: 'text.primary', mt: '1em'}}>
+              Page content:
+            </Typography>
+            <HTMLEditor
+              initialValue={formik.values.content}
+              onChange={(value) => formik.setFieldValue('content', value)}
+            />
           </Grid>
         </Grid>
       </Box>

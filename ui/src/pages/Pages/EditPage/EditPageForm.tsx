@@ -8,6 +8,7 @@ import {DatePicker} from '../../../components/FormComponents/DatePicker';
 import {PageUpdateForm} from '../../../types/pages';
 import {Switch} from '../../../components/Switch';
 import CategoryPageAutocomplete from '../../../components/Autocompletes/CategoryPageAutocomplete';
+import HTMLEditor from '../../../components/HTMLEditor';
 
 interface Props {
   formik: FormikProps<PageUpdateForm>;
@@ -49,14 +50,6 @@ const EditUserForm = ({formik}: Props) => {
                 required: true,
               },
               {
-                id: 'content',
-                label: 'Content',
-                placeholder: 'Content',
-                value: formik.values.content,
-                helperText: formik.touched.content && formik.errors.content,
-                error: !!formik.errors.content && formik.touched.content,
-              },
-              {
                 id: 'seoTitle',
                 label: 'SEO Title',
                 placeholder: 'Title',
@@ -90,6 +83,7 @@ const EditUserForm = ({formik}: Props) => {
                 getCategory={(value) => {
                   formik.setFieldValue('category', value);
                 }}
+                containerStyles={{mt: '0.5em'}}
                 onlyParent={false}
                 initialValue={formik.values?.category || null}
                 textFieldProps={{
@@ -115,7 +109,7 @@ const EditUserForm = ({formik}: Props) => {
                 onBlur: formik.handleBlur,
               }}
               maxDate={new Date()}
-              containerStyles={{margin: '1em 0'}}
+              containerStyles={{margin: '1.5em 0'}}
             />
             <Box display="flex" alignItems="center" sx={{mb: '0.625em'}}>
               <Typography
@@ -126,6 +120,17 @@ const EditUserForm = ({formik}: Props) => {
               <Switch
                 value={formik.values.isActive}
                 onChanged={(value) => formik.setFieldValue('isActive', value)}
+              />
+            </Box>
+            <Box>
+              <Typography
+                variant="body1"
+                sx={{color: 'text.primary', mt: '1em'}}>
+                Page content:
+              </Typography>
+              <HTMLEditor
+                initialValue={formik.values.content}
+                onChange={(value) => formik.setFieldValue('content', value)}
               />
             </Box>
           </Box>
