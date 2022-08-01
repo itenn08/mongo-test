@@ -73,7 +73,7 @@ const PageEdit = ({page, openDialog, onClose}: Props) => {
       onSave={formik.submitForm}
       disableSaveBtn={!!Object.keys(formik.errors).length}
       dialogProps={{
-        maxWidth: 'md',
+        maxWidth: 'lg',
         open: openDialog || false,
       }}>
       <EditUserForm formik={formik} />

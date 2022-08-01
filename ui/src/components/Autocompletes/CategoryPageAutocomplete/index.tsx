@@ -16,6 +16,7 @@ interface Props {
   disabled?: boolean;
   onlyParent?: boolean;
   required?: boolean;
+  containerStyles?: {[key: string]: any};
 }
 
 const CategoryPageAutocomplete = ({
@@ -26,6 +27,7 @@ const CategoryPageAutocomplete = ({
   disabled,
   onlyParent = true,
   required = false,
+  containerStyles,
 }: Props) => {
   const [query, setQuery] = useState<string>('');
   const [queryView, setQueryView] = useState(initialValue?.name || '');
@@ -80,7 +82,7 @@ const CategoryPageAutocomplete = ({
       if (getQuery) getQuery('');
     }
   }, [queryView]);
-  console.log('categoriesResource.data', categoriesResource.data);
+
   return (
     <Autocomplete
       size="small"
@@ -88,7 +90,7 @@ const CategoryPageAutocomplete = ({
       clearOnBlur={false}
       disablePortal
       id="categoryAutocomplete"
-      sx={{minHeight: 0}}
+      sx={{minHeight: 0, ...containerStyles}}
       options={categoriesResource.data}
       onChange={(event: any, newValue: Category | null) => {
         setCategory(newValue || null);

@@ -40,7 +40,7 @@ const UIRouter = () => (
         <Route
           path="/pages/new"
           element={
-            <PageLayout>
+            <PageLayout pageScrollable>
               <NewPage />
             </PageLayout>
           }
