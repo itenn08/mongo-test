@@ -15,6 +15,7 @@ interface Props {
   textFieldProps?: TextFieldProps;
   disabled?: boolean;
   onlyParent?: boolean;
+  required?: boolean;
 }
 
 const CategoryPageAutocomplete = ({
@@ -24,6 +25,7 @@ const CategoryPageAutocomplete = ({
   textFieldProps,
   disabled,
   onlyParent = true,
+  required = false,
 }: Props) => {
   const [query, setQuery] = useState<string>('');
   const [queryView, setQueryView] = useState(initialValue?.name || '');
@@ -100,7 +102,7 @@ const CategoryPageAutocomplete = ({
             name: 'categoryPage',
             ...params,
             ...textFieldProps,
-            required: true,
+            required,
           }}
         />
       )}

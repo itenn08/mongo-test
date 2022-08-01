@@ -59,7 +59,6 @@ export const SeoSettingsForm = ({
                 value: formik.values.seoTitle,
                 helperText: formik.touched.seoTitle && formik.errors.seoTitle,
                 error: !!formik.errors.seoTitle && formik.touched.seoTitle,
-                required: true,
                 sx: {
                   mt: '0.5em',
                 },
@@ -80,7 +79,6 @@ export const SeoSettingsForm = ({
                 error:
                   !!formik.errors.seoDescription &&
                   formik.touched.seoDescription,
-                required: true,
                 sx: {
                   mt: '0.5em',
                 },
