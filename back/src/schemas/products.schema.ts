@@ -1,8 +1,18 @@
+import { Base } from "@typegoose/typegoose/lib/defaultClasses";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 
-@Schema()
-export class Product extends Document {
+@Schema({
+  versionKey: false,
+  toJSON: {
+    getters: true,
+  },
+})
+export class Product extends Document implements Base {
+  _id!: Types.ObjectId;
+
+  id!: string;
+
   @Prop({ required: true })
   name: string;
 

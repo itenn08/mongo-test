@@ -24,8 +24,10 @@ export class ProductsController {
 
   @UseGuards(JwtAuthGuard)
   @Get("")
-  async getAll() {
-    return await this.productService.findAll();
+  async getAll(@Res() res) {
+    // return await this.productService.findAll();
+    const customers = await this.productService.findAll();
+    return res.status(HttpStatus.OK).json(customers);
   }
 
   @UseGuards(JwtAuthGuard)

@@ -12,6 +12,7 @@ import AuthPage from '../pages/auth';
 import PageLayout from '../pages/PageLayout';
 import {NewPage} from '../pages/NewPage';
 import RequireAuth from './RequireAuth';
+import ProductsTable from '../pages/Products';
 
 const UIRouter = () => (
   <Router>
@@ -42,6 +43,15 @@ const UIRouter = () => (
           element={
             <PageLayout pageScrollable>
               <NewPage />
+            </PageLayout>
+          }
+        />
+
+        <Route
+          path="/products"
+          element={
+            <PageLayout pageScrollable>
+              <ProductsTable />
             </PageLayout>
           }
         />

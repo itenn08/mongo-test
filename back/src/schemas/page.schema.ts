@@ -1,7 +1,12 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 
-@Schema()
+@Schema({
+  versionKey: false,
+  toJSON: {
+    getters: true,
+  },
+})
 export class Page extends Document {
   @Prop({ required: true })
   title: string;

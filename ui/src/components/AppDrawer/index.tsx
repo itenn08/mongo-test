@@ -15,7 +15,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
-import {Description, PeopleAlt} from '@mui/icons-material';
+import {Description, Inventory2, PeopleAlt} from '@mui/icons-material';
 
 const drawerWidth = '15rem';
 
@@ -106,6 +106,20 @@ export const AppDrawer = () => {
         setSelectedIndex(index);
         setSelectedPath('/pages');
         navigate('/pages');
+      },
+    },
+    {
+      text: 'Products',
+      icon: <Inventory2 sx={{color: '#fff'}} />,
+      path: '/products',
+      onClick: (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        index: number,
+      ) => {
+        e.preventDefault();
+        setSelectedIndex(index);
+        setSelectedPath('/products');
+        navigate('/products');
       },
     },
   ];

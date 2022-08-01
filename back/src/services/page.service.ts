@@ -39,24 +39,9 @@ export class PageService {
         .limit(pageSize)
         .exec();
 
-      const data = await pages.map((item) => {
-        return {
-          id: item._id,
-          title: item.title,
-          seoTitle: item.seoTitle,
-          seoDescription: item.seoDescription,
-          createdAt: item.createdAt,
-          updatedAt: item.updatedAt,
-          content: item.content,
-          url: item.url,
-          category: item.category,
-          isActive: item.isActive,
-        };
-      });
-
       const total = await this.pageModel.count();
 
-      return { data, page: pageIndex, total };
+      return { data: pages, page: pageIndex, total };
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
