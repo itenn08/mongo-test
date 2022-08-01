@@ -4,7 +4,7 @@ import * as Yup from 'yup';
 
 import EditUserForm from './EditPageForm';
 import {Dialog} from '../../../components/Dialog';
-import {Page, PageUpdateForm} from '../../../types/pages';
+import {Page, PageUpdateForm, PageView} from '../../../types/pages';
 import {usePages} from '../../../hooks/reactQuery/usePages';
 
 interface Props {
@@ -21,7 +21,7 @@ const PageEdit = ({page, openDialog, onClose}: Props) => {
     url: Yup.string().nullable().required('Last name is required'),
   });
 
-  const formik = useFormik<PageUpdateForm>({
+  const formik = useFormik<PageView>({
     enableReinitialize: true,
 
     initialValues: {
@@ -44,7 +44,7 @@ const PageEdit = ({page, openDialog, onClose}: Props) => {
         seoDescription: formik.values.seoDescription || '',
         date: formik.values.date || new Date(),
         isActive: formik.values.isActive,
-        category: formik.values.category || null,
+        category: formik.values.category?.id || null,
       };
 
       updatePage(body, page.id, () => {

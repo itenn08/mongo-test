@@ -1,3 +1,4 @@
+import { Schema } from "@nestjs/mongoose";
 import {
   IsNotEmpty,
   IsNumber,
@@ -6,7 +7,7 @@ import {
   IsString,
 } from "class-validator";
 
-import { PageCategoryView } from "src/interfaces/pageCategory.interface";
+import { PageCategoryView } from "src/interfaces/page-category.interface";
 
 export class PageCategoryDto {
   @IsString()

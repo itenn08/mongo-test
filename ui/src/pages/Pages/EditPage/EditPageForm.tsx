@@ -5,13 +5,13 @@ import Box from '@mui/material/Box';
 
 import FormInput from '../../../components/FormComponents/FormInput';
 import {DatePicker} from '../../../components/FormComponents/DatePicker';
-import {PageUpdateForm} from '../../../types/pages';
+import {PageView} from '../../../types/pages';
 import {Switch} from '../../../components/Switch';
 import CategoryPageAutocomplete from '../../../components/Autocompletes/CategoryPageAutocomplete';
 import HTMLEditor from '../../../components/HTMLEditor';
 
 interface Props {
-  formik: FormikProps<PageUpdateForm>;
+  formik: FormikProps<PageView>;
 }
 
 const EditUserForm = ({formik}: Props) => {

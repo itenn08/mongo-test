@@ -2,9 +2,9 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Document, Types } from "mongoose";
 
 @Schema()
-export class Page extends Document {
+export class Product extends Document {
   @Prop({ required: true })
-  title: string;
+  name: string;
 
   @Prop({ required: true })
   url: string;
@@ -13,16 +13,28 @@ export class Page extends Document {
   category: Types.ObjectId;
 
   @Prop()
-  content: string;
-
-  @Prop()
   seoTitle: string;
 
   @Prop()
   seoDescription: string;
 
   @Prop()
-  isActive: Boolean;
+  photoUrl: string;
+
+  @Prop()
+  price: number;
+
+  @Prop({ required: true })
+  currency: string;
+
+  @Prop({ required: true })
+  isActive: boolean;
+
+  @Prop()
+  quantity: number;
+
+  @Prop()
+  text: string;
 
   @Prop({ default: Date.now })
   createdAt: Date;
@@ -31,4 +43,4 @@ export class Page extends Document {
   updatedAt: Date;
 }
 
-export const PageSchema = SchemaFactory.createForClass(Page);
+export const ProductSchema = SchemaFactory.createForClass(Product);

@@ -16,10 +16,6 @@ export class PageDto {
   @IsNotEmpty()
   url: string;
 
-  @IsDateString()
-  @IsOptional()
-  date?: Date;
-
   @IsString()
   @IsNotEmpty()
   content: string;
@@ -36,7 +32,7 @@ export class PageDto {
   @IsOptional()
   isActive?: boolean;
 
-  @IsObject()
+  @IsString()
   @IsOptional()
-  category?: {} | null;
+  category?: string | null;
 }

@@ -10,13 +10,14 @@ import {
   UseGuards,
   ValidationPipe,
 } from "@nestjs/common";
+
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 import {
   PageCategoryDto,
   PageCategoryUpdateDto,
-} from "src/dto/pageCategory.dto";
+} from "src/dto/page-category.dto";
 import { PaginationParams } from "src/dto/pagination.dto";
-import { PageCategoryService } from "src/services/pageCategory.service";
+import { PageCategoryService } from "src/services/page-category.service";
 
 @Controller("category")
 export class PageCategoryController {

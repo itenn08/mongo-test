@@ -5,8 +5,8 @@ import { Model } from "mongoose";
 import {
   PageCategoryDto,
   PageCategoryUpdateDto,
-} from "src/dto/pageCategory.dto";
-import { PageCategory } from "src/interfaces/pageCategory.interface";
+} from "src/dto/page-category.dto";
+import { PageCategory } from "src/interfaces/page-category.interface";
 
 @Injectable()
 export class PageCategoryService {

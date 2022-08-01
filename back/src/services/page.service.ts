@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { Schema as MongooseSchema } from "mongoose";
 
-import { Page } from "src/interfaces/page.interface";
 import { PageDto } from "src/dto/page.dto";
+import { Page } from "src/schemas/page.schema";
 
 @Injectable()
 export class PageService {
@@ -13,12 +14,11 @@ export class PageService {
     const page = new this.pageModel({
       title: body.title,
       content: body.content,
-      date: body.date || new Date(),
       isActive: body.isActive,
       seoDescription: body.seoDescription,
       seoTitle: body.seoTitle,
       url: body.url,
-      category: body.category,
+      category: body.category || null,
     });
 
     try {
@@ -33,6 +33,7 @@ export class PageService {
     try {
       const pages = await this.pageModel
         .find()
+        .populate("category")
         .sort({ _id: 1 })
         .skip(pageIndex * pageSize)
         .limit(pageSize)
@@ -44,10 +45,11 @@ export class PageService {
           title: item.title,
           seoTitle: item.seoTitle,
           seoDescription: item.seoDescription,
-          date: item.date,
+          createdAt: item.createdAt,
+          updatedAt: item.updatedAt,
           content: item.content,
           url: item.url,
-          category: item.category || "",
+          category: item.category,
           isActive: item.isActive,
         };
       });
@@ -60,15 +62,15 @@ export class PageService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: MongooseSchema.Types.ObjectId) {
     try {
-      return this.pageModel.findOne({ id }).exec();
+      return this.pageModel.findById(id).populate("category").exec();
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async update(id: string, postData: PageDto) {
+  async update(id: MongooseSchema.Types.ObjectId, postData: PageDto) {
     try {
       const post = await this.pageModel.findByIdAndUpdate(
         { _id: id },
@@ -87,7 +89,7 @@ export class PageService {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: MongooseSchema.Types.ObjectId) {
     try {
       const deletedPage = await this.pageModel
         .findByIdAndRemove({ _id: id })
