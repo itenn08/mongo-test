@@ -44,7 +44,7 @@ const PageEdit = ({page, openDialog, onClose}: Props) => {
         seoDescription: formik.values.seoDescription || '',
         date: formik.values.date || new Date(),
         isActive: formik.values.isActive,
-        category: formik.values.category,
+        category: formik.values.category || null,
       };
 
       updatePage(body, page.id, () => {

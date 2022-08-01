@@ -30,7 +30,7 @@ const CategoryEdit = ({category, openDialog, type, onClose}: Props) => {
       id: category?.id || '',
       name: category?.name || '',
       link: category?.link || '',
-      parent_id: category?.parent_id || '',
+      parent: category?.parent || null,
       order: category?.order || 1,
       type: category?.type || '',
     },

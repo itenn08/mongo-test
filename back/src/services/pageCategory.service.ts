@@ -17,7 +17,7 @@ export class PageCategoryService {
   async create(body: PageCategoryDto) {
     const category = new this.pageCategoryModel({
       name: body.name,
-      parent_id: body.parent_id || "",
+      parent: body.parent || null,
       order: body.order || 1,
       link: body.link,
       type: body.type || "link",
@@ -47,21 +47,42 @@ export class PageCategoryService {
     }
   }
 
-  async findByFilter(pageIndex?: number, pageSize?: number, query?: string) {
+  async findByFilter(
+    pageIndex?: number,
+    pageSize?: number,
+    query?: string,
+    type?: string
+  ) {
     try {
-      const categories = await this.pageCategoryModel
-        .find()
-        .where({ "LOWER(name)": new RegExp(`^${query}`) })
-        .sort({ _id: 1 })
-        .skip(pageIndex * pageSize)
-        .limit(pageSize)
-        .exec();
+      let categories;
+      if (type) {
+        categories = await this.pageCategoryModel
+          .find()
+          .where({
+            "LOWER(name)": new RegExp(`^${query}`),
+            parent: type === "parent" && null,
+          })
+          .sort({ _id: 1 })
+          .skip(pageIndex * pageSize)
+          .limit(pageSize)
+          .exec();
+      } else {
+        categories = await this.pageCategoryModel
+          .find()
+          .where({
+            "LOWER(name)": new RegExp(`^${query}`),
+          })
+          .sort({ _id: 1 })
+          .skip(pageIndex * pageSize)
+          .limit(pageSize)
+          .exec();
+      }
 
       const data = await categories.map((item) => {
         return {
           id: item._id,
           name: item.name,
-          parent_id: item.parent_id,
+          parent: item.parent,
           order: item.order,
           link: item.link,
           type: "parent",
@@ -86,22 +107,26 @@ export class PageCategoryService {
         .exec();
 
       const data = await categories
-        .filter((item) => !item.parent_id)
+        .filter((item) => item.parent === null)
         .map((item) => {
           return {
             id: item._id,
             name: item.name,
-            parent_id: item.parent_id,
+            parent: item.parent,
             order: item.order,
             link: item.link,
             type: "parent",
             children: categories
-              .filter((child) => child.parent_id === item._id.toString())
+              .filter(
+                (child) =>
+                  child.parent !== null &&
+                  child.parent.id === item._id.toString()
+              )
               .map((child) => {
                 return {
                   id: child._id,
                   name: child.name,
-                  parent_id: child.parent_id,
+                  parent: child.parent,
                   order: child.order,
                   link: "link",
                   type: child.type,

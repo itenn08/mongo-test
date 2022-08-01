@@ -10,6 +10,7 @@ import {PageCard} from '../../components/PageCard';
 import FormInput from '../../components/FormComponents/FormInput';
 import {Switch} from '../../components/Switch';
 import {DatePicker} from '../../components/FormComponents/DatePicker';
+import CategoryPageAutocomplete from '../../components/Autocompletes/CategoryPageAutocomplete';
 
 interface Props {
   getBasicSettingsFormErrors?: (
@@ -36,6 +37,7 @@ export const BasicSettingsForm = ({
       content: initialValues?.content || '',
       date: initialValues?.date || null,
       isActive: initialValues?.isActive || true,
+      category: initialValues?.category || null,
     },
     onSubmit: () => {},
     validationSchema,
@@ -100,7 +102,6 @@ export const BasicSettingsForm = ({
               }}
             />
           </Grid>
-
           <Grid item md={5}>
             <FormInput
               props={{
@@ -132,6 +133,24 @@ export const BasicSettingsForm = ({
               }}
               maxDate={new Date()}
               containerStyles={{mt: '0.5em'}}
+            />
+          </Grid>
+          <Grid item md={5}>
+            <CategoryPageAutocomplete
+              getCategory={(value) => {
+                formik.setFieldValue('category', value);
+              }}
+              onlyParent={false}
+              initialValue={formik.values?.category || null}
+              textFieldProps={{
+                error: !!(formik.errors.category && formik.touched.category),
+                helperText:
+                  formik.errors.category && formik.touched.category
+                    ? formik.errors.category
+                    : '',
+                label: 'Category',
+                onBlur: formik.handleBlur,
+              }}
             />
           </Grid>
           <Grid item md={10}>

@@ -32,6 +32,7 @@ export const NewPage = () => {
       content: '',
       date: null,
       isActive: true,
+      category: null,
     });
 
   const [seoSettingsFormError, setSeoSettingsFormError] = useState<
@@ -68,13 +69,12 @@ export const NewPage = () => {
     useCreatePage('Page created successfully');
 
   const addNewPage = async () => {
-    console.log('basicSettingsFormValues', basicSettingsFormValues);
-
     const body: NewPageModel = {
       title: basicSettingsFormValues.title,
       url: basicSettingsFormValues.url,
       content: basicSettingsFormValues.content,
       date: basicSettingsFormValues.date,
+      category: basicSettingsFormValues.category,
       isActive: basicSettingsFormValues.isActive,
       seoTitle: seoSettingsFormValues.seoTitle,
       seoDescription: seoSettingsFormValues.seoDescription,

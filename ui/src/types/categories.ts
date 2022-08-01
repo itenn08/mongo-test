@@ -1,7 +1,7 @@
 export interface CategoryParent {
   name: string;
   link: string;
-  parent_id: string;
+  parent: Category | null;
   order: number;
   type: string;
   children?: Category[];

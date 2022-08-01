@@ -1,4 +1,3 @@
-import { PageCategoryService } from "./../services/pageCategory.service";
 import {
   Body,
   Controller,
@@ -17,6 +16,7 @@ import {
   PageCategoryUpdateDto,
 } from "src/dto/pageCategory.dto";
 import { PaginationParams } from "src/dto/pagination.dto";
+import { PageCategoryService } from "src/services/pageCategory.service";
 
 @Controller("category")
 export class PageCategoryController {
@@ -31,12 +31,13 @@ export class PageCategoryController {
   @UseGuards(JwtAuthGuard)
   @Get("/search")
   async searchByName(
-    @Query() { pageIndex, pageSize, query }: PaginationParams
+    @Query() { pageIndex, pageSize, query, type }: PaginationParams
   ) {
     return await this.pageCategoryService.findByFilter(
       pageIndex,
       pageSize,
-      query
+      query,
+      type
     );
   }
 

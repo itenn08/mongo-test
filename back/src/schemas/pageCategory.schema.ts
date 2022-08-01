@@ -5,7 +5,10 @@ export const PageCategorySchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  parent_id: String,
+  parent: {
+    type: {},
+    default: null,
+  },
   link: String,
   order: Number,
   type: {
