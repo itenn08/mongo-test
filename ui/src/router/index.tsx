@@ -24,7 +24,7 @@ const UIRouter = () => (
         <Route
           path="/users"
           element={
-            <PageLayout>
+            <PageLayout pageTitle="Users">
               <UsersTable />
             </PageLayout>
           }
@@ -33,7 +33,7 @@ const UIRouter = () => (
         <Route
           path="/pages"
           element={
-            <PageLayout pageScrollable>
+            <PageLayout pageTitle="Pages" pageScrollable>
               <PageTable />
             </PageLayout>
           }
@@ -42,7 +42,7 @@ const UIRouter = () => (
         <Route
           path="/pages/new"
           element={
-            <PageLayout pageScrollable>
+            <PageLayout pageTitle="New Page" pageScrollable>
               <NewPage />
             </PageLayout>
           }
@@ -51,7 +51,7 @@ const UIRouter = () => (
         <Route
           path="/products"
           element={
-            <PageLayout pageScrollable>
+            <PageLayout pageTitle="Products" pageScrollable>
               <ProductsTable />
             </PageLayout>
           }
@@ -60,7 +60,7 @@ const UIRouter = () => (
         <Route
           path="/products/new"
           element={
-            <PageLayout pageScrollable>
+            <PageLayout pageTitle="New Products" pageScrollable>
               <NewProduct />
             </PageLayout>
           }
