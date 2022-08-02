@@ -9,6 +9,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Res,
   UseGuards,
   ValidationPipe,
@@ -17,6 +18,7 @@ import { Schema as MongooseSchema } from "mongoose";
 
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 import { Response } from "express";
+import { PaginationParams } from "src/dto/pagination.dto";
 
 @Controller("products")
 export class ProductsController {
@@ -24,9 +26,16 @@ export class ProductsController {
 
   @UseGuards(JwtAuthGuard)
   @Get("")
-  async getAll(@Res() res) {
+  async getAll(
+    @Query() { pageIndex, pageSize, query }: PaginationParams,
+    @Res() res
+  ) {
     // return await this.productService.findAll();
-    const customers = await this.productService.findAll();
+    const customers = await this.productService.findAll(
+      pageIndex,
+      pageSize,
+      query
+    );
     return res.status(HttpStatus.OK).json(customers);
   }
 

@@ -39,10 +39,10 @@ export class ProductService {
     }
   }
 
-  async findAll(pageIndex?: number, pageSize?: number) {
+  async findAll(pageIndex?: number, pageSize?: number, query?: string) {
     try {
       const products = await this.productModel
-        .find()
+        .find({ name: { $regex: `${query}` } })
         .populate("category")
         .sort({ createdAt: -1 })
         .skip(pageIndex * pageSize)
