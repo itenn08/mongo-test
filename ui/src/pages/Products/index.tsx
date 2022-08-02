@@ -29,6 +29,7 @@ const ProductsTable = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [query, setQuery] = useState('');
 
   const handleCloseModal = () => {
     setShowDeleteModal(false);
@@ -44,16 +45,21 @@ const ProductsTable = () => {
     {
       pageIndex: page.pageIndex,
       pageSize: page.pageSize,
+      query,
     },
     {keepPreviousData: true},
   );
 
   useEffect(() => {
-    setPageCount(Math.ceil(productsResource.total / page.pageSize));
+    if (productsResource.data.length === 0) {
+      setPageCount(0);
+    } else {
+      setPageCount(Math.ceil(productsResource.total / page.pageSize));
+    }
   }, [productsResource, page.pageSize]);
 
   useEffect(() => {
-    if (!isLoading && productsResource && productsResource?.data.length > 0) {
+    if (!isLoading && productsResource && productsResource?.data) {
       setRows(makeRows(productsResource));
     }
   }, [productsResource, isLoading]);
@@ -85,14 +91,15 @@ const ProductsTable = () => {
           <PageListingLayout
             renderWidget={
               <Widget
-                searchPlaceholder="Search by number, name, address etc."
+                getSearchValue={(value) => setQuery(value)}
+                searchPlaceholder="Search by name"
                 showActionBtn
                 btnOnClick={() => navigate('/products/new')}
                 btnLabel="New Product"
               />
             }>
             <Box display="flex" flexGrow={1} sx={{minHeight: '650px'}}>
-              {rows.length > 0 ? (
+              {!isLoading ? (
                 <DataGridLayout
                   rows={rows}
                   columns={columns(getEditableProduct, getDeletableProduct)}
@@ -100,7 +107,9 @@ const ProductsTable = () => {
                   pageSize={page.pageSize}
                   pageIndex={page.pageIndex + 1}
                   pageCount={pageCount}
-                  hideFooter={pageCount <= 1}
+                  hideFooter={
+                    pageCount <= 1 || productsResource.data.length < pageSize
+                  }
                   handlePageChange={(value) =>
                     setPage((prev) => ({
                       ...prev,

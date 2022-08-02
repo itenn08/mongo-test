@@ -26,6 +26,7 @@ const PageTable = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedPage, setSelectedPage] = useState<Page | null>(null);
+  const [query, setQuery] = useState('');
 
   const handleCloseModal = () => {
     setShowDeleteModal(false);
@@ -39,16 +40,21 @@ const PageTable = () => {
       {
         pageIndex: page.pageIndex,
         pageSize: page.pageSize,
+        query,
       },
       {keepPreviousData: true},
     );
 
   useEffect(() => {
-    setPageCount(Math.ceil(pagesResource.total / page.pageSize));
+    if (pagesResource.data.length === 0) {
+      setPageCount(0);
+    } else {
+      setPageCount(Math.ceil(pagesResource.total / page.pageSize));
+    }
   }, [pagesResource, page.pageSize]);
 
   useEffect(() => {
-    if (!isLoading && pagesResource && pagesResource?.data.length > 0) {
+    if (!isLoading && pagesResource && pagesResource?.data) {
       setRows(makeRows(pagesResource));
     }
   }, [pagesResource, isLoading]);
@@ -80,14 +86,15 @@ const PageTable = () => {
           <PageListingLayout
             renderWidget={
               <Widget
-                searchPlaceholder="Search by number, name, address etc."
+                getSearchValue={(value) => setQuery(value)}
+                searchPlaceholder="Search by name"
                 showActionBtn
                 btnOnClick={() => navigate('/pages/new')}
                 btnLabel="New Page"
               />
             }>
             <Box display="flex" flexGrow={1} sx={{minHeight: '650px'}}>
-              {rows.length > 0 ? (
+              {!isLoading ? (
                 <DataGridLayout
                   rows={rows}
                   columns={columns(getEditablePage, getDeletablePage)}
@@ -95,7 +102,9 @@ const PageTable = () => {
                   pageSize={page.pageSize}
                   pageIndex={page.pageIndex + 1}
                   pageCount={pageCount}
-                  hideFooter={pageCount <= 1}
+                  hideFooter={
+                    pageCount <= 1 || pagesResource.data.length < pageSize
+                  }
                   handlePageChange={(value) =>
                     setPage((prev) => ({
                       ...prev,

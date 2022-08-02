@@ -26,8 +26,8 @@ export class PageController {
 
   @UseGuards(JwtAuthGuard)
   @Get("")
-  async findAll(@Query() { pageIndex, pageSize }: PaginationParams) {
-    return await this.pageService.findAll(pageIndex, pageSize);
+  async findAll(@Query() { pageIndex, pageSize, query }: PaginationParams) {
+    return await this.pageService.findAll(pageIndex, pageSize, query);
   }
 
   @UseGuards(JwtAuthGuard)

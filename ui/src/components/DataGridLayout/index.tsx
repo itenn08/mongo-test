@@ -168,7 +168,7 @@ export const DataGridLayout = ({
         <EmptySection
           illustration="clipboard"
           size="tiny"
-          containerStyle={{my: 'auto'}}
+          containerStyle={{top: '50%', height: '100%'}}
           label="There are no entires for the applied filters."
         />
       )

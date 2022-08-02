@@ -29,10 +29,10 @@ export class PageService {
     }
   }
 
-  async findAll(pageIndex: number, pageSize?: number) {
+  async findAll(pageIndex: number, pageSize?: number, query?: string) {
     try {
       const pages = await this.pageModel
-        .find()
+        .find({ title: { $regex: `${query}` } })
         .populate("category")
         .sort({ _id: 1 })
         .skip(pageIndex * pageSize)
