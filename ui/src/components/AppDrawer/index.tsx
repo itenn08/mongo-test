@@ -15,7 +15,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
-import {Description, Inventory2, PeopleAlt} from '@mui/icons-material';
+import {Description, Home, Inventory2, PeopleAlt} from '@mui/icons-material';
+import {observer} from 'mobx-react';
+
+import UserStore from '../../store/User';
 
 const drawerWidth = '15rem';
 
@@ -59,16 +62,15 @@ const Drawer = styled(MuiDrawer, {
   }),
 }));
 
-export const AppDrawer = () => {
+const AppDrawer = () => {
   const [open, setOpen] = useState(false);
   const themeX = useTheme();
   const setSelectedIndex = useState(0)[1];
-  const [selectedPath, setSelectedPath] = useState('/orders');
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    setSelectedPath(location.pathname);
+    UserStore.setSelectedPage(location.pathname);
   }, []);
 
   const handleDrawerOpen = () => {
@@ -81,6 +83,20 @@ export const AppDrawer = () => {
 
   const drawerList = [
     {
+      text: 'Home',
+      icon: <Home sx={{color: '#fff'}} />,
+      path: '/home',
+      onClick: (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        index: number,
+      ) => {
+        e.preventDefault();
+        setSelectedIndex(index);
+        UserStore.setSelectedPage('/home');
+        navigate('/home');
+      },
+    },
+    {
       text: 'Users',
       icon: <PeopleAlt sx={{color: '#fff'}} />,
       path: '/users',
@@ -90,7 +106,7 @@ export const AppDrawer = () => {
       ) => {
         e.preventDefault();
         setSelectedIndex(index);
-        setSelectedPath('/users');
+        UserStore.setSelectedPage('/users');
         navigate('/users');
       },
     },
@@ -104,7 +120,7 @@ export const AppDrawer = () => {
       ) => {
         e.preventDefault();
         setSelectedIndex(index);
-        setSelectedPath('/pages');
+        UserStore.setSelectedPage('/pages');
         navigate('/pages');
       },
     },
@@ -118,7 +134,7 @@ export const AppDrawer = () => {
       ) => {
         e.preventDefault();
         setSelectedIndex(index);
-        setSelectedPath('/products');
+        UserStore.setSelectedPage('/products');
         navigate('/products');
       },
     },
@@ -172,7 +188,7 @@ export const AppDrawer = () => {
           {drawerList.map(({text, icon, onClick, path}, index) => (
             <ListItemButton
               onClick={(e) => onClick(e, index)}
-              selected={!!selectedPath.includes(path)}
+              selected={!!UserStore.selectedPage.includes(path)}
               style={{
                 paddingTop: 15,
                 paddingBottom: 15,
@@ -208,3 +224,5 @@ export const AppDrawer = () => {
     </Box>
   );
 };
+
+export default observer(AppDrawer);
