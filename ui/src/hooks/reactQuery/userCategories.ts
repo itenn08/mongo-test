@@ -4,7 +4,7 @@ import {paramsSerializer, axiosClient} from '../../utils/axios';
 import {useSnackbar} from '../useSnackbar';
 import {queryKeys as qks, queryKeys} from '../../reactQuery/constants';
 import {BASE_URL} from '../../config';
-import {Category, CategoryFetch, CategoryParent} from '../../types/categories';
+import {Category, CategoryFetch, UpdateCategory} from '../../types/categories';
 
 export const getCategories = async (params: any) => {
   const response = await axiosClient.get<CategoryFetch>(
@@ -40,11 +40,38 @@ export const getCategoriesByName = async (params: any) => {
   return response.data;
 };
 
-export const useSearchByName = (params?: any, options?: any) =>
+export const useSearchCategoryByName = (params?: any, options?: any) =>
   useQuery(
     [qks.getCategories, params],
     () =>
       getCategoriesByName({
+        ...params,
+      }),
+    {
+      ...options,
+    },
+  );
+
+export const getCategoriesById = async (id: string, params?: any) => {
+  const response = await axiosClient.get<Category>(
+    `${BASE_URL}/category/${id}`,
+    {
+      params,
+      paramsSerializer,
+    },
+  );
+  return response.data;
+};
+
+export const useSearchCategoryById = (
+  id: string,
+  params?: any,
+  options?: any,
+) =>
+  useQuery(
+    [qks.getCategories, params],
+    () =>
+      getCategoriesById(id, {
         ...params,
       }),
     {
@@ -57,7 +84,7 @@ export const useCategories = () => {
   const queryClient = useQueryClient();
 
   const updateCategory = async (
-    data: CategoryParent,
+    data: UpdateCategory,
     id: string,
     onSuccess?: () => void,
   ): Promise<void> => {
@@ -145,7 +172,7 @@ export const useCategories = () => {
   };
 
   const createCategory = async (
-    data: Category,
+    data: UpdateCategory,
     onSuccess?: () => void,
   ): Promise<void> => {
     try {

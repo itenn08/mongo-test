@@ -9,4 +9,8 @@ export const queryKeys = {
   getCategories: 'getCategories',
   updateCategory: 'updateCategory',
   deleteCategory: 'deleteCategory',
+
+  getProducts: 'getProducts',
+  updateProduct: 'updateProduct',
+  deleteProduct: 'deleteProduct',
 };

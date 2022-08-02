@@ -9,7 +9,6 @@ import {BasicSettingsFormModel} from './model';
 import {PageCard} from '../../components/PageCard';
 import FormInput from '../../components/FormComponents/FormInput';
 import {Switch} from '../../components/Switch';
-import {DatePicker} from '../../components/FormComponents/DatePicker';
 import CategoryPageAutocomplete from '../../components/Autocompletes/CategoryPageAutocomplete';
 import HTMLEditor from '../../components/HTMLEditor';
 
@@ -22,7 +21,7 @@ interface Props {
 }
 
 const validationSchema = Yup.object().shape({
-  title: Yup.string().nullable().required('Title is required'),
+  name: Yup.string().nullable().required('Name is required'),
   url: Yup.string().nullable().required('URL is required'),
 });
 
@@ -33,10 +32,10 @@ export const BasicSettingsForm = ({
 }: Props) => {
   const formik = useFormik<BasicSettingsFormModel>({
     initialValues: {
-      title: initialValues?.title || '',
+      name: initialValues?.name || '',
       url: initialValues?.url || '',
-      content: initialValues?.content || '',
-      date: initialValues?.date || null,
+      text: initialValues?.text || '',
+      photoUrl: initialValues?.photoUrl || '',
       isActive: initialValues?.isActive || true,
       category: initialValues?.category || null,
     },
@@ -71,12 +70,12 @@ export const BasicSettingsForm = ({
             <FormInput
               props={{
                 size: 'small',
-                placeholder: '1&1 Drillisch AG',
-                label: 'Title',
-                name: 'title',
-                value: formik.values.title,
-                helperText: formik.touched.title && formik.errors.title,
-                error: !!formik.errors.title && formik.touched.title,
+                placeholder: 'Name of product',
+                label: 'Name',
+                name: 'name',
+                value: formik.values.name,
+                helperText: formik.touched.name && formik.errors.name,
+                error: !!formik.errors.name && formik.touched.name,
                 required: true,
                 sx: {
                   mt: '0.5em',
@@ -104,19 +103,20 @@ export const BasicSettingsForm = ({
             />
           </Grid>
           <Grid item md={5}>
-            <DatePicker
-              defaultDate={formik.values.date}
-              getSelectedDate={(newValue) => {
-                if (newValue) formik.setFieldValue('date', newValue);
+            <FormInput
+              props={{
+                size: 'small',
+                placeholder: 'URL photo',
+                label: 'Photo',
+                name: 'photoUrl',
+                value: formik.values.photoUrl,
+                helperText: formik.touched.photoUrl && formik.errors.photoUrl,
+                error: !!formik.errors.photoUrl && formik.touched.photoUrl,
+                sx: {
+                  mt: '0.5em',
+                },
+                ...defaultProps,
               }}
-              textFieldProps={{
-                label: 'Date',
-                name: 'date',
-                error: !!(formik.touched.date && formik.errors.date),
-                onBlur: formik.handleBlur,
-              }}
-              maxDate={new Date()}
-              containerStyles={{mt: '0.5em'}}
             />
           </Grid>
           <Grid item md={5}>
@@ -145,7 +145,7 @@ export const BasicSettingsForm = ({
               <Typography
                 variant="body1"
                 sx={{color: 'text.primary', mr: '20px'}}>
-                Page status:
+                Product status:
               </Typography>
               <Switch
                 value={formik.values.isActive}
@@ -155,11 +155,11 @@ export const BasicSettingsForm = ({
           </Grid>
           <Grid item md={10}>
             <Typography variant="body1" sx={{color: 'text.primary', mt: '1em'}}>
-              Page content:
+              Product text:
             </Typography>
             <HTMLEditor
-              initialValue={formik.values.content}
-              onChange={(value) => formik.setFieldValue('content', value)}
+              initialValue={formik.values.text}
+              onChange={(value) => formik.setFieldValue('text', value)}
             />
           </Grid>
         </Grid>

@@ -1,4 +1,6 @@
-import { PageCategoryController } from "./controllers/pageCategory";
+import { ProductService } from "./services/products.service";
+import { ProductsController } from "./controllers/products.controller";
+import { PageCategoryController } from "./controllers/page-category.controller";
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -13,8 +15,9 @@ import { JwtStrategy } from "./strategies/jwt-auth.strategy";
 import { PageSchema } from "./schemas/page.schema";
 import { PageController } from "./controllers/pages.controller";
 import { PageService } from "./services/page.service";
-import { PageCategoryService } from "./services/pageCategory.service";
-import { PageCategorySchema } from "./schemas/pageCategory.schema";
+import { PageCategoryService } from "./services/page-category.service";
+import { PageCategorySchema } from "./schemas/page-category.schema";
+import { ProductSchema } from "./schemas/products.schema";
 
 @Module({
   imports: [
@@ -26,6 +29,7 @@ import { PageCategorySchema } from "./schemas/pageCategory.schema";
       { name: "User", schema: UserSchema },
       { name: "Page", schema: PageSchema },
       { name: "PageCategory", schema: PageCategorySchema },
+      { name: "Products", schema: ProductSchema },
     ]),
     PassportModule,
     JwtModule.register({
@@ -33,14 +37,20 @@ import { PageCategorySchema } from "./schemas/pageCategory.schema";
       signOptions: { expiresIn: "24h" },
     }),
   ],
-  controllers: [UserController, PageController, PageCategoryController],
+  controllers: [
+    UserController,
+    PageController,
+    PageCategoryController,
+    ProductsController,
+  ],
   providers: [
     UserService,
     PageService,
     PageCategoryService,
+    ProductService,
     LocalStrategy,
     JwtStrategy,
   ],
-  exports: [UserService, PageService, PageCategoryService],
+  exports: [UserService, PageService, PageCategoryService, ProductService],
 })
 export class AppModule {}

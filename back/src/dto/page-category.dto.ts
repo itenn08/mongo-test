@@ -1,21 +1,13 @@
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-} from "class-validator";
-
-import { PageCategoryView } from "src/interfaces/pageCategory.interface";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class PageCategoryDto {
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @IsObject()
+  @IsString()
   @IsOptional()
-  parent: PageCategoryView | null;
+  parent?: string | null;
 
   @IsString()
   @IsNotEmpty()

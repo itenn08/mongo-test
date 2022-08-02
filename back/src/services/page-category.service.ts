@@ -1,12 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
+import { Schema as MongooseSchema } from "mongoose";
 
-import {
-  PageCategoryDto,
-  PageCategoryUpdateDto,
-} from "src/dto/pageCategory.dto";
-import { PageCategory } from "src/interfaces/pageCategory.interface";
+import { PageCategoryDto } from "src/dto/page-category.dto";
+import { PageCategory } from "src/schemas/page-category.schema";
 
 @Injectable()
 export class PageCategoryService {
@@ -28,22 +26,6 @@ export class PageCategoryService {
       return { category: category._id };
     } catch (error) {
       throw error;
-    }
-  }
-
-  async updateAll(body: PageCategoryUpdateDto[]) {
-    try {
-      let uniqueCategories = new Set();
-
-      body.forEach((item) => uniqueCategories.add(item));
-
-      uniqueCategories.forEach((item: PageCategoryUpdateDto) =>
-        this.update(item.id, item)
-      );
-
-      return "updated";
-    } catch (e) {
-      throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -118,9 +100,10 @@ export class PageCategoryService {
             type: "parent",
             children: categories
               .filter(
-                (child) =>
+                (child: PageCategory) =>
                   child.parent !== null &&
-                  child.parent.id === item._id.toString()
+                  child.parent &&
+                  child.parent === item._id.toString()
               )
               .map((child) => {
                 return {
@@ -143,15 +126,15 @@ export class PageCategoryService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: MongooseSchema.Types.ObjectId) {
     try {
-      return this.pageCategoryModel.findOne({ id }).exec();
+      return this.pageCategoryModel.findOne({ _id: id }).exec();
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
   }
 
-  async update(id: string, postData: PageCategoryDto) {
+  async update(id: MongooseSchema.Types.ObjectId, postData: PageCategoryDto) {
     try {
       const post = await this.pageCategoryModel.findByIdAndUpdate(
         { _id: id },
@@ -170,7 +153,7 @@ export class PageCategoryService {
     }
   }
 
-  async delete(id: string) {
+  async delete(id: MongooseSchema.Types.ObjectId) {
     try {
       const deletedPage = await this.pageCategoryModel
         .findByIdAndRemove({ _id: id })

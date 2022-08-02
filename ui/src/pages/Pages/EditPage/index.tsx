@@ -32,7 +32,7 @@ const PageEdit = ({page, openDialog, onClose}: Props) => {
       seoDescription: page.seoDescription,
       date: page.date,
       isActive: page.isActive,
-      category: page.category,
+      category: page.category?.id || null,
     },
     validationSchema,
     onSubmit: () => {

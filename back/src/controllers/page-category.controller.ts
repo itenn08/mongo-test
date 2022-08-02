@@ -10,13 +10,15 @@ import {
   UseGuards,
   ValidationPipe,
 } from "@nestjs/common";
+import { Schema as MongooseSchema } from "mongoose";
+
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 import {
   PageCategoryDto,
   PageCategoryUpdateDto,
-} from "src/dto/pageCategory.dto";
+} from "src/dto/page-category.dto";
 import { PaginationParams } from "src/dto/pagination.dto";
-import { PageCategoryService } from "src/services/pageCategory.service";
+import { PageCategoryService } from "src/services/page-category.service";
 
 @Controller("category")
 export class PageCategoryController {
@@ -49,25 +51,22 @@ export class PageCategoryController {
 
   @UseGuards(JwtAuthGuard)
   @Get(":id")
-  async findOne(@Param("id") id: string): Promise<PageCategoryDto> {
+  async findOne(@Param("id") id: MongooseSchema.Types.ObjectId) {
     return this.pageCategoryService.findOne(id);
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch(":id")
-  async updatePost(@Param("id") id: string, @Body() body: PageCategoryDto) {
+  async updatePost(
+    @Param("id") id: MongooseSchema.Types.ObjectId,
+    @Body() body: PageCategoryDto
+  ) {
     return this.pageCategoryService.update(id, body);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Patch()
-  async updateAllPost(@Body() body: PageCategoryUpdateDto[]) {
-    return this.pageCategoryService.updateAll(body);
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Delete(":id")
-  async delete(@Param("id") id: string) {
+  async delete(@Param("id") id: MongooseSchema.Types.ObjectId) {
     return this.pageCategoryService.delete(id);
   }
 }

@@ -40,6 +40,7 @@ const CategoryEdit = ({category, openDialog, type, onClose}: Props) => {
         ...formik.values,
         parent: formik.values.parent,
       };
+
       if (type === 'create') {
         createCategory(body, () => {
           formik.resetForm();
