@@ -6,7 +6,7 @@ export interface ProductView {
   seoTitle: string;
   seoDescription: string;
   photoUrl: string;
-  price: null;
+  price: string | null;
   currency: string;
   quantity: string | null;
   text: string;
@@ -22,7 +22,7 @@ export interface ProductUpdateForm {
   seoTitle: string;
   seoDescription: string;
   photoUrl: string;
-  price: null;
+  price: string | null;
   currency: string;
   quantity: string | null;
   text: string;

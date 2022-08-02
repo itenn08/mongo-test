@@ -6,6 +6,7 @@ import { Document, Types } from "mongoose";
   toJSON: {
     getters: true,
   },
+  timestamps: true,
 })
 export class Page extends Document {
   @Prop({ required: true })

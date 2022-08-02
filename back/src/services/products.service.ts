@@ -25,7 +25,7 @@ export class ProductService {
       seoDescription: body.seoDescription || "",
       photoUrl: body.photoUrl || "",
       price: body.price || null,
-      currency: body.currency || null,
+      currency: body.currency || "$",
       isActive: body.isActive || false,
       quantity: body.quantity || null,
       text: body.text || "",

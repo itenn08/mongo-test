@@ -4,7 +4,7 @@ import {
   GridColumnHeaderParams,
   GridRenderCellParams,
 } from '@mui/x-data-grid';
-import {Box, Typography} from '@mui/material';
+import {Avatar, Box, Typography} from '@mui/material';
 import {Delete, Edit} from '@mui/icons-material';
 
 import {formatDate} from '../../utils/date';
@@ -44,6 +44,15 @@ export const columns = (
   getDeletableProduct: (item: Product) => void,
 ): GridColDef[] => [
   {
+    field: 'photoUrl',
+    headerName: '',
+    flex: 0.5,
+    headerAlign: 'center',
+    align: 'center',
+    ...defaultProps,
+    renderCell: (params) => <Avatar src={params.value} />,
+  },
+  {
     field: 'name',
     headerName: 'Name',
     type: 'string',
@@ -52,12 +61,20 @@ export const columns = (
     flex: 2,
   },
   {
-    field: 'url',
-    headerName: 'URL',
+    field: 'price',
+    headerName: 'Price',
     type: 'string',
     ...defaultAlignment,
     ...defaultProps,
-    flex: 2,
+    flex: 0.5,
+  },
+  {
+    field: 'quantity',
+    headerName: 'Quantity',
+    type: 'string',
+    ...defaultAlignment,
+    ...defaultProps,
+    flex: 1,
   },
   {
     field: 'category',
@@ -84,8 +101,8 @@ export const columns = (
     flex: 2,
   },
   {
-    field: 'date',
-    headerName: 'Date',
+    field: 'updatedAt',
+    headerName: 'Last Update',
     type: 'string',
     ...defaultAlignment,
     ...defaultProps,
@@ -128,6 +145,10 @@ export const makeRows = (products: Resource<Product>): any => {
       id: index,
       name: product.name || '-',
       url: product.url || '-',
+      price:
+        `${product.price || 0}${product.currency && product.currency}` || '-',
+      photoUrl: product.photoUrl || '-',
+      quantity: product.quantity || '-',
       category: product.category?.name || '-',
       seoTitle: product.seoTitle || '-',
       seoDescription: product.seoDescription || '-',

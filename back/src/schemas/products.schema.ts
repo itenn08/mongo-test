@@ -7,6 +7,7 @@ import { Document, Types } from "mongoose";
   toJSON: {
     getters: true,
   },
+  timestamps: true,
 })
 export class Product extends Document implements Base {
   _id!: Types.ObjectId;

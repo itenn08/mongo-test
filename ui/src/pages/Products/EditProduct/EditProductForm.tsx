@@ -8,6 +8,8 @@ import {Switch} from '../../../components/Switch';
 import CategoryPageAutocomplete from '../../../components/Autocompletes/CategoryPageAutocomplete';
 import HTMLEditor from '../../../components/HTMLEditor';
 import {ProductUpdateForm} from '../../../types/products';
+import {FormSelect} from '../../../components/FormComponents/FormSelect';
+import {currencies} from '../../../constants/menu';
 
 interface Props {
   formik: FormikProps<ProductUpdateForm>;
@@ -65,14 +67,6 @@ const EditProductForm = ({formik}: Props) => {
                 error: !!formik.errors.price && formik.touched.price,
               },
               {
-                id: 'currency',
-                label: 'currency',
-                placeholder: 'dollar / euro',
-                value: formik.values.currency,
-                helperText: formik.touched.currency && formik.errors.currency,
-                error: !!formik.errors.currency && formik.touched.currency,
-              },
-              {
                 id: 'quantity',
                 label: 'Quantity',
                 placeholder: 'Quantity',
@@ -109,6 +103,23 @@ const EditProductForm = ({formik}: Props) => {
                 }}
               />
             ))}
+            <FormSelect
+              labelId="currencySelect-label"
+              label="Currency"
+              required
+              containerStyles={{margin: '1em 0'}}
+              options={currencies.map(({value, label}) => ({
+                label,
+                value,
+              }))}
+              selectProps={{
+                id: 'currencySelect',
+                value: formik.values.currency,
+                error: !!(formik.touched.currency && formik.errors.currency),
+                name: 'currency',
+                ...defaultProps,
+              }}
+            />
             <Box>
               <CategoryPageAutocomplete
                 getCategory={(value) => {

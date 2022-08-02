@@ -7,6 +7,7 @@ import { PageCategoryView } from "src/interfaces/page-category.interface";
   toJSON: {
     getters: true,
   },
+  timestamps: true,
 })
 export class PageCategory extends Document {
   @Prop({ required: true, unique: true })

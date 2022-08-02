@@ -23,7 +23,7 @@ export class ProductDto {
   price: number;
 
   @IsNotEmpty()
-  currency: string;
+  currency: "$" | "€";
 
   @IsNotEmpty()
   isActive: boolean;

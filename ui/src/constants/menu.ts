@@ -17,3 +17,14 @@ export const typeOfCategory = [
     value: 'link',
   },
 ];
+
+export const currencies = [
+  {
+    label: '$',
+    value: '$',
+  },
+  {
+    label: '€',
+    value: '€',
+  },
+];
