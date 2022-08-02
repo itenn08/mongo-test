@@ -14,6 +14,7 @@ import PageLayout from '../pages/PageLayout';
 import {NewPage} from '../pages/NewPage';
 import ProductsTable from '../pages/Products';
 import {NewProduct} from '../pages/NewProduct';
+import HomePage from '../pages/Home';
 
 const UIRouter = () => (
   <Router>
@@ -21,6 +22,15 @@ const UIRouter = () => (
       <Route path="/login" element={<AuthPage />} />
 
       <Route element={<RequireAuth />}>
+        <Route
+          path="/home"
+          element={
+            <PageLayout pageTitle="Home">
+              <HomePage />
+            </PageLayout>
+          }
+        />
+
         <Route
           path="/users"
           element={

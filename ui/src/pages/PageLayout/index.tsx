@@ -1,7 +1,7 @@
 import {Box} from '@mui/system';
 import React, {ReactNode} from 'react';
 
-import {AppDrawer} from '../../components/AppDrawer';
+import AppDrawer from '../../components/AppDrawer';
 import AppTopBar from '../../components/AppTopBar';
 
 interface Props {
