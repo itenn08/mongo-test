@@ -5,14 +5,15 @@ import {
   Route,
   Routes,
 } from 'react-router-dom';
+
+import RequireAuth from './RequireAuth';
 import PageTable from '../pages/Pages';
 import UsersTable from '../pages/Users';
-
 import AuthPage from '../pages/auth';
 import PageLayout from '../pages/PageLayout';
 import {NewPage} from '../pages/NewPage';
-import RequireAuth from './RequireAuth';
 import ProductsTable from '../pages/Products';
+import {NewProduct} from '../pages/NewProduct';
 
 const UIRouter = () => (
   <Router>
@@ -52,6 +53,15 @@ const UIRouter = () => (
           element={
             <PageLayout pageScrollable>
               <ProductsTable />
+            </PageLayout>
+          }
+        />
+
+        <Route
+          path="/products/new"
+          element={
+            <PageLayout pageScrollable>
+              <NewProduct />
             </PageLayout>
           }
         />

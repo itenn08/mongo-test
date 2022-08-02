@@ -5,8 +5,8 @@ import {useSnackbar} from '../useSnackbar';
 import {queryKeys as qks, queryKeys} from '../../reactQuery/constants';
 import {BASE_URL} from '../../config';
 import {Resource, StringValue} from '../../types/misc';
-import {NewPageModel} from '../../pages/NewPage/model';
 import {Product, ProductUpdateForm} from '../../types/products';
+import {NewProductModel} from '../../pages/NewProduct/model';
 
 export const getProducts = async (params: any) => {
   const response = await axiosClient.get<Resource<Product>>(
@@ -101,7 +101,7 @@ export const useProducts = () => {
   };
 };
 
-const createProduct = async (body: NewPageModel): Promise<StringValue> => {
+const createProduct = async (body: NewProductModel): Promise<StringValue> => {
   const response = await axiosClient.post<StringValue>(
     `${BASE_URL}/products/`,
     {
@@ -113,7 +113,7 @@ const createProduct = async (body: NewPageModel): Promise<StringValue> => {
 
 export const useCreateProduct = (successMsg: string) => {
   const {enqueueSnackbar} = useSnackbar();
-  return useMutation((body: NewPageModel) => createProduct(body), {
+  return useMutation((body: NewProductModel) => createProduct(body), {
     onSuccess: () => {
       enqueueSnackbar(successMsg, {
         variant: 'success',

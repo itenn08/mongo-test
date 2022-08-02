@@ -19,6 +19,7 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
   const validationSchema = Yup.object().shape({
     name: Yup.string().nullable().required('Name is required'),
     url: Yup.string().nullable().required('Url is required'),
+    currency: Yup.string().nullable().required('Currency is required'),
   });
 
   const formik = useFormik<ProductUpdateForm>({
@@ -75,7 +76,7 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
 
   return (
     <Dialog
-      title="Edit Page Information"
+      title="Edit Product Information"
       onCancel={handleClose}
       onSave={formik.submitForm}
       disableSaveBtn={!!Object.keys(formik.errors).length}
