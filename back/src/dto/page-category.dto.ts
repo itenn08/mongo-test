@@ -1,22 +1,13 @@
-import { Schema } from "@nestjs/mongoose";
-import {
-  IsNotEmpty,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-} from "class-validator";
-
-import { PageCategoryView } from "src/interfaces/page-category.interface";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class PageCategoryDto {
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @IsObject()
+  @IsString()
   @IsOptional()
-  parent: PageCategoryView | null;
+  parent?: string | null;
 
   @IsString()
   @IsNotEmpty()

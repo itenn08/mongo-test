@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 
-import {Category} from '../../../types/categories';
+import {Category, UpdateCategory} from '../../../types/categories';
 import {useCategories} from '../../../hooks/reactQuery/userCategories';
 import {Dialog} from '../../../components/Dialog';
 import CategoryForm from './CategoryForm';
@@ -36,13 +36,17 @@ const CategoryEdit = ({category, openDialog, type, onClose}: Props) => {
     },
     validationSchema,
     onSubmit: () => {
+      const body: UpdateCategory = {
+        ...formik.values,
+        parent: formik.values.parent,
+      };
       if (type === 'create') {
-        createCategory(formik.values, () => {
+        createCategory(body, () => {
           formik.resetForm();
           onClose();
         });
       } else {
-        updateCategory(formik.values, category?.id!, () => {
+        updateCategory(body, category?.id!, () => {
           formik.resetForm();
           onClose();
         });

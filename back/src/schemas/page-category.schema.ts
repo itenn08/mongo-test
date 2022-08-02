@@ -1,18 +1,34 @@
-import * as mongoose from "mongoose";
+import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Document, Types } from "mongoose";
+import { PageCategoryView } from "src/interfaces/page-category.interface";
 
-export const PageCategorySchema = new mongoose.Schema({
-  name: {
-    type: String,
-    unique: true,
+@Schema({
+  versionKey: false,
+  toJSON: {
+    getters: true,
   },
+})
+export class PageCategory extends Document {
+  @Prop({ required: true, unique: true })
+  name: string;
+
+  @Prop({ required: true })
+  link: string;
+
+  @Prop({ type: String })
   parent: {
-    type: {},
-    default: null,
-  },
-  link: String,
-  order: Number,
+    type: String;
+    default: null;
+  };
+
+  @Prop({ type: String })
   type: {
-    type: String,
-    default: null,
-  },
-});
+    type: String;
+    default: null;
+  };
+
+  @Prop({ default: 0 })
+  order: Number;
+}
+
+export const PageCategorySchema = SchemaFactory.createForClass(PageCategory);

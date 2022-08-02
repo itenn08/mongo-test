@@ -7,10 +7,10 @@ import FormInput from '../../../components/FormComponents/FormInput';
 import {Switch} from '../../../components/Switch';
 import CategoryPageAutocomplete from '../../../components/Autocompletes/CategoryPageAutocomplete';
 import HTMLEditor from '../../../components/HTMLEditor';
-import {ProductView} from '../../../types/products';
+import {ProductUpdateForm} from '../../../types/products';
 
 interface Props {
-  formik: FormikProps<ProductView>;
+  formik: FormikProps<ProductUpdateForm>;
 }
 
 const EditProductForm = ({formik}: Props) => {

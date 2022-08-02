@@ -5,13 +5,16 @@ import Autocomplete from '@mui/material/Autocomplete';
 import {Category} from '../../../types/categories';
 import FormInput from '../../FormComponents/FormInput';
 import {createEmptyResource} from '../../../utils/paging';
-import {useSearchByName} from '../../../hooks/reactQuery/userCategories';
+import {
+  getCategoriesById,
+  useSearchCategoryByName,
+} from '../../../hooks/reactQuery/userCategories';
 import {useDebounce} from '../../../hooks/useDebounce';
 
 interface Props {
-  getCategory?: (val: Category | null) => void;
+  getCategory?: (val: string | null) => void;
   getQuery?: (val: string) => void;
-  initialValue?: Category | null;
+  initialValue?: string | null;
   textFieldProps?: TextFieldProps;
   disabled?: boolean;
   onlyParent?: boolean;
@@ -30,18 +33,30 @@ const CategoryPageAutocomplete = ({
   containerStyles,
 }: Props) => {
   const [query, setQuery] = useState<string>('');
-  const [queryView, setQueryView] = useState(initialValue?.name || '');
-  const [category, setCategory] = useState<Category | null>(initialValue);
+  const [queryView, setQueryView] = useState('');
+  const [category, setCategory] = useState<Category | null>();
 
-  const {data: categoriesResource = createEmptyResource(5)} = useSearchByName(
-    {
-      pageIndex: 0,
-      pageSize: 5,
-      query,
-      ...(onlyParent && {type: 'parent'}),
-    },
-    {keepPreviousData: true},
-  );
+  useEffect(() => {
+    const getInitialCategory = async () => {
+      if (initialValue) {
+        const initialCategory = await getCategoriesById(initialValue);
+        setQueryView(initialCategory.name);
+        setCategory(initialCategory);
+      }
+    };
+    getInitialCategory();
+  }, []);
+
+  const {data: categoriesResource = createEmptyResource(5)} =
+    useSearchCategoryByName(
+      {
+        pageIndex: 0,
+        pageSize: 5,
+        query,
+        ...(onlyParent && {type: 'parent'}),
+      },
+      {keepPreviousData: true},
+    );
 
   const debouncedSearchTerm: string = useDebounce<string>(queryView, 500);
 
@@ -67,8 +82,8 @@ const CategoryPageAutocomplete = ({
   };
 
   useEffect(() => {
-    if (getCategory) {
-      getCategory(category);
+    if (getCategory && (category === null || category)) {
+      getCategory(category && category?.id);
     }
   }, [category]);
 

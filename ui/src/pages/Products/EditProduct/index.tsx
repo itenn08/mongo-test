@@ -3,7 +3,7 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 
 import {Dialog} from '../../../components/Dialog';
-import {Product, ProductUpdateForm, ProductView} from '../../../types/products';
+import {Product, ProductUpdateForm} from '../../../types/products';
 import {useProducts} from '../../../hooks/reactQuery/useProducts';
 import EditProductForm from './EditProductForm';
 
@@ -21,7 +21,7 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
     url: Yup.string().nullable().required('Url is required'),
   });
 
-  const formik = useFormik<ProductView>({
+  const formik = useFormik<ProductUpdateForm>({
     enableReinitialize: true,
 
     initialValues: {
@@ -35,8 +35,9 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
       currency: product.currency,
       quantity: product.quantity,
       isActive: product.isActive,
-      category: product.category,
+      category: product.category?.id || null,
     },
+
     validationSchema,
     onSubmit: () => {
       const body: ProductUpdateForm = {
@@ -50,7 +51,7 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
         currency: formik.values.currency || '',
         quantity: formik.values.quantity || '',
         isActive: formik.values.isActive,
-        category: formik.values.category?.id || null,
+        category: formik.values.category || null,
       };
 
       updateProduct(body, product.id, () => {

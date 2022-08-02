@@ -126,7 +126,9 @@ export const BasicSettingsForm = ({
               }}
               containerStyles={{mt: '0.5em'}}
               onlyParent={false}
-              initialValue={formik.values?.category || null}
+              initialValue={
+                (formik.values?.category && formik.values?.category) || null
+              }
               textFieldProps={{
                 error: !!(formik.errors.category && formik.touched.category),
                 helperText:

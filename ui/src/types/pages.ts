@@ -10,7 +10,6 @@ export interface PageView {
   isActive: boolean;
   category: Category | null;
 }
-
 export interface PageUpdateForm {
   title: string;
   url: string;
