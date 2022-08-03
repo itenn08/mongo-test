@@ -28,3 +28,38 @@ export const currencies = [
     value: '€',
   },
 ];
+
+export const orderStatuses = [
+  {
+    label: 'Closed',
+    value: 'closed',
+  },
+  {
+    label: 'Processing',
+    value: 'processing',
+  },
+  {
+    label: 'Approved',
+    value: 'approved',
+  },
+  {
+    label: 'Pending',
+    value: 'pending',
+  },
+  {
+    label: 'Removed',
+    value: 'removed',
+  },
+  {
+    label: 'Open',
+    value: 'open',
+  },
+  {
+    label: 'Complete',
+    value: 'complete',
+  },
+  {
+    label: 'Canceled',
+    value: 'canceled',
+  },
+];

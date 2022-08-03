@@ -13,4 +13,8 @@ export const queryKeys = {
   getProducts: 'getProducts',
   updateProduct: 'updateProduct',
   deleteProduct: 'deleteProduct',
+
+  getOrders: 'getOrders',
+  updateOrder: 'updateOrder',
+  deleteOrder: 'deleteOrder',
 };
