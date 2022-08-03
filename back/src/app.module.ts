@@ -18,6 +18,9 @@ import { PageService } from "./services/page.service";
 import { PageCategoryService } from "./services/page-category.service";
 import { PageCategorySchema } from "./schemas/page-category.schema";
 import { ProductSchema } from "./schemas/products.schema";
+import { OrderSchema } from "./schemas/order.schema";
+import { OrderService } from "./services/order.service";
+import { OrderController } from "./controllers/order.controller";
 
 @Module({
   imports: [
@@ -30,6 +33,7 @@ import { ProductSchema } from "./schemas/products.schema";
       { name: "Page", schema: PageSchema },
       { name: "PageCategory", schema: PageCategorySchema },
       { name: "Products", schema: ProductSchema },
+      { name: "Order", schema: OrderSchema },
     ]),
     PassportModule,
     JwtModule.register({
@@ -42,15 +46,23 @@ import { ProductSchema } from "./schemas/products.schema";
     PageController,
     PageCategoryController,
     ProductsController,
+    OrderController,
   ],
   providers: [
     UserService,
     PageService,
     PageCategoryService,
     ProductService,
+    OrderService,
     LocalStrategy,
     JwtStrategy,
   ],
-  exports: [UserService, PageService, PageCategoryService, ProductService],
+  exports: [
+    UserService,
+    PageService,
+    PageCategoryService,
+    ProductService,
+    OrderService,
+  ],
 })
 export class AppModule {}

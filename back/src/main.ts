@@ -11,7 +11,7 @@ async function bootstrap() {
     },
     logger: ["error", "warn", "log", "debug"],
   });
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   await app.listen(8080);
 }
 bootstrap();
