@@ -27,14 +27,14 @@ export class ProductsController {
   @UseGuards(JwtAuthGuard)
   @Get("")
   async getAll(
-    @Query() { pageIndex, pageSize, query }: PaginationParams,
+    @Query() { pageIndex, pageSize, query, date }: PaginationParams,
     @Res() res
   ) {
-    // return await this.productService.findAll();
     const customers = await this.productService.findAll(
       pageIndex,
       pageSize,
-      query
+      query,
+      date
     );
     return res.status(HttpStatus.OK).json(customers);
   }

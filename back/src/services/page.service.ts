@@ -32,7 +32,9 @@ export class PageService {
   async findAll(pageIndex: number, pageSize?: number, query?: string) {
     try {
       const pages = await this.pageModel
-        .find({ title: { $regex: `${query}` } })
+        .find({
+          ...(query && { title: { $regex: `${query}`, $options: "i" } }),
+        })
         .populate("category")
         .sort({ _id: 1 })
         .skip(pageIndex * pageSize)

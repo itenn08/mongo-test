@@ -39,16 +39,23 @@ export class ProductService {
     }
   }
 
-  async findAll(pageIndex?: number, pageSize?: number, query?: string) {
+  async findAll(
+    pageIndex?: number,
+    pageSize?: number,
+    query?: string,
+    date?: string
+  ) {
     try {
       const products = await this.productModel
-        .find({ name: { $regex: `${query}` } })
+        .find({
+          ...(query && { name: { $regex: `${query}`, $options: "i" } }),
+          ...(date && { createdAt: { $gte: date } }),
+        })
         .populate("category")
         .sort({ createdAt: -1 })
         .skip(pageIndex * pageSize)
         .limit(pageSize)
         .exec();
-
       const total = await this.productModel.count();
 
       return { data: products, total };
