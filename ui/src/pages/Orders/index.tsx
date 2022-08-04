@@ -89,9 +89,9 @@ const OrdersTable = () => {
             renderWidget={
               <Widget
                 getSearchValue={(value) => setQuery(value)}
-                searchPlaceholder="Search by name"
+                searchPlaceholder="Search by phone number"
                 showActionBtn
-                btnOnClick={() => navigate('/order/new')}
+                btnOnClick={() => navigate('/orders/new')}
                 btnLabel="New Order"
               />
             }>

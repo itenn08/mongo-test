@@ -15,15 +15,15 @@ interface Props {
   formik: FormikProps<OrderView>;
 }
 
+export const initialAutocompleteProduct = {
+  product: null,
+  quantity: 1,
+};
+
 const EditOrderForm = ({formik}: Props) => {
   const defaultProps = {
     onChange: formik.handleChange,
     onBlur: formik.handleBlur,
-  };
-
-  const initialProduct = {
-    product: null,
-    quantity: 1,
   };
 
   return (
@@ -137,7 +137,9 @@ const EditOrderForm = ({formik}: Props) => {
                             <Remove />
                           </IconButton>
                           <IconButton
-                            onClick={() => arrayHelpers.push(initialProduct)}>
+                            onClick={() =>
+                              arrayHelpers.push(initialAutocompleteProduct)
+                            }>
                             <Add />
                           </IconButton>
                         </Box>
@@ -145,7 +147,9 @@ const EditOrderForm = ({formik}: Props) => {
                     ) : (
                       <Button
                         variant="contained"
-                        onClick={() => arrayHelpers.push(initialProduct)}>
+                        onClick={() =>
+                          arrayHelpers.push(initialAutocompleteProduct)
+                        }>
                         Add a product
                       </Button>
                     )}

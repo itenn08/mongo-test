@@ -24,6 +24,7 @@ interface Props {
 const validationSchema = Yup.object().shape({
   title: Yup.string().nullable().required('Title is required'),
   url: Yup.string().nullable().required('URL is required'),
+  content: Yup.string().nullable().required('Content is required'),
 });
 
 export const BasicSettingsForm = ({
@@ -154,9 +155,13 @@ export const BasicSettingsForm = ({
             </Box>
           </Grid>
           <Grid item md={10}>
-            <Typography variant="body1" sx={{color: 'text.primary', mt: '1em'}}>
-              Page content:
-            </Typography>
+            <Box display="flex" alignItems="center" sx={{mt: '1em'}}>
+              <Typography variant="body1" sx={{color: 'text.primary'}}>
+                Page Content
+              </Typography>
+              <Typography sx={{color: 'red', fontSize: '14px'}}>*</Typography>
+            </Box>
+
             <HTMLEditor
               initialValue={formik.values.content}
               onChange={(value) => formik.setFieldValue('content', value)}
