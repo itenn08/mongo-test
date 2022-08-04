@@ -45,10 +45,12 @@ const OrderEdit = ({order, openDialog, onClose}: Props) => {
         address: formik.values.address || '',
         status: formik.values.status,
         text: formik.values.text || '',
-        products: order.products.map((product) => ({
-          product: product.product.id,
-          quantity: product.quantity,
-        })),
+        products: formik.values.products
+          .filter((product) => product.product.id !== '')
+          .map((product) => ({
+            product: product.product?.id,
+            quantity: product.quantity,
+          })),
       };
 
       updateOrder(body, order.id!, () => {

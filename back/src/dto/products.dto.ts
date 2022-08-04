@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
 export class ProductDto {
   @IsNotEmpty()
@@ -22,8 +22,10 @@ export class ProductDto {
   @IsOptional()
   price: number;
 
+  @IsString()
   @IsNotEmpty()
-  currency: "$" | "€";
+  @IsEnum(["$", "€"])
+  currency: string;
 
   @IsNotEmpty()
   isActive: boolean;

@@ -8,6 +8,17 @@ import {Resource, StringValue} from '../../types/misc';
 import {Product, ProductUpdateForm} from '../../types/products';
 import {NewProductModel} from '../../pages/NewProduct/model';
 
+export const getProductById = async (id: string, params?: any) => {
+  const response = await axiosClient.get<Product>(
+    `${BASE_URL}/products/${id}`,
+    {
+      params,
+      paramsSerializer,
+    },
+  );
+  return response.data;
+};
+
 export const getProducts = async (params: any) => {
   const response = await axiosClient.get<Resource<Product>>(
     `${BASE_URL}/products/`,

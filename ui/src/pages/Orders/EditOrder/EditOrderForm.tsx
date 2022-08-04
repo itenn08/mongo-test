@@ -1,12 +1,14 @@
 import React from 'react';
-import {Grid, Typography} from '@mui/material';
-import {FormikProps} from 'formik';
+import {Button, Grid, IconButton, Typography} from '@mui/material';
+import {FieldArray, FormikProps, FormikProvider} from 'formik';
+import {Add, Remove} from '@mui/icons-material';
 import Box from '@mui/material/Box';
 
 import FormInput from '../../../components/FormComponents/FormInput';
 import HTMLEditor from '../../../components/HTMLEditor';
-import {OrderView} from '../../../types/orders';
 import {FormSelect} from '../../../components/FormComponents/FormSelect';
+import ProductAutocomplete from '../../../components/Autocompletes/ProductAutocomplete';
+import {OrderView} from '../../../types/orders';
 import {orderStatuses} from '../../../constants/menu';
 
 interface Props {
@@ -17,6 +19,11 @@ const EditOrderForm = ({formik}: Props) => {
   const defaultProps = {
     onChange: formik.handleChange,
     onBlur: formik.handleBlur,
+  };
+
+  const initialProduct = {
+    product: null,
+    quantity: 1,
   };
 
   return (
@@ -78,26 +85,74 @@ const EditOrderForm = ({formik}: Props) => {
                 }}
               />
             ))}
-            {/* <Box>
-              <CategoryPageAutocomplete
-                getCategory={(value) => {
-                  formik.setFieldValue('category', value);
-                }}
-                containerStyles={{mt: '0.5em'}}
-                onlyParent={false}
-                initialValue={formik.values?.category || null}
-                textFieldProps={{
-                  error: !!(formik.errors.category && formik.touched.category),
-                  helperText:
-                    formik.errors.category && formik.touched.category
-                      ? formik.errors.category
-                      : '',
-                  label: 'Category',
-                  onBlur: formik.handleBlur,
-                }}
+            <FormikProvider value={formik}>
+              <FieldArray
+                name="products"
+                render={(arrayHelpers) => (
+                  <Box>
+                    {formik.values.products &&
+                    formik.values.products.length > 0 ? (
+                      formik.values.products.map((product, index) => (
+                        <Box
+                          key={index}
+                          display="flex"
+                          alignItems="center"
+                          margin="1em 0">
+                          <Box>
+                            <ProductAutocomplete
+                              getProduct={(value) => {
+                                formik.setFieldValue(
+                                  `products.${index}.product.id`,
+                                  value || '',
+                                );
+                              }}
+                              containerStyles={{minWidth: '25em'}}
+                              initialValue={
+                                formik.values?.products[index]?.product?.id ||
+                                null
+                              }
+                              textFieldProps={{
+                                label: 'Product',
+                                onBlur: formik.handleBlur,
+                              }}
+                            />
+                          </Box>
+                          <FormInput
+                            containerStyles={{
+                              maxWidth: '150px',
+                              ml: '0.5em',
+                            }}
+                            props={{
+                              id: `products.${index}.quantity`,
+                              label: 'Quantity',
+                              placeholder: 'Quantity',
+                              type: 'number',
+                              value: formik.values.products[index].quantity,
+                              required: true,
+                              ...defaultProps,
+                            }}
+                          />
+                          <IconButton
+                            onClick={() => arrayHelpers.remove(index)}>
+                            <Remove />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => arrayHelpers.push(initialProduct)}>
+                            <Add />
+                          </IconButton>
+                        </Box>
+                      ))
+                    ) : (
+                      <Button
+                        variant="contained"
+                        onClick={() => arrayHelpers.push(initialProduct)}>
+                        Add a product
+                      </Button>
+                    )}
+                  </Box>
+                )}
               />
-            </Box> */}
-
+            </FormikProvider>
             <Box>
               <FormSelect
                 labelId="statusSelect-label"
