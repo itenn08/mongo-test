@@ -13,10 +13,7 @@ import {
 import { Schema as MongooseSchema } from "mongoose";
 
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
-import {
-  PageCategoryDto,
-  PageCategoryUpdateDto,
-} from "src/dto/page-category.dto";
+import { PageCategoryDto } from "src/dto/page-category.dto";
 import { PaginationParams } from "src/dto/pagination.dto";
 import { PageCategoryService } from "src/services/page-category.service";
 

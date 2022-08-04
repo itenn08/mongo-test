@@ -15,7 +15,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import Fade from '@mui/material/Fade';
-import {Description, Home, Inventory2, PeopleAlt} from '@mui/icons-material';
+import {
+  Description,
+  Home,
+  Inventory2,
+  LocalShipping,
+  PeopleAlt,
+} from '@mui/icons-material';
 import {observer} from 'mobx-react';
 
 import UserStore from '../../store/User';
@@ -136,6 +142,20 @@ const AppDrawer = () => {
         setSelectedIndex(index);
         UserStore.setSelectedPage('/products');
         navigate('/products');
+      },
+    },
+    {
+      text: 'Orders',
+      icon: <LocalShipping sx={{color: '#fff'}} />,
+      path: '/orders',
+      onClick: (
+        e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        index: number,
+      ) => {
+        e.preventDefault();
+        setSelectedIndex(index);
+        UserStore.setSelectedPage('/orders');
+        navigate('/orders');
       },
     },
   ];

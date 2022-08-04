@@ -15,6 +15,8 @@ import {NewPage} from '../pages/NewPage';
 import ProductsTable from '../pages/Products';
 import {NewProduct} from '../pages/NewProduct';
 import HomePage from '../pages/Home';
+import OrdersTable from '../pages/Orders';
+import {NewOrder} from '../pages/NewOrder';
 
 const UIRouter = () => (
   <Router>
@@ -75,8 +77,25 @@ const UIRouter = () => (
             </PageLayout>
           }
         />
+
+        <Route
+          path="/orders"
+          element={
+            <PageLayout pageTitle="Orders" pageScrollable>
+              <OrdersTable />
+            </PageLayout>
+          }
+        />
+        <Route
+          path="/orders/new"
+          element={
+            <PageLayout pageTitle="New Order" pageScrollable>
+              <NewOrder />
+            </PageLayout>
+          }
+        />
       </Route>
-      <Route path="*" element={<Navigate to="/users" replace />} />
+      <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   </Router>
 );
