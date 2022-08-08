@@ -6,6 +6,7 @@ import {Dialog} from '../../../components/Dialog';
 import {Product, ProductUpdateForm} from '../../../types/products';
 import {useProducts} from '../../../hooks/reactQuery/useProducts';
 import EditProductForm from './EditProductForm';
+import {useFile} from '../../../hooks/reactQuery/useFile';
 
 interface Props {
   product: Product;
@@ -15,6 +16,7 @@ interface Props {
 
 const ProductEdit = ({product, openDialog, onClose}: Props) => {
   const {updateProduct} = useProducts();
+  const {uploadFile} = useFile();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().nullable().required('Name is required'),
@@ -37,10 +39,16 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
       quantity: product.quantity,
       isActive: product.isActive,
       category: product.category?.id || null,
+      image: null,
     },
 
     validationSchema,
     onSubmit: () => {
+      if (formik.values.image) {
+        console.log('formik.values.image', formik.values.image);
+        uploadFile(formik.values.image);
+      }
+
       const body: ProductUpdateForm = {
         name: formik.values.name || '',
         url: formik.values.url || '',

@@ -6,6 +6,7 @@ import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
+import { MulterModule } from "@nestjs/platform-express";
 
 import { UserService } from "./services/user.service";
 import { UserController } from "./controllers/user.controller";
@@ -21,6 +22,8 @@ import { ProductSchema } from "./schemas/products.schema";
 import { OrderSchema } from "./schemas/order.schema";
 import { OrderService } from "./services/order.service";
 import { OrderController } from "./controllers/order.controller";
+import { FileController } from "./controllers/file.controller";
+import { FileService } from "./services/file.service";
 
 @Module({
   imports: [
@@ -40,6 +43,9 @@ import { OrderController } from "./controllers/order.controller";
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
     }),
+    MulterModule.register({
+      dest: "./images",
+    }),
   ],
   controllers: [
     UserController,
@@ -47,6 +53,7 @@ import { OrderController } from "./controllers/order.controller";
     PageCategoryController,
     ProductsController,
     OrderController,
+    FileController,
   ],
   providers: [
     UserService,
@@ -54,6 +61,7 @@ import { OrderController } from "./controllers/order.controller";
     PageCategoryService,
     ProductService,
     OrderService,
+    FileService,
     LocalStrategy,
     JwtStrategy,
   ],
@@ -63,6 +71,7 @@ import { OrderController } from "./controllers/order.controller";
     PageCategoryService,
     ProductService,
     OrderService,
+    FileService,
   ],
 })
 export class AppModule {}

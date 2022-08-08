@@ -10,6 +10,7 @@ import HTMLEditor from '../../../components/HTMLEditor';
 import {ProductUpdateForm} from '../../../types/products';
 import {FormSelect} from '../../../components/FormComponents/FormSelect';
 import {currencies} from '../../../constants/menu';
+import {UploadFile} from '../../../components/UploadFile';
 
 interface Props {
   formik: FormikProps<ProductUpdateForm>;
@@ -159,6 +160,18 @@ const EditProductForm = ({formik}: Props) => {
               <HTMLEditor
                 initialValue={formik.values.text}
                 onChange={(value) => formik.setFieldValue('text', value)}
+              />
+            </Box>
+            <Box sx={{mt: '1em'}}>
+              <UploadFile
+                getAcceptedFiles={(dropedFiles) => {
+                  formik.setFieldValue('image', dropedFiles);
+                  console.log('dropedFiles', dropedFiles);
+                }}
+                // isCropped
+                hints={['JPG, PNG or BMP only', 'File size less than 5MB only']}
+                acceptedFileTypes="image/*"
+                maxFiles={1}
               />
             </Box>
           </Box>
