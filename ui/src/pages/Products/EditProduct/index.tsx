@@ -6,6 +6,7 @@ import {Dialog} from '../../../components/Dialog';
 import {Product, ProductUpdateForm} from '../../../types/products';
 import {useProducts} from '../../../hooks/reactQuery/useProducts';
 import EditProductForm from './EditProductForm';
+import {useFile} from '../../../hooks/reactQuery/useFile';
 
 interface Props {
   product: Product;
@@ -15,6 +16,7 @@ interface Props {
 
 const ProductEdit = ({product, openDialog, onClose}: Props) => {
   const {updateProduct} = useProducts();
+  const {uploadFile} = useFile();
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().nullable().required('Name is required'),
@@ -40,14 +42,19 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
     },
 
     validationSchema,
-    onSubmit: () => {
+    onSubmit: async () => {
+      let uploadedFile;
+      if (formik.values.image) {
+        uploadedFile = await uploadFile(formik.values.image, 'products');
+      }
+
       const body: ProductUpdateForm = {
         name: formik.values.name || '',
         url: formik.values.url || '',
         text: formik.values.text || '',
         seoTitle: formik.values.seoTitle || '',
         seoDescription: formik.values.seoDescription || '',
-        photoUrl: formik.values.photoUrl || '',
+        photoUrl: uploadedFile || product.photoUrl,
         price: formik.values.price || null,
         currency: formik.values.currency || '',
         quantity: formik.values.quantity || '',
@@ -84,7 +91,7 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
         maxWidth: 'lg',
         open: openDialog || false,
       }}>
-      <EditProductForm formik={formik} />
+      <EditProductForm formik={formik} img={product.signedPhotoUrl} />
     </Dialog>
   );
 };

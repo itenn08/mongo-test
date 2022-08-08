@@ -21,6 +21,8 @@ import { ProductSchema } from "./schemas/products.schema";
 import { OrderSchema } from "./schemas/order.schema";
 import { OrderService } from "./services/order.service";
 import { OrderController } from "./controllers/order.controller";
+import { FileController } from "./controllers/file.controller";
+import { FileService } from "./services/file.service";
 
 @Module({
   imports: [
@@ -47,6 +49,7 @@ import { OrderController } from "./controllers/order.controller";
     PageCategoryController,
     ProductsController,
     OrderController,
+    FileController,
   ],
   providers: [
     UserService,
@@ -54,6 +57,7 @@ import { OrderController } from "./controllers/order.controller";
     PageCategoryService,
     ProductService,
     OrderService,
+    FileService,
     LocalStrategy,
     JwtStrategy,
   ],
@@ -63,6 +67,7 @@ import { OrderController } from "./controllers/order.controller";
     PageCategoryService,
     ProductService,
     OrderService,
+    FileService,
   ],
 })
 export class AppModule {}

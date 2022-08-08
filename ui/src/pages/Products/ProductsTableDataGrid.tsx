@@ -44,7 +44,7 @@ export const columns = (
   getDeletableProduct: (item: Product) => void,
 ): GridColDef[] => [
   {
-    field: 'photoUrl',
+    field: 'signedPhotoUrl',
     headerName: '',
     flex: 0.5,
     headerAlign: 'center',
@@ -148,6 +148,7 @@ export const makeRows = (products: Resource<Product>): any => {
       price:
         `${product.price || 0}${product.currency && product.currency}` || '-',
       photoUrl: product.photoUrl || '-',
+      signedPhotoUrl: product.signedPhotoUrl || '-',
       quantity: product.quantity || '-',
       category: product.category?.name || '-',
       seoTitle: product.seoTitle || '-',

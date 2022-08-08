@@ -1,3 +1,4 @@
+import {FileWithPreview} from '../components/UploadFile';
 import {Category} from './categories';
 
 export interface ProductView {
@@ -14,6 +15,7 @@ export interface ProductView {
   updatedAt?: Date;
   isActive: boolean;
   category: Category | null;
+  signedPhotoUrl: string;
 }
 
 export interface ProductUpdateForm {
@@ -30,6 +32,7 @@ export interface ProductUpdateForm {
   updatedAt?: Date;
   isActive: boolean;
   category: string | null;
+  image?: FileWithPreview[] | null;
 }
 
 export interface Product extends ProductView {

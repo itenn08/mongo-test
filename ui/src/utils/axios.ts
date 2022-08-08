@@ -1,14 +1,48 @@
-import Axios from "axios";
-import AuthStore from "../store/Auth";
+import Axios, {AxiosRequestConfig} from 'axios';
+import AuthStore from '../store/Auth';
+
+type APIPropsType = {
+  url: string;
+  method: any;
+  config?: AxiosRequestConfig<any>;
+  data?: any;
+  params?: any;
+};
 
 export const axiosClient = Axios.create({
   baseURL: process.env.REACT_APP_API_URL,
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/json",
-    source: "WEB",
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    source: 'WEB',
   },
 });
+
+export const API = async ({
+  url,
+  method,
+  config,
+  data,
+  params,
+}: APIPropsType): Promise<any> => {
+  try {
+    const response = await axiosClient
+      .request({
+        url,
+        method,
+        withCredentials: false,
+        data,
+        params,
+        ...config,
+      })
+      .catch((error: any) => {
+        throw error.response;
+      });
+    return {response};
+  } catch (err: any) {
+    return {err};
+  }
+};
 
 axiosClient.interceptors.request.use(
   async (config) => {
@@ -23,10 +57,10 @@ axiosClient.interceptors.request.use(
   },
   (error) => {
     Promise.reject(error);
-  }
+  },
 );
 
-export const paramsSerializer = (parameters: { [key: string]: any }) => {
+export const paramsSerializer = (parameters: {[key: string]: any}) => {
   const items = Object.keys(parameters).map((key) => {
     const value = parameters[key];
     if (Array.isArray(value)) {
@@ -35,5 +69,5 @@ export const paramsSerializer = (parameters: { [key: string]: any }) => {
     return `${key}=${value}`;
   });
 
-  return items.flat().join("&");
+  return items.flat().join('&');
 };

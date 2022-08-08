@@ -50,3 +50,7 @@ Thumbs.db
 *.wmv
 
 .env
+
+serviceAccountKey.json
+
+/files

@@ -1,7 +1,9 @@
+import {FileWithPreview} from '../../components/UploadFile';
+
 export interface BasicSettingsFormModel {
   name: string;
   url: string;
-  photoUrl: string;
+  photoUrl: FileWithPreview[] | null | string;
   text: string;
   isActive: boolean;
   category: string | null;

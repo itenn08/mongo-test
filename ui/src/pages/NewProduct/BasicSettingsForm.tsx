@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {FormikErrors, useFormik} from 'formik';
 import * as Yup from 'yup';
 import {Box} from '@mui/system';
@@ -11,6 +11,7 @@ import FormInput from '../../components/FormComponents/FormInput';
 import {Switch} from '../../components/Switch';
 import CategoryPageAutocomplete from '../../components/Autocompletes/CategoryPageAutocomplete';
 import HTMLEditor from '../../components/HTMLEditor';
+import UploadFileForm from '../../components/UploadFileForm';
 
 interface Props {
   getBasicSettingsFormErrors?: (
@@ -30,12 +31,14 @@ export const BasicSettingsForm = ({
   getBasicSettingsFormValues,
   initialValues,
 }: Props) => {
+  const [imgUrl, setImgUrl] = useState<string | null | ArrayBuffer>('');
+
   const formik = useFormik<BasicSettingsFormModel>({
     initialValues: {
       name: initialValues?.name || '',
       url: initialValues?.url || '',
       text: initialValues?.text || '',
-      photoUrl: initialValues?.photoUrl || '',
+      photoUrl: initialValues?.photoUrl || null,
       isActive: initialValues?.isActive || true,
       category: initialValues?.category || null,
     },
@@ -58,6 +61,24 @@ export const BasicSettingsForm = ({
     onChange: formik.handleChange,
     onBlur: formik.handleBlur,
   };
+
+  const getLocalImg = async () => {
+    if (formik.values.photoUrl && formik.values.photoUrl.length > 0) {
+      const fetchUrl = formik.values.photoUrl[0] as any;
+      const response = await fetch(fetchUrl.preview);
+      const imageBlob = await response.blob();
+      const reader = new FileReader();
+      reader.readAsDataURL(imageBlob);
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        setImgUrl(base64data);
+      };
+    }
+  };
+
+  useEffect(() => {
+    getLocalImg();
+  }, [formik.values.photoUrl]);
 
   return (
     <PageCard
@@ -103,23 +124,6 @@ export const BasicSettingsForm = ({
             />
           </Grid>
           <Grid item md={5}>
-            <FormInput
-              props={{
-                size: 'small',
-                placeholder: 'URL photo',
-                label: 'Photo',
-                name: 'photoUrl',
-                value: formik.values.photoUrl,
-                helperText: formik.touched.photoUrl && formik.errors.photoUrl,
-                error: !!formik.errors.photoUrl && formik.touched.photoUrl,
-                sx: {
-                  mt: '0.5em',
-                },
-                ...defaultProps,
-              }}
-            />
-          </Grid>
-          <Grid item md={5}>
             <CategoryPageAutocomplete
               getCategory={(value) => {
                 formik.setFieldValue('category', value);
@@ -152,6 +156,21 @@ export const BasicSettingsForm = ({
                 onChanged={(value) => formik.setFieldValue('isActive', value)}
               />
             </Box>
+          </Grid>
+          <Grid item md={10}>
+            <Typography variant="body1" sx={{color: 'text.primary'}}>
+              Product image:
+            </Typography>
+            <UploadFileForm
+              getFiles={(dropedFiles) => {
+                formik.setFieldValue('photoUrl', dropedFiles);
+              }}
+              image={imgUrl || null}
+              isCropped
+              hints={['JPG, PNG or BMP only', 'File size less than 5MB only']}
+              acceptedFileTypes="image/*"
+              maxFiles={1}
+            />
           </Grid>
           <Grid item md={10}>
             <Typography variant="body1" sx={{color: 'text.primary', mt: '1em'}}>
