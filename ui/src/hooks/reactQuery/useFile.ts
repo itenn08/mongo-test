@@ -35,7 +35,6 @@ export const useFile = () => {
 
   const uploadFile = async (files: FileWithPreview[], path: string) => {
     try {
-      console.log('files', files.length);
       let filePath = '';
       if (files.length === 1) {
         filePath = await uploadAndSave(files[0], `${path}`);

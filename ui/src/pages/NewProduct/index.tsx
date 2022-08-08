@@ -14,6 +14,8 @@ import {BasicSettingsForm} from './BasicSettingsForm';
 import {SeoSettingsForm} from './SeoSettingsForm';
 import {useCreateProduct} from '../../hooks/reactQuery/useProducts';
 import {PriceSettingsForm} from './PriceSettingsForm';
+import {useFile} from '../../hooks/reactQuery/useFile';
+import {FileWithPreview} from '../../components/UploadFile';
 
 const steps = ['Add basic information', 'Price settings', 'SEO settings'];
 
@@ -32,7 +34,7 @@ export const NewProduct = () => {
       name: '',
       url: '',
       text: '',
-      photoUrl: '',
+      photoUrl: null,
       isActive: true,
       category: null,
     });
@@ -87,16 +89,26 @@ export const NewProduct = () => {
     setActiveStep(0);
   };
 
+  const {uploadFile} = useFile();
+
   const {mutateAsync: createProduct, isLoading: isSubmitting} =
     useCreateProduct('Product created successfully');
 
   const addNewPage = async () => {
+    let uploadedFile;
+    if (basicSettingsFormValues.photoUrl) {
+      uploadedFile = await uploadFile(
+        basicSettingsFormValues.photoUrl as FileWithPreview[],
+        'products',
+      );
+    }
+
     const body: NewProductModel = {
       name: basicSettingsFormValues.name,
       url: basicSettingsFormValues.url,
       text: basicSettingsFormValues.text,
       category: basicSettingsFormValues.category,
-      photoUrl: basicSettingsFormValues.photoUrl,
+      photoUrl: uploadedFile as string,
       isActive: basicSettingsFormValues.isActive,
       seoTitle: seoSettingsFormValues.seoTitle,
       seoDescription: seoSettingsFormValues.seoDescription,

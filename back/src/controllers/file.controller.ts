@@ -34,7 +34,6 @@ export class FileController {
     @Query() { category }: { category: string },
     @Res() res
   ) {
-    console.log("file", file);
     const path = await this.fileService.uploadFile(file, category);
     return res.status(HttpStatus.OK).json(path);
   }
