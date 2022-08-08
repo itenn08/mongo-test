@@ -6,7 +6,6 @@ import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { PassportModule } from "@nestjs/passport";
 import { JwtModule } from "@nestjs/jwt";
-import { MulterModule } from "@nestjs/platform-express";
 
 import { UserService } from "./services/user.service";
 import { UserController } from "./controllers/user.controller";
@@ -42,9 +41,6 @@ import { FileService } from "./services/file.service";
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: "24h" },
-    }),
-    MulterModule.register({
-      dest: "./images",
     }),
   ],
   controllers: [

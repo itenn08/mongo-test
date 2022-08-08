@@ -52,3 +52,5 @@ Thumbs.db
 .env
 
 serviceAccountKey.json
+
+/files

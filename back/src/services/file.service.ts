@@ -41,15 +41,18 @@ export class FileService {
           HttpStatus.BAD_REQUEST
         );
       }
-      console.log("file.path", file.path);
-      const uploadedFile = await storage.upload(file.path, {
-        destination: `${category}/${uuidv4()}${file.originalname}`,
-        metadata: {
-          contentType: file.mimetype,
-          cacheControl: "public, max-age=31536000",
-        },
+
+      const filePath = `${category}/${uuidv4()}${file.originalname}`;
+
+      const fileStorage = storage.file(filePath);
+
+      await fileStorage.save(file.buffer, function (error) {
+        if (!error) {
+          return { error };
+        }
       });
-      return { path: uploadedFile[0].name };
+
+      return { path: filePath };
     } catch (error) {
       return { error };
     }
