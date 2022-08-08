@@ -4,7 +4,7 @@ import {
   GridColumnHeaderParams,
   GridRenderCellParams,
 } from '@mui/x-data-grid';
-import {Avatar, Typography} from '@mui/material';
+import {Typography} from '@mui/material';
 
 import {OrderProductView} from '../../types/orders';
 import {StatusChip} from '../StatusChip/StatusChip';
@@ -37,15 +37,6 @@ const defaultAlignment: {
 };
 
 export const columns: GridColDef[] = [
-  {
-    field: 'photoUrl',
-    headerName: '',
-    flex: 0.5,
-    headerAlign: 'center',
-    align: 'center',
-    ...defaultProps,
-    renderCell: (params) => <Avatar src={params.value} />,
-  },
   {
     field: 'name',
     headerName: 'Name',
@@ -104,7 +95,6 @@ export const makeRows = (products: OrderProductView[]): any => {
         `${product.product.price || 0}${
           product.product.currency && product.product.currency
         }` || '-',
-      photoUrl: product.product.photoUrl || '-',
       inStock: product.product.quantity || '-',
       isActive: product.product.isActive,
     }));

@@ -15,6 +15,7 @@ export interface ProductView {
   updatedAt?: Date;
   isActive: boolean;
   category: Category | null;
+  signedPhotoUrl: string;
 }
 
 export interface ProductUpdateForm {

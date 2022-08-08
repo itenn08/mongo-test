@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Grid, Typography} from '@mui/material';
 import {FormikProps} from 'formik';
 import Box from '@mui/material/Box';
@@ -11,16 +11,37 @@ import {ProductUpdateForm} from '../../../types/products';
 import {FormSelect} from '../../../components/FormComponents/FormSelect';
 import {currencies} from '../../../constants/menu';
 import {UploadFile} from '../../../components/UploadFile';
+import {Button} from '../../../components/Button';
 
 interface Props {
   formik: FormikProps<ProductUpdateForm>;
+  img: string;
 }
 
-const EditProductForm = ({formik}: Props) => {
+const EditProductForm = ({formik, img}: Props) => {
+  const [imgUrl, setImgUrl] = useState<string | null | ArrayBuffer>('');
+  const [showUploadForm, setShowUploadForm] = useState<boolean>(false);
   const defaultProps = {
     onChange: formik.handleChange,
     onBlur: formik.handleBlur,
   };
+
+  const getLocalImg = async () => {
+    if (formik.values.image && formik.values.image.length > 0) {
+      const response = await fetch(formik.values.image[0].preview);
+      const imageBlob = await response.blob();
+      const reader = new FileReader();
+      reader.readAsDataURL(imageBlob);
+      reader.onloadend = () => {
+        const base64data = reader.result;
+        setImgUrl(base64data);
+      };
+    }
+  };
+
+  useEffect(() => {
+    getLocalImg();
+  }, [formik.values.image]);
 
   return (
     <Grid
@@ -50,14 +71,6 @@ const EditProductForm = ({formik}: Props) => {
                 helperText: formik.touched.url && formik.errors.url,
                 error: !!formik.errors.url && formik.touched.url,
                 required: true,
-              },
-              {
-                id: 'photoUrl',
-                label: 'Photo URL',
-                placeholder: 'URL',
-                value: formik.values.photoUrl,
-                helperText: formik.touched.photoUrl && formik.errors.photoUrl,
-                error: !!formik.errors.photoUrl && formik.touched.photoUrl,
               },
               {
                 id: 'price',
@@ -163,16 +176,63 @@ const EditProductForm = ({formik}: Props) => {
               />
             </Box>
             <Box sx={{mt: '1em'}}>
-              <UploadFile
-                getAcceptedFiles={(dropedFiles) => {
-                  formik.setFieldValue('image', dropedFiles);
-                  console.log('dropedFiles', dropedFiles);
-                }}
-                // isCropped
-                hints={['JPG, PNG or BMP only', 'File size less than 5MB only']}
-                acceptedFileTypes="image/*"
-                maxFiles={1}
-              />
+              {img && !showUploadForm && (
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDirection="column">
+                  <Box
+                    sx={{
+                      border: `1px solid text.disabled`,
+                      padding: '0.5em',
+                      height: '12.5em',
+                      width: '12.5em',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}>
+                    <Box
+                      sx={{flexGrow: 1, height: 0, cursor: 'pointer'}}
+                      onClick={() => window.open(img, '_blank')}>
+                      <img
+                        alt="product img"
+                        src={(imgUrl as any) || img}
+                        style={{
+                          objectFit: 'cover',
+                          objectPosition: 'top',
+                          width: '100%',
+                          height: '100%',
+                        }}
+                      />
+                    </Box>
+                  </Box>
+                  <Button
+                    label="Replace Image"
+                    buttonProps={{
+                      variant: 'outlined',
+                      onClick: () => setShowUploadForm(true),
+                      sx: {
+                        mt: '1em',
+                      },
+                    }}
+                  />
+                </Box>
+              )}
+              {(!formik.values.photoUrl || showUploadForm) && (
+                <UploadFile
+                  getAcceptedFiles={(dropedFiles) => {
+                    formik.setFieldValue('image', dropedFiles);
+                    setShowUploadForm(false);
+                  }}
+                  isCropped
+                  hints={[
+                    'JPG, PNG or BMP only',
+                    'File size less than 5MB only',
+                  ]}
+                  acceptedFileTypes="image/*"
+                  maxFiles={1}
+                />
+              )}
             </Box>
           </Box>
         </Box>

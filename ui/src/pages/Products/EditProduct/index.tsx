@@ -39,14 +39,13 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
       quantity: product.quantity,
       isActive: product.isActive,
       category: product.category?.id || null,
-      image: null,
     },
 
     validationSchema,
-    onSubmit: () => {
+    onSubmit: async () => {
+      let uploadedFile;
       if (formik.values.image) {
-        console.log('formik.values.image', formik.values.image);
-        uploadFile(formik.values.image);
+        uploadedFile = await uploadFile(formik.values.image, 'products');
       }
 
       const body: ProductUpdateForm = {
@@ -55,7 +54,7 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
         text: formik.values.text || '',
         seoTitle: formik.values.seoTitle || '',
         seoDescription: formik.values.seoDescription || '',
-        photoUrl: formik.values.photoUrl || '',
+        photoUrl: uploadedFile || product.photoUrl,
         price: formik.values.price || null,
         currency: formik.values.currency || '',
         quantity: formik.values.quantity || '',
@@ -92,7 +91,7 @@ const ProductEdit = ({product, openDialog, onClose}: Props) => {
         maxWidth: 'lg',
         open: openDialog || false,
       }}>
-      <EditProductForm formik={formik} />
+      <EditProductForm formik={formik} img={product.signedPhotoUrl} />
     </Dialog>
   );
 };

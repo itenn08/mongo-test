@@ -76,15 +76,6 @@ export const columns = (
     ...defaultProps,
     flex: 2,
   },
-  // {
-  //   field: 'products',
-  //   headerName: 'products',
-  //   type: 'string',
-  //   ...defaultAlignment,
-  //   ...defaultProps,
-  //   flex: 2,
-  // },
-
   {
     field: 'products',
     headerName: 'Products',
@@ -92,14 +83,6 @@ export const columns = (
     ...defaultProps,
     renderCell: (params) => <OrderProductsPopover products={params.value} />,
   },
-  // {
-  //   field: 'text',
-  //   headerName: 'Text',
-  //   type: 'string',
-  //   ...defaultAlignment,
-  //   ...defaultProps,
-  //   flex: 2,
-  // },
   {
     field: 'createdAt',
     headerName: 'Created',

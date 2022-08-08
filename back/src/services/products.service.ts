@@ -9,12 +9,16 @@ import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { Schema as MongooseSchema } from "mongoose";
 
+import { FileService } from "src/services/file.service";
 import { ProductDto } from "src/dto/products.dto";
 import { Product } from "src/schemas/products.schema";
 
 @Injectable()
 export class ProductService {
-  constructor(@InjectModel("Products") private productModel: Model<Product>) {}
+  constructor(
+    @InjectModel("Products") private productModel: Model<Product>,
+    private fileService: FileService
+  ) {}
 
   async create(body: ProductDto) {
     const product = new this.productModel({
@@ -56,32 +60,68 @@ export class ProductService {
         .skip(pageIndex * pageSize)
         .limit(pageSize)
         .exec();
+
+      const formattedProducts = await Promise.all(
+        products.map(async (product) => {
+          let signedPhotoUrl;
+          if (product.photoUrl) {
+            signedPhotoUrl = await this.fileService.downloadFile(
+              product.photoUrl
+            );
+          } else {
+            signedPhotoUrl = product.photoUrl;
+          }
+
+          return {
+            id: product.id,
+            category: product.category,
+            currency: product.currency,
+            signedPhotoUrl: signedPhotoUrl,
+            photoUrl: product.photoUrl,
+            createdAt: product.createdAt,
+            isActive: product.isActive,
+            name: product.name,
+            price: product.price,
+            quantity: product.quantity,
+            seoDescription: product.seoDescription,
+            seoTitle: product.seoTitle,
+            text: product.text,
+            updatedAt: product.updatedAt,
+            url: product.url,
+          };
+        })
+      );
+
       const total = await this.productModel.count();
 
-      return { data: products, total };
+      return { data: formattedProducts, total };
     } catch (e) {
       throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
   }
 
   async getProductById(id: MongooseSchema.Types.ObjectId) {
-    let product;
+    let selectedProduct;
     try {
-      product = await this.productModel
+      selectedProduct = await this.productModel
         .findById(id)
         .populate("category")
         .exec();
+      if (selectedProduct.photoUrl) {
+        selectedProduct["signedPhotoUrl"] = await this.fileService.downloadFile(
+          selectedProduct.photoUrl
+        );
+      }
     } catch (error) {
       throw new InternalServerErrorException(
         `Product not found:${id}. ${error}`
       );
     }
 
-    if (!product) {
+    if (!selectedProduct) {
       throw new NotFoundException("The client with this id does not exist");
     }
-
-    return product;
+    return selectedProduct;
   }
 
   async update(id: MongooseSchema.Types.ObjectId, postData: ProductDto) {

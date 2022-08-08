@@ -30,7 +30,7 @@ export class FileService {
       });
     }
 
-    return exist ? { url: signedUrl } : { error: "File not found" };
+    return exist ? signedUrl : { error: "File not found" };
   }
 
   async uploadFile(file: Express.Multer.File, category: string) {
@@ -52,7 +52,7 @@ export class FileService {
         }
       });
 
-      return { path: filePath };
+      return filePath;
     } catch (error) {
       return { error };
     }
